@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎁 КОРОБОЧКА 3.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+	<meta name="theme-color" content="#5d4037">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎁 КОРОБОЧКА 3.5</h1>
+            <button class="notify-toggle" id="notifyToggleBtn" aria-label="Уведомления">
+                <i class="fas fa-bell-slash"></i>
+            </button>
+        </header>
+
+        <div class="sections">
+            <div class="section mandatory" data-category="1">
+                <h2>Обязательные дела</h2>
+                <p>Нажмите, чтобы выбрать случайную задачу</p>
+            </div>
+            
+            <div class="section security" data-category="2,5">
+                <h2>Система безопасности <br>и доступность простых радостей</h2>
+                <p>Нажмите, чтобы выбрать случайную задачу</p>
+            </div>
+            
+            <div class="section joys" data-category="3,4">
+                <h2>Простые и эго-радости</h2>
+                <p>Нажмите, чтобы выбрать случайную задачу</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="showTasksBtn">Все задачи</button>
+            <button id="addSingleBtn">Добавить задачу</button>
+            <button id="addMultipleBtn">Добавить несколько задач</button>
+            <button id="exportTasksBtn">Скачать задачи</button>
+        </div>
+        
+        <div class="task-list" id="taskList" style="display: none;">
+            <h2>Все задачи</h2>
+            
+            <div class="task-form">
+                <textarea id="taskText" placeholder="Введите новую задачу или несколько (каждая с новой строки)..."></textarea>
+                <select id="taskCategory">
+                    <option value="0">Без категории (неактивна)</option>
+                    <option value="1">Обязательные дела</option>
+                    <option value="2">Система безопасности</option>
+                    <option value="5">Доступность простых радостей</option>
+                    <option value="3">Простые радости</option>
+                    <option value="4">Эго-радости</option>
+                </select>
+                <button id="addTaskBtn">Добавить задачу</button>
+            </div>
+            
+            <div class="import-export">
+                <label for="importFile" class="file-label">
+                    <i class="fas fa-upload"></i> Загрузить задачи из файла
+                </label>
+                <input type="file" id="importFile" class="file-input" accept=".json">
+            </div>
+            
+            <div class="tasks" id="tasksContainer">
+                <!-- Задачи будут добавляться здесь -->
+            </div>
+            
+            <button id="hideTasksBtn">Скрыт�� список</button>
+        </div>
+    </div>
+    
+    <div class="timer-screen" id="timerScreen">
+        <div class="timer-content">
+            <h2>Ваша задача:</h2>
+            <div class="timer-task" id="timerTaskText"></div>
+            <div class="timer-display" id="timerDisplay">15:00</div>
+            
+            <div class="timer-controls">
+                <input type="number" id="timerMinutes" min="1" max="120" value="15">
+                <button class="timer-btn" id="startTimerBtn">Старт</button>
+                <button class="timer-btn" id="pauseTimerBtn">Пауза</button>
+                <button class="timer-btn" id="resetTimerBtn">Сброс</button>
+            </div>
+            
+            <div class="timer-complete-options" id="timerCompleteOptions">
+                <button class="timer-btn" id="completeTaskBtn">Завершить задачу</button>
+                <button class="timer-btn" id="returnTaskBtn">Вернуть в коробочку</button>
+            </div>
+            
+            <button class="timer-btn" id="closeTimerBtn" style="margin-top: 15px;">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        Время вышло!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
