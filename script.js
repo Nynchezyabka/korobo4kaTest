@@ -41,7 +41,7 @@ let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
 
-// Режим отображе��ия архива выполненных задач
+// ��ежим отображе��ия архива выполненных задач
 let showArchive = false;
 
 // Элем��нты DOM
@@ -749,7 +749,7 @@ function setupAddCategorySelector() {
         const dropdown = document.createElement('div');
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
-            <button class="add-category-option" data-category="0">Б��з ка��егории</button>
+            <button class="add-category-option" data-category="0">Без категории</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность радостей</button>
@@ -763,6 +763,8 @@ function setupAddCategorySelector() {
                 applyCategoryVisualToSelect();
                 dropdown.classList.remove('show');
                 activeDropdown = null;
+                // show subcategory picker if available
+                showAddSubcategoriesFor(parseInt(v));
             });
         });
         badge.addEventListener('click', (e) => {
@@ -778,6 +780,80 @@ function setupAddCategorySelector() {
         taskCategory.insertAdjacentElement('afterend', container);
     }
     applyCategoryVisualToSelect();
+
+    // Ensure subcategory controls container exists
+    if (!document.querySelector('.add-subcategory-controls')) {
+        const sc = document.createElement('div');
+        sc.className = 'add-subcategory-controls';
+        sc.style.display = 'none';
+        taskCategory.parentElement.appendChild(sc);
+    }
+}
+
+function showAddSubcategoriesFor(cat) {
+    const controls = document.querySelector('.add-subcategory-controls');
+    if (!controls) return;
+    const customSubsRaw = localStorage.getItem('customSubcategories');
+    const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+    const list = [];
+    if (String(cat) === '1') {
+        list.push({ key: 'work', label: 'Работа' });
+        list.push({ key: 'home', label: 'Дом' });
+    }
+    const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+    saved.forEach(s => list.push({ key: s, label: s }));
+
+    controls.innerHTML = '';
+    if (list.length === 0) {
+        controls.classList.remove('show');
+        controls.style.display = 'none';
+        return;
+    }
+
+    // option for none
+    const noneBtn = document.createElement('button');
+    noneBtn.className = 'add-subcategory-btn';
+    noneBtn.type = 'button';
+    noneBtn.dataset.sub = '';
+    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.addEventListener('click', () => {
+        controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
+        noneBtn.classList.add('selected');
+        const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', '');
+    });
+    controls.appendChild(noneBtn);
+
+    list.forEach(item => {
+        const b = document.createElement('button');
+        b.className = 'add-subcategory-btn';
+        b.type = 'button';
+        b.dataset.sub = item.key;
+        b.textContent = item.label;
+        b.addEventListener('click', () => {
+            controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected');
+            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', item.key);
+        });
+        controls.appendChild(b);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-subcategory-btn';
+    addBtn.type = 'button';
+    addBtn.textContent = 'Добавить подкатегорию...';
+    addBtn.addEventListener('click', () => {
+        const name = prompt('Введите название подкатегории:');
+        if (name && name.trim()) {
+            const val = name.trim();
+            const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+            if (!arrSaved.includes(val)) { arrSaved.push(val); customSubs[cat] = arrSaved; localStorage.setItem('customSubcategories', JSON.stringify(customSubs)); }
+            showAddSubcategoriesFor(cat);
+        }
+    });
+    controls.appendChild(addBtn);
+
+    controls.classList.add('show');
+    controls.style.display = 'flex';
 }
 
 window.addEventListener('load', async () => {
@@ -865,7 +941,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при первом запуске
+    // при перво�� запуске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1026,6 +1102,7 @@ sections.forEach(section => {
         setTimeout(() => {
             taskText.focus();
             taskText.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showAddSubcategoriesFor(parseInt(taskCategory.value));
         }, 0);
     });
 });
@@ -1034,6 +1111,7 @@ showTasksBtn.addEventListener('click', () => {
     showArchive = false;
     taskList.style.display = 'block';
     displayTasks();
+    showAddSubcategoriesFor(parseInt(taskCategory.value));
 });
 
 if (archiveBtn) {
@@ -1041,6 +1119,7 @@ if (archiveBtn) {
         showArchive = true;
         taskList.style.display = 'block';
         displayTasks();
+        const sc = document.querySelector('.add-subcategory-controls'); if (sc) { sc.classList.remove('show'); sc.style.display = 'none'; }
     });
 }
 
@@ -1056,17 +1135,19 @@ addTaskBtn.addEventListener('click', () => {
     let category = parseInt(taskCategory.value);
     if (lines.length === 0) return;
 
-    // Для надёжности: если выбрана подкатегория, принудительно устанавливаем категорию 1
-    if (category !== 1) {
-        const selBtn = document.querySelector('.add-subcategory-controls .add-subcategory-btn.selected');
-        if (selBtn && selBtn.dataset.sub) {
+    // Для надёжности: если выбрана подкатегория, принудительно устанавливаем категорию 1 и запомним подкатегорию
+    const selBtn = document.querySelector('.add-subcategory-controls .add-subcategory-btn.selected');
+    let selectedSub = null;
+    if (selBtn && typeof selBtn.dataset.sub !== 'undefined') {
+        selectedSub = selBtn.dataset.sub || null;
+        if (category !== 1) {
             if (taskCategory) taskCategory.value = '1';
             category = 1;
         }
     }
 
     if (lines.length > 1) {
-        if (!confirm(`Добав��ть ${lines.length} задач?`)) return;
+        if (!confirm(`Добавить ${lines.length} задач?`)) return;
     }
 
     const active = true;
@@ -1079,11 +1160,13 @@ addTaskBtn.addEventListener('click', () => {
             active,
             statusChangedAt: Date.now()
         };
+        if (selectedSub) newTask.subcategory = selectedSub;
         tasks.push(newTask);
     });
 
     saveTasks();
     taskText.value = '';
+    if (selBtn) selBtn.classList.remove('selected');
     displayTasks();
 });
 
