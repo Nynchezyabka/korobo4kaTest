@@ -1117,7 +1117,7 @@ textarea {
     .subcategory-columns { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 }
 
-/* Стикер на всю строку для длинных задач */
+/* Стикер на всю ��троку для длинных задач */
 .group-grid .sticker-wide { grid-column: 1 / -1; }
 .group-grid .task { padding: 6px 8px; border-radius: 12px; }
 .group-grid .category-badge { background-color: transparent; padding: 0 6px; }
@@ -1139,7 +1139,7 @@ textarea {
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группировк�� опций в выпадающих списках категорий */
+/* Группировк�� опций в выпадающих списках катег��рий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1226,7 +1226,7 @@ textarea {
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-.modal-category-options .modal-category-btn { padding: 8px 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; color: #5d4037; min-width: 70px; max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.95rem; }
+.modal-category-options .modal-category-btn { padding: 10px 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; color: #5d4037; min-width: 110px; max-width: 260px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; text-align: center; font-size: 1rem; }
 
 /* Ensure category titles/buttons remain compact and aligned */
 .category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
@@ -1581,7 +1581,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устройств */
+/* Адаптивность для мобильных уст��ойств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
