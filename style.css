@@ -629,7 +629,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная версия — компактное отображение */
+/* Мобильная версия ��� компактное отображение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -1134,7 +1134,7 @@ textarea {
     .subcategory-columns { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 }
 
-/* Стикер на всю строку дл�� длинных задач */
+/* Стикер на всю строку для длинных задач */
 .group-grid .sticker-wide { grid-column: 1 / -1; }
 .group-grid .task { padding: 6px 8px; border-radius: 12px; }
 .group-grid .category-badge { background-color: transparent; padding: 0 6px; }
@@ -1179,8 +1179,8 @@ textarea {
 /* Кнопка актива��ии/деактивации всей категории в з��головке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* Кнопки на секциях главного экрана */
-.section-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+/* Кнопки на се��циях главного экрана */
+.section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
 .section-action-btn .action-text { font-size: 0.9rem; opacity: 0.95; }
