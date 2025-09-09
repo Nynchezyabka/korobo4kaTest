@@ -442,7 +442,7 @@ textarea {
     margin-bottom: 0;
 }
 
-/* Цвета для опций категорий */
+/* Цвета для опци�� категорий */
 .category-option[data-category="0"] {
     background-color: #f5f5f5;
     border-left: 2px solid #9E9E9E;
@@ -725,7 +725,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок ��права */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -931,7 +931,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаг��ловки на всех экранах */
+/* Показываем подзаголовки на всех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1118,7 +1118,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* Переопределяем стару�� десктопную раскладку внутри групп */
+/* Переопределяем стару�� дес��топную раскладку внутри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1188,7 +1188,18 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #5d4037; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
-#modalTaskCategory { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
+.modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.modal-category-options .modal-category-btn { padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; color: #5d4037; min-width: 90px; }
+.modal-category-options .modal-category-btn.selected { outline: 3px solid rgba(0,0,0,0.08); transform: translateY(-1px); }
+
+/* Category color variants */
+.modal-category-btn.cat-0 { background-color: #f5f5f5; border-left: 4px solid #9E9E9E; }
+.modal-category-btn.cat-1 { background-color: #fff9c4; border-left: 4px solid #FFD54F; }
+.modal-category-btn.cat-2 { background-color: #bbdefb; border-left: 4px solid #64B5F6; }
+.modal-category-btn.cat-3 { background-color: #c8e6c9; border-left: 4px solid #81C784; }
+.modal-category-btn.cat-4 { background-color: #ffcdd2; border-left: 4px solid #E57373; }
+.modal-category-btn.cat-5 { background-color: #d1c4e9; border-left: 4px solid #9575CD; }
+
 #modalAddTaskBtn, #modalCancelBtn { padding: 10px 14px; border-radius: 8px; border: none; background-color: #5d4037; color: #fff; cursor: pointer; }
 #modalCancelBtn { background-color: #9E9E9E; }
 
