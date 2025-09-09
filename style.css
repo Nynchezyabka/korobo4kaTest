@@ -546,7 +546,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* оранжевый */
+    background-color: #ff9800; /* оранжевы�� */
 }
 
 #pauseTimerBtn:active {
@@ -635,7 +635,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная версия — компактное отображение */
+/* Мобильная ве��сия — компактное отображение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -1003,7 +1003,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Стикерная сетка для планшетов и десктопов */
+/* С��икерная сетка для планшетов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1151,7 +1151,7 @@ textarea {
 /* Редактор текста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
-/* Цветизация выбранной категории при добавлении задачи */
+/* Цветизация в��бранной категории при добавлении задачи */
 .add-category-badge[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-badge[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-badge[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -1286,6 +1286,14 @@ textarea {
 
 /* Responsive subcategory controls */
 .add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+/* Strong overrides to prevent breaking single letters in task text */
+.tasks .task-text, .tasks.mobile-compact .task-text, .tasks.sticker-grid .task-text, .group-grid .task-text {
+    word-break: normal !important;
+    hyphens: none !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+}
 .add-subcategory-controls .add-subcategory-btn { padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,0.05); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1rem; }
 .add-subcategory-controls .add-subcategory-btn.selected { background: #5d4037; color: #fff; }
 .add-subcategory-controls .add-subcategory-btn { min-width: 86px; flex: 0 1 auto; }
