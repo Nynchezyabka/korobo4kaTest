@@ -47,7 +47,7 @@ let showArchive = false;
 // Элем��нты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия отк��ытого выпадающего меню категорий
+// Глобальный обработчик для закрытия отк���ытого выпадающего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -197,7 +197,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span>`;
+        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\">+</button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -746,7 +746,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управлени�� ��аймером
+    // ��крываем опции завершения и показываем управлени�� ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1138,7 +1138,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ��ланируем локальный fallback
+    // ���ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1198,7 +1198,7 @@ function startTimer() {
     }
 }
 
-// Функция для ���аузы таймера
+// Функция для ����аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1246,7 +1246,7 @@ async function cancelServerSchedule() {
 
 // Функци�� для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, с��рвер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
