@@ -737,7 +737,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке страницы
+// Добавляем запрос раз��ешения при загрузке страницы
 function setupAddCategorySelector() {
     if (!taskCategory) return;
     let container = document.querySelector('.add-category-selector');
@@ -1136,6 +1136,31 @@ const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
 
+function getCategoryColor(cat) {
+    switch (Number(cat)) {
+        case 0: return '#f5f5f5';
+        case 1: return '#fff9c4';
+        case 2: return '#bbdefb';
+        case 3: return '#c8e6c9';
+        case 4: return '#ffcdd2';
+        case 5: return '#d1c4e9';
+        default: return '#ffffff';
+    }
+}
+
+function applyModalBackground(cat) {
+    const modalContent = addTaskModal ? addTaskModal.querySelector('.modal-content') : null;
+    if (!modalContent) return;
+    const color = getCategoryColor(cat);
+    modalContent.style.backgroundColor = color;
+    // adjust text color for grey background
+    if (String(cat) === '0') {
+        modalContent.style.color = '#333';
+    } else {
+        modalContent.style.color = '#333';
+    }
+}
+
 function renderModalCategoryOptions(allowedCategories = null) {
     const container = modalCategoryOptions;
     if (!container) return;
@@ -1152,6 +1177,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
         btn.addEventListener('click', () => {
             container.querySelectorAll('.modal-category-btn').forEach(x => x.classList.remove('selected'));
             btn.classList.add('selected');
+            applyModalBackground(btn.dataset.category);
             if (parseInt(btn.dataset.category) === 1) showAddSubcategoriesFor(1, modalSubcategories);
             else { if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; } }
             container.dataset.selected = btn.dataset.category;
@@ -1359,7 +1385,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Уведомления включ��ны');
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
