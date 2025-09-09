@@ -186,7 +186,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённые пользовательские по��категории
+    // Загружаем сохранённые пользовательские подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -266,10 +266,6 @@ function displayTasks() {
             }
 
             const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
-            // add a visual + button on the sticker (visually matches section add), no add-functionality here
-            const stickerAddHtml = `<button type=\"button\" class=\"section-action-btn section-add-btn sticker-add-btn\" aria-hidden=\"true\">`+
-                `<i class=\"fas fa-plus\"></i>`+
-                `</button>`;
 
             taskElement.innerHTML = `
                 <div class=\"task-content\">
@@ -287,7 +283,7 @@ function displayTasks() {
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без категори��</button>
                             <div class=\"category-option-group\">
-                                <button class=\"category-option\" data-category=\"1\">Обязательны��</button>
+                                <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
@@ -1668,10 +1664,10 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокир��ваны в настройках браузера. Разрешит�� их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попр��буйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� снова.');
         }
         updateNotifyToggle();
     });
