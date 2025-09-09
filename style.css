@@ -171,7 +171,7 @@ button:active {
 }
 
 .task-form {
-    display: flex;
+    display: none; /* moved to modal */
     flex-direction: column;
     gap: 10px;
     margin-bottom: 15px;
@@ -931,7 +931,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на всех экранах */
+/* Показываем подзаг��ловки на всех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1314,7 +1314,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, с��рава сверху категория, снизу под ней кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
