@@ -206,7 +206,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названи�� категории — добавление пользовательской подкатегории
+        // Клик п�� названи�� категории — добавление пользовательской подкатегории
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.addEventListener('click', (e) => {
@@ -849,25 +849,41 @@ function populateTaskSubcategoryDropdown(task) {
     });
 
     // for security category (2) provide add-button
-    if (task.category === 2) {
-        const addBtn = document.createElement('button');
-        addBtn.type = 'button';
-        addBtn.className = 'category-option add-sub-btn';
-        addBtn.textContent = 'Добавить сложную радость';
-        addBtn.addEventListener('click', (e) => {
+    if (task.category === 2 || task.category === 4) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'category-option add-sub-btn-wrapper';
+        const inline = document.createElement('div');
+        inline.className = 'inline-add-form';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        const save = document.createElement('button');
+        save.type = 'button';
+        save.className = 'inline-save-btn';
+        save.textContent = 'Добавить';
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'inline-cancel-btn';
+        cancel.textContent = 'Отмена';
+        inline.appendChild(input);
+        inline.appendChild(save);
+        inline.appendChild(cancel);
+        wrapper.appendChild(inline);
+        dd.appendChild(wrapper);
+
+        save.addEventListener('click', (e) => {
             e.stopPropagation();
-            const name = prompt('Введите название сложной радости:');
-            if (name && name.trim()) {
-                const val = name.trim();
-                const arr = Array.isArray(customSubs[2]) ? customSubs[2] : [];
-                if (!arr.includes(val)) arr.push(val);
-                customSubs[2] = arr;
-                localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
-                populateTaskSubcategoryDropdown(task);
-                if (addTaskModal && addTaskModal.style.display === 'flex') showAddSubcategoriesFor(2, modalSubcategories);
-            }
+            const name = input.value && input.value.trim();
+            if (!name) return;
+            const val = name;
+            const arr = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
+            if (!arr.includes(val)) arr.push(val);
+            customSubs[task.category] = arr;
+            localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+            populateTaskSubcategoryDropdown(task);
+            if (addTaskModal && addTaskModal.style.display === 'flex') showAddSubcategoriesFor(task.category, modalSubcategories);
         });
-        dd.appendChild(addBtn);
+        cancel.addEventListener('click', (e) => { e.stopPropagation(); populateTaskSubcategoryDropdown(task); });
     }
 }
 
@@ -1017,7 +1033,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во время таймера
+// Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1464,7 +1480,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возвра���е на ��кладку/разворачивании окна
+// Пересчет при воз��ра���е на ��кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
