@@ -152,7 +152,7 @@ function getCategoryName(category) {
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
-        4: "Эго-радости",
+        4: "Эго-��адости",
         5: "Доступность радостей"
     };
     return categories[category] || "Неизвестно";
@@ -514,7 +514,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из��е��ения категории задачи
+// Функция для из����е��ения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -616,7 +616,7 @@ function importTasks(file) {
             // Добавляем задачи в базу данных
             tasks = importedTasks;
             saveTasks();
-            alert(`Успешно импортировано ${importedTasks.length} задач`);
+            alert(`Успешно импортирован�� ${importedTasks.length} задач`);
             displayTasks();
             
         } catch (error) {
@@ -838,16 +838,21 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     });
 
     const addBtn = document.createElement('button');
-    addBtn.className = 'add-subcategory-btn';
+    addBtn.className = 'add-subcategory-btn add-subcategory-add';
     addBtn.type = 'button';
-    addBtn.textContent = 'Добавить подкатегорию...';
+    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
     addBtn.addEventListener('click', () => {
-        const name = prompt('Введите название подкатегории:');
+        const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
+        const name = prompt(promptText);
         if (name && name.trim()) {
             const val = name.trim();
             const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
             if (!arrSaved.includes(val)) { arrSaved.push(val); customSubs[cat] = arrSaved; localStorage.setItem('customSubcategories', JSON.stringify(customSubs)); }
-            showAddSubcategoriesFor(cat);
+            showAddSubcategoriesFor(cat, targetContainer);
+            // If modal open, refresh modal subcategories too
+            if (addTaskModal && addTaskModal.style.display === 'flex') {
+                showAddSubcategoriesFor(cat, modalSubcategories);
+            }
         }
     });
     controls.appendChild(addBtn);
@@ -1067,7 +1072,7 @@ async function cancelServerSchedule() {
 
 // Функция для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локал��ный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
