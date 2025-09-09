@@ -478,6 +478,20 @@ function displayTasks() {
     });
 
     document.querySelectorAll('.category-option').forEach(option => {
+        // attach + button on category titles and task badges to open add modal
+    });
+
+    // attach handlers for category-add buttons (open modal restricted to this category)
+    document.querySelectorAll('.category-add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const cat = btn.dataset.cat ? parseInt(btn.dataset.cat) : null;
+            openAddModal(undefined, { restrict: 'section', sectionCats: String(cat) });
+        });
+    });
+
+    // continue with category-option bindings
+    document.querySelectorAll('.category-option').forEach(option => {
         option.addEventListener('click', function() {
             const badge = this.closest('.category-selector').querySelector('.category-badge');
             const taskId = parseInt(badge.dataset.id);
@@ -784,7 +798,7 @@ function showNotification(message) {
     }
 }
 
-// Создани�� браузерного увед��мления
+// Создани�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1209,7 +1223,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм�����ра
+// Функция для остановки тайм���ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
