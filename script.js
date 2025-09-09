@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения ��сех за���ач
+// Функция от��бражения ��сех за���ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -395,7 +395,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
+            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз �� урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -424,7 +424,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Динамическая группировка з��дач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -769,7 +769,7 @@ function getRandomTask(categories) {
     // Прео��разуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных категорий
+    // Получаем все актив��ые задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -1057,7 +1057,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радо��ть' : 'Новая подкатегория';
+    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
