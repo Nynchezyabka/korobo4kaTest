@@ -148,7 +148,7 @@ function updateNotifyToggle() {
 // Функция для п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Без категории",
+        0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
@@ -755,7 +755,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведомления
+// Функция для пок��за уведомления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача ����авершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -968,7 +968,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const addBtn = document.createElement('button');
     addBtn.className = 'add-subcategory-btn add-subcategory-add';
     addBtn.type = 'button';
-    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
+    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить ��одкатегорию...';
     addBtn.addEventListener('click', () => {
         const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
         const name = prompt(promptText);
@@ -1081,7 +1081,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае�� серверу о расписании пуш-уведомления
+    // Сообщае�� сер��еру о расписании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
