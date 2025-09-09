@@ -1191,6 +1191,18 @@ textarea {
 .task-top-actions { display: inline-flex; align-items: center; gap: 6px; }
 .task-top-actions .task-control-btn { padding: 4px; }
 
+/* Inline add form for subcategories */
+.inline-add-form { display: inline-flex; gap: 6px; align-items: center; }
+.inline-add-form input { padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); min-width: 120px; }
+.inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { padding: 6px 8px; border-radius: 6px; border: none; cursor: pointer; background: #5d4037; color: #fff; }
+.inline-add-form .inline-cancel-btn { background: #9E9E9E; }
+
+/* Category dropdown background adapts via inline style from JS; ensure text/buttons visible */
+.category-dropdown { color: #222; }
+.category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
+.category-dropdown .category-option:hover { background: rgba(0,0,0,0.06); }
+.category-dropdown .add-sub-btn-wrapper { padding: 6px 8px; }
+
 /* Modal for adding tasks */
 .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 10050; }
 .modal[aria-hidden="false"] { display: flex; }
