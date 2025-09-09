@@ -417,7 +417,7 @@ function displayTasks() {
         }
     });
 
-    // Добав��яем обработчики событий для новых элементов
+    // Добав��яем обработчики событи�� для новых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         const nameEl = badge.querySelector('.category-name');
         if (nameEl) {
@@ -823,7 +823,7 @@ function populateTaskSubcategoryDropdown(task) {
     if (!dd) return;
     dd.innerHTML = '';
     // Apply category-colored background for the dropdown
-    try { dd.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
+    try { dd.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.92); dd.style.color = '#222'; } catch (e) {}
     // option: none
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
@@ -868,7 +868,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-про��кт';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1243,7 +1243,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци�� для сбр��са таймера
+// Функци�� для сброса таймера
 function resetTimer() {
     // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
@@ -1635,7 +1635,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откро��те сайт напрямую и попробуйт�� снова.');
         }
         updateNotifyToggle();
     });
