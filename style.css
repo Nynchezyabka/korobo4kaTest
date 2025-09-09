@@ -198,7 +198,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* С��рываем на��ивный select и используем кастомный цветной дропдаун */
+/* С��рываем на��ивный select и исполь��уем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -1243,7 +1243,7 @@ textarea {
 
 /* category + button near category title: match section + style but colored per category */
 .category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.4rem; font-weight: 700; }
-.category-add-btn i { color: #5d4037; font-size: 1.4rem; line-height:1; }
+.category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.4rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
@@ -1256,16 +1256,19 @@ textarea {
 .category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
 
 /* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
-.task-text { font-size: 1rem; line-height: 1.25; word-break: break-word; }
+.task-text { font-size: 0.95rem; line-height: 1.25; word-break: normal; overflow-wrap: break-word; hyphens: none; white-space: normal; }
 
 /* Make icons more compact */
-.task-control-btn { font-size: 1rem; padding: 4px; }
+.task-control-btn { font-size: 0.95rem; padding: 3px; }
 
-/* Mobile: make bell smaller and move to corner */
+/* Mobile: make bell smaller and move to corner; move + to right of title */
 @media (max-width: 480px) {
     header { position: relative; }
     .notify-toggle { width: 30px; height: 30px; top: 6px; right: 6px; }
     .notify-toggle i { font-size: 1rem; }
+    /* Ensure category title is positioned relative so + can be absolutely positioned */
+    .category-title { position: relative; }
+    .tasks.mobile-compact .category-title .category-add-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
 }
 .modal-category-options .modal-category-btn.selected { outline: 3px solid rgba(0,0,0,0.08); transform: translateY(-1px); }
 
