@@ -286,7 +286,14 @@ function displayTasks() {
 
             const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
-            const safeText = escapeHtml(task.text);
+            // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
+            let raw = String(task.text || '');
+            raw = raw.replace(/\uFFFD/g, '');
+            raw = raw.replace(/\u00AD/g, '');
+            raw = raw.replace(/\u200B/g, '');
+            // Remove unintended newlines or breaks between letters (e.g. 'Разобрат\nь' -> 'Разобрать')
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            const safeText = escapeHtml(raw);
             const displayText = fixOrphans(safeText);
             taskElement.innerHTML = `
                 <div class=\"task-content\">
@@ -617,7 +624,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из��е��ения категори�� задачи
+// Функция для из��е��ения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -652,7 +659,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач вн���три категории
+// Пе��еключение активн��сти всех задач вн���три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -891,7 +898,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новы�� эго-проект';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -936,7 +943,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Об��зательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность радостей</button>
+            <button class="add-category-option" data-category="5">Д��ступность радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1588,7 +1595,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при воз��ра���е на ��кладку/разворачив��нии окна
+// Пересчет при воз��ра���е на ��кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
