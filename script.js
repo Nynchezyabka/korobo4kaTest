@@ -47,7 +47,7 @@ let showArchive = false;
 // Элем��нты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия отк��ытого выпадающего меню категорий
+// Глобальный обработчик для закрытия отк��ытого выпада��щего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -156,6 +156,24 @@ function getCategoryName(category) {
         5: "Доступность радостей"
     };
     return categories[category] || "Неизвестно";
+}
+
+// Escape HTML to avoid injection when inserting task text into innerHTML
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+// Prevent single-letter words from being pushed to the next line by replacing the space before them with a non-breaking space
+function fixOrphans(text) {
+    if (!text) return '';
+    // Replace occurrences of ' <single-letter> ' with '\u00A0<letter> '
+    // Use Cyrillic and Latin single letters
+    const singleLetterRegex = /\s([A-Za-zА-Яа-яЁё])\s/g;
+    let res = text.replace(singleLetterRegex, function(m, p1) { return '\u00A0' + p1 + ' '; });
+    // start of string single letter
+    res = res.replace(/^([A-Za-zА-Яа-яЁё])\s/, function(m,p1) { return p1 + '\u00A0'; });
+    return res;
 }
 
 // Функция отображения ��сех за���ач
@@ -324,7 +342,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'Удалить задачу';
+                    del.title = 'Уда��ить задачу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -690,7 +708,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправильный формат файла');
+                    alert('Ошибка: неправ��льный формат файла');
                     return;
                 }
             }
@@ -913,7 +931,7 @@ function setupAddCategorySelector() {
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
-            <button class="add-category-option" data-category="1">Обязательные</button>
+            <button class="add-category-option" data-category="1">Об��зательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
@@ -1121,7 +1139,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво�� запуске
+    // при перво�� за��уске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1152,7 +1170,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ����ем Web Worker для т��чного отс��ета времени в фоне
+    // Использ����ем Web Worker для т����чного отс��ета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
