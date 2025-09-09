@@ -41,7 +41,7 @@ let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
 
-// ��ежим отображе��ия архива ��ыполненных задач
+// ��ежим отображе��ия архива ��ы��олненных задач
 let showArchive = false;
 
 // Элем��нты DOM
@@ -289,10 +289,13 @@ function displayTasks() {
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
             raw = raw.replace(/\uFFFD/g, '');
-            raw = raw.replace(/\u00AD/g, '');
+            // remove soft hyphens and common HTML soft-hyphen entities
+            raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // Remove unintended newlines or breaks between letters (e.g. 'Разобрат\nь' -> 'Разобрать')
-            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            // Replace explicit newlines with spaces (users may paste multi-line text) to avoid forced breaks
+            raw = raw.replace(/[\r\n]+/g, ' ');
+            // collapse multiple spaces
+            raw = raw.replace(/\s{2,}/g, ' ').trim();
             const safeText = escapeHtml(raw);
             const displayText = fixOrphans(safeText);
             taskElement.innerHTML = `
@@ -315,7 +318,7 @@ function displayTasks() {
                                 <div class=\"category-subrow\">
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
+                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">��ом</button>
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
@@ -723,7 +726,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавля��м задачи в б��зу данных
+            // Добавля��м задачи в б���зу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -739,7 +742,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной ��адачи из категории
 function getRandomTask(categories) {
-    // Преобразуем строку категор��й в мас��ив чисел
+    // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -775,7 +778,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем уп��авлени�� ��аймером
+    // Скрываем опции завершения и показываем управлени�� ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1212,7 +1215,7 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback дл�� браузеров без подде�����жки Web Workers
+        // Fallback дл�� браузеров без подде�������жки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
@@ -1227,7 +1230,7 @@ function startTimer() {
     }
 }
 
-// Функция для ���аузы ��аймера
+// Функция для ���аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1680,7 +1683,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
+            alert('Не удалось запросить разрешение на уведомления. Отк��ойте с��йт напрямую и попробуйт�� с��ова.');
         }
         updateNotifyToggle();
     });
