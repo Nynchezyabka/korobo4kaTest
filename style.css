@@ -198,7 +198,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* С��рываем на��ивный select и исполь��уем кастомный цветной дропдаун */
+/* С��рываем на��ивный select и используем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -1268,6 +1268,7 @@ textarea {
     .notify-toggle i { font-size: 1rem; }
     /* Ensure category title is positioned relative so + can be absolutely positioned */
     .category-title { position: relative; }
+    .tasks.mobile-compact .category-title { position: relative; padding-right: 56px; }
     .tasks.mobile-compact .category-title .category-add-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
 }
 .modal-category-options .modal-category-btn.selected { outline: 3px solid rgba(0,0,0,0.08); transform: translateY(-1px); }
