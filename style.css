@@ -185,7 +185,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветная индикация категории при добавлении задачи */
+/* Цветная индикация кат��гории при добавлении задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -1124,7 +1124,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* Переопределяем стару�� десктопную раскладку внутри групп */
+/* Переопределяем с��ару�� десктопную раскладку внутри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1241,13 +1241,9 @@ textarea {
 .category-dropdown { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 6px; border-radius: 8px; min-width: 160px; }
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
-/* + button next to category titles */
-.category-add-btn { margin-left: 8px; border: none; background: #5d4037; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; }
-.category-add-btn.small { width: 22px; height: 22px; font-size: 0.9rem; }
-
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; padding: 8px; cursor: pointer; background: transparent; }
-.category-add-btn i { color: #5d4037; font-size: 1.1rem; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; }
+.category-add-btn i { color: #5d4037; font-size: 1.4rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
@@ -1256,8 +1252,14 @@ textarea {
 .category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
 .category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
 
-/* Make sure the + looks like the section add button: brown icon on light category background, square */
-.category-add-btn { box-shadow: none; }
+/* Small variant if needed */
+.category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
+
+/* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
+.task-text { font-size: 1rem; line-height: 1.25; word-break: break-word; }
+
+/* Make icons more compact */
+.task-control-btn { font-size: 1rem; padding: 4px; }
 
 /* Mobile: make bell smaller and move to corner */
 @media (max-width: 480px) {
