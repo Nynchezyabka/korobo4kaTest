@@ -204,7 +204,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённые пользовательские подкатегории
+    // ��агружаем сохранённые пользовательские подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -285,6 +285,8 @@ function displayTasks() {
 
             const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
+            const safeText = escapeHtml(task.text);
+            const displayText = fixOrphans(safeText);
             taskElement.innerHTML = `
                 <div class=\"task-content\">
                     <div class=\"task-text\">${task.text}</div>
@@ -636,7 +638,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ��ункция для переключения активности задачи
+// ��ункция для переключения активности за��ачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -746,7 +748,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отоб��ажения таймера
+// Функци�� для отоб��ажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1670,7 +1672,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
+            alert('Не удалось запросить разрешени�� на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
         }
         updateNotifyToggle();
     });
