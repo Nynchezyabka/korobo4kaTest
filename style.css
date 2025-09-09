@@ -744,7 +744,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
+    /* Выровнять элеме��ты задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -924,7 +924,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* По��заголовки категорий для мобильной группировки */
+/* По��заголовки категорий для мобильной группиро��ки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1227,6 +1227,11 @@ textarea {
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .modal-category-options .modal-category-btn { padding: 8px 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; color: #5d4037; min-width: 70px; max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.95rem; }
+
+/* Ensure category titles/buttons remain compact and aligned */
+.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.category-title .category-heading { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 44px); }
+.category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
 
 /* Make add-category options compact and prevent buttons from expanding with long text */
 .add-category-option, .add-category-badge, .add-category-badge button { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; font-size: 0.95rem; }
