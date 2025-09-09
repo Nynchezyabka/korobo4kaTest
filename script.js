@@ -303,7 +303,7 @@ function displayTasks() {
                     </button>
                 </div>
             `;
-            // Перестав����яем элементы для мобильного: папка сверху спра��а, ниже сразу глаз и урна
+            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -977,7 +977,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ����ем Web Worker для точного отсчета времени в фоне
+    // Использ����ем Web Worker для т��чного отсчета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1256,9 +1256,17 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
     let selectedSub = null;
     if (selBtn && typeof selBtn.dataset.sub !== 'undefined') selectedSub = selBtn.dataset.sub || null;
+    // if a subcategory chosen and modalPrimaryCategory is set, ensure category is that primary
+    if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
+        category = modalPrimaryCategory;
+    }
     if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
     const active = true;
-    lines.forEach(text => { const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() }; if (selectedSub) newTask.subcategory = selectedSub; tasks.push(newTask); });
+    lines.forEach(text => {
+        const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
+        if (selectedSub) newTask.subcategory = selectedSub;
+        tasks.push(newTask);
+    });
     saveTasks(); closeAddModal(); displayTasks();
 });
 
@@ -1410,7 +1418,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
