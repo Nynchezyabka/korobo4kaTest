@@ -158,7 +158,7 @@ function getCategoryName(category) {
     return categories[category] || "Неизвестно";
 }
 
-// Функция отображения ��сех за��ач
+// Функция отображения ��сех за���ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -331,7 +331,7 @@ function displayTasks() {
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
                     ret.dataset.id = String(task.id);
-                    ret.title = 'Вернуть в активные';
+                    ret.title = 'Вернуть в акт��вные';
                     ret.innerHTML = '<i class="fas fa-undo"></i>';
                     controls.appendChild(ret);
                 }
@@ -360,21 +360,6 @@ function displayTasks() {
             }
             grid.appendChild(taskElement);
 
-            // insert visual + button on the sticker (no functionality) matching section-add-btn style
-            try {
-                const topActions = taskElement.querySelector('.task-top-actions');
-                if (topActions) {
-                    const wrapper = document.createElement('div');
-                    wrapper.innerHTML = stickerAddHtml;
-                    const node = wrapper.querySelector('button');
-                    if (node) {
-                        node.classList.add('sticker-add-btn');
-                        // ensure it does not have any click handlers
-                        node.addEventListener('click', (e) => { e.stopPropagation(); /* decorative only */ });
-                        topActions.insertBefore(node, topActions.querySelector('.complete-task-btn'));
-                    }
-                }
-            } catch (e) {}
 
             // If this task belongs to security-related categories (2 or 5), render subcategory selector in the dropdown
             if (!task.completed && task.category !== 0) {
@@ -710,7 +695,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавляем задачи в базу данных
+            // Добавляем задачи в б��зу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -1664,10 +1649,10 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокир��ваны в настройках браузера. Разрешит�� их вручную.');
+                alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
         }
         updateNotifyToggle();
     });
