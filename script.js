@@ -265,7 +265,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span><button type=\"button\" class=\"category-add-btn small\" data-cat=\"${task.category}\" title=\"Добавить задачу в категорию\">+</button>`;
 
             taskElement.innerHTML = `
                 <div class=\"task-content\">
@@ -638,7 +638,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активн��сти подкатего��ии по имени для указанной категории
+// Переключение активности подкатего��ии по имени для указанной категории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -672,7 +672,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция дл�� им��орта задач из файла
+// Функция дл�� импорта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -707,7 +707,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной ��адачи из кат��гории
+// Функция для выбора случайной ��адачи из категории
 function getRandomTask(categories) {
     // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -868,7 +868,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-про��кт';
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1060,7 +1060,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦ��Я ТАЙ��ЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
 async function requestWakeLock() {
@@ -1243,9 +1243,9 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци�� для сброса таймера
+// Функци�� для сбр��са таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, сервер��ый не ��р��гаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1463,7 +1463,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбрасываем значен��е input
+        e.target.value = ''; // Сбрасываем значение input
     }
 });
 
