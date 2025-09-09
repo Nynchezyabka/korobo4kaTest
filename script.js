@@ -368,7 +368,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей катего��ии (учитываем сохранённые подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -712,7 +712,7 @@ function getRandomTask(categories) {
     // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных ка��егорий
+    // Получаем все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -750,7 +750,7 @@ function showTimer(task) {
     document.querySelector('.timer-controls').style.display = 'flex';
 }
 
-// Функция для ��крытия таймера
+// Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
@@ -784,7 +784,7 @@ function showNotification(message) {
     }
 }
 
-// Создани�� браузерного уведомления
+// Создани�� браузерного увед��мления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -876,7 +876,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = '��тмена';
+        cancel.textContent = 'Отмена';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -1209,7 +1209,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм���ра
+// Функция для остановки тайм�����ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1326,6 +1326,21 @@ function getCategoryColor(cat) {
         case 5: return '#d1c4e9';
         default: return '#ffffff';
     }
+}
+
+// Lighten hex color towards white by factor (0..1) where 1 keeps original, 0 -> white
+function lightenHex(hex, factor) {
+    try {
+        if (!hex) return hex;
+        const h = hex.replace('#','');
+        const r = parseInt(h.substring(0,2),16);
+        const g = parseInt(h.substring(2,4),16);
+        const b = parseInt(h.substring(4,6),16);
+        const nr = Math.round(r + (255 - r) * (1 - factor));
+        const ng = Math.round(g + (255 - g) * (1 - factor));
+        const nb = Math.round(b + (255 - b) * (1 - factor));
+        return `rgb(${nr}, ${ng}, ${nb})`;
+    } catch (e) { return hex; }
 }
 
 function applyModalBackground(cat) {
