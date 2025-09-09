@@ -368,7 +368,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей катего��ии (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -417,7 +417,7 @@ function displayTasks() {
         }
     });
 
-    // Добав��яем обработчики событи�� для новых элементов
+    // Добав��яем обработчики событий для новых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         const nameEl = badge.querySelector('.category-name');
         if (nameEl) {
@@ -712,7 +712,7 @@ function getRandomTask(categories) {
     // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных категорий
+    // Получаем все активные задачи из указанных ка��егорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -750,7 +750,7 @@ function showTimer(task) {
     document.querySelector('.timer-controls').style.display = 'flex';
 }
 
-// Функция для скрытия таймера
+// Функция для ��крытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
@@ -876,7 +876,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'Отмена';
+        cancel.textContent = '��тмена';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -913,7 +913,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность ��адостей</button>
+            <button class="add-category-option" data-category="5">Доступность радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1635,7 +1635,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откро��те сайт напрямую и попробуйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйт�� снова.');
         }
         updateNotifyToggle();
     });
