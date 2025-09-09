@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п��лучения названия категории по номеру
+// Функция д��я п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -204,7 +204,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // ��агружаем сохранённые пользовательские подкатегории
+    // Загружаем сохранённые пользовательск��е подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -289,7 +289,7 @@ function displayTasks() {
             const displayText = fixOrphans(safeText);
             taskElement.innerHTML = `
                 <div class=\"task-content\">
-                    <div class=\"task-text\">${task.text}</div>
+                    <div class=\"task-text\">${displayText}</div>
                     <div class=\"category-selector\">
                         <div class=\"task-top-actions\">
                             <div class=\"category-badge\" data-id=\"${task.id}\">
@@ -638,7 +638,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ��ункция для переключения активности за��ачи
+// ��ункция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -681,7 +681,7 @@ function deleteTask(taskId) {
     }
 }
 
-// Функ��ия для экспорта задач в файл
+// Функ��ия для экспорта задач в ф��йл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -715,7 +715,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавляем задачи в б��зу данных
+            // Добавля��м задачи в б��зу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -748,7 +748,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функци�� для отоб��ажения таймера
+// Функция для отоб��ажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1204,7 +1204,7 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback дл�� браузеров без подде����жки Web Workers
+        // Fallback дл�� браузеров без подде�����жки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
@@ -1672,7 +1672,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешени�� на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� с��ова.');
         }
         updateNotifyToggle();
     });
