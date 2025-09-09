@@ -303,7 +303,7 @@ function displayTasks() {
                     </button>
                 </div>
             `;
-            // Перестав����яем элементы для мобильного: папка сверху справа, ниже сразу глаз и урна
+            // Перестав����яем элементы для мобильного: папка сверху спра��а, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -1124,45 +1124,49 @@ hideTasksBtn.addEventListener('click', () => {
 
 taskCategory.addEventListener('change', applyCategoryVisualToSelect);
 
-addTaskBtn.addEventListener('click', () => {
-    const raw = taskText.value;
+addTaskBtn.addEventListener('click', (e) => { e.preventDefault(); openAddModal(parseInt(taskCategory.value) || 0); });
+
+// Modal elements
+const addTaskModal = document.getElementById('addTaskModal');
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalTaskText = document.getElementById('modalTaskText');
+const modalTaskCategory = document.getElementById('modalTaskCategory');
+const modalSubcategories = document.getElementById('modalSubcategories');
+const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+function openAddModal(initialCategory) {
+    if (!addTaskModal) return;
+    addTaskModal.setAttribute('aria-hidden', 'false');
+    addTaskModal.style.display = 'flex';
+    modalTaskText.value = '';
+    modalTaskCategory.value = typeof initialCategory !== 'undefined' ? String(initialCategory) : '0';
+    showAddSubcategoriesFor(parseInt(modalTaskCategory.value), modalSubcategories);
+    setTimeout(() => modalTaskText.focus(), 50);
+}
+function closeAddModal() {
+    if (!addTaskModal) return;
+    addTaskModal.setAttribute('aria-hidden', 'true');
+    addTaskModal.style.display = 'none';
+    if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+}
+modalBackdrop && modalBackdrop.addEventListener('click', () => closeAddModal());
+modalCloseBtn && modalCloseBtn.addEventListener('click', () => closeAddModal());
+modalCancelBtn && modalCancelBtn.addEventListener('click', (e) => { e.preventDefault(); closeAddModal(); });
+modalTaskCategory && modalTaskCategory.addEventListener('change', () => showAddSubcategoriesFor(parseInt(modalTaskCategory.value), modalSubcategories));
+modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
+    const raw = modalTaskText.value;
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    let category = parseInt(taskCategory.value);
+    let category = parseInt(modalTaskCategory.value);
     if (lines.length === 0) return;
-
-    // Для надёжности: если выбрана подкатегория, принудительно устанавливаем категорию 1 и запомним подкатегорию
-    const selBtn = document.querySelector('.add-subcategory-controls .add-subcategory-btn.selected');
+    const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
     let selectedSub = null;
-    if (selBtn && typeof selBtn.dataset.sub !== 'undefined') {
-        selectedSub = selBtn.dataset.sub || null;
-        if (category !== 1) {
-            if (taskCategory) taskCategory.value = '1';
-            category = 1;
-        }
-    }
-
-    if (lines.length > 1) {
-        if (!confirm(`Добавить ${lines.length} задач?`)) return;
-    }
-
+    if (selBtn && typeof selBtn.dataset.sub !== 'undefined') selectedSub = selBtn.dataset.sub || null;
+    if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
     const active = true;
-    lines.forEach(text => {
-        const newTask = {
-            id: getNextId(),
-            text,
-            category,
-            completed: false,
-            active,
-            statusChangedAt: Date.now()
-        };
-        if (selectedSub) newTask.subcategory = selectedSub;
-        tasks.push(newTask);
-    });
-
-    saveTasks();
-    taskText.value = '';
-    if (selBtn) selBtn.classList.remove('selected');
-    displayTasks();
+    lines.forEach(text => { const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() }; if (selectedSub) newTask.subcategory = selectedSub; tasks.push(newTask); });
+    saveTasks(); closeAddModal(); displayTasks();
 });
 
 if (typeof addMultipleBtn !== 'undefined' && addMultipleBtn) {
