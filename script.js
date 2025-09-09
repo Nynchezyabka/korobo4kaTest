@@ -276,7 +276,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отм��тить выполн��нной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -751,7 +751,7 @@ function showTimer(task) {
     document.querySelector('.timer-controls').style.display = 'flex';
 }
 
-// Функция для скрытия тайм��ра
+// Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
@@ -960,7 +960,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     if (String(cat) === '1') {
         list.push({ key: 'work', label: 'Работа' });
-        list.push({ key: 'home', label: 'До��' });
+        list.push({ key: 'home', label: 'Дом' });
     }
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => list.push({ key: s, label: s }));
@@ -1109,7 +1109,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// Функция для запуска тай��ера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
