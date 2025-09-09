@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех за�ач
+// Функция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -229,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённ��е пользовательске подкатегории
+    // Загружаем сохранённе пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -253,7 +253,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/ра��ворачивание группы
+        // Клик по названию категории — сворачивание/разворачивание группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -316,7 +316,7 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Разобрать')
+            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
             raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
@@ -397,7 +397,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Переставяем элменты для мобильного: папка с��ерху спраа, ниже сразу глаз и урна
+            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -426,7 +426,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -475,7 +475,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для но��ых элементов
+    // Добавяем обработчики событий для ноых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -688,7 +688,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееключение активности всех задач вн�три категории
+// Пееключение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -740,7 +740,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать массив задач');
+                alert('Ошибка: файл должен содержать ма��сив задач');
                 return;
             }
             
@@ -752,7 +752,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавлям задачи в б�зу данных
+            // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -766,7 +766,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной адачи из категор��и
+// Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -843,7 +843,7 @@ function showNotification(message) {
     }
 }
 
-// С��здани браузерного уведомления
+// Сздани браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1241,7 +1241,7 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback дл браузеров без подде�жки Web Workers
+        // Fallback дл браузеров без поддежки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
@@ -1256,7 +1256,7 @@ function startTimer() {
     }
 }
 
-// Функция для �аузы таймеа
+// Функция для аузы таймеа
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1268,7 +1268,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм�ра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1633,7 +1633,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возра�е на кладку/разворачивании окна
+// Пересчет при возрае на кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
