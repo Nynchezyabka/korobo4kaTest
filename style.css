@@ -734,7 +734,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-запрос для планшет��в в альбомной ориентации и небольших ноутбуков */
+/* Медиа-запрос для планшетов в альбомной ориентации и небольших ноутбуков */
 @media (min-width: 768px) {
     .sections {
         display: grid;
@@ -1134,7 +1134,7 @@ textarea {
     .subcategory-columns { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 }
 
-/* Стикер на всю строку для длинных задач */
+/* Стикер на всю строку дл�� длинных задач */
 .group-grid .sticker-wide { grid-column: 1 / -1; }
 .group-grid .task { padding: 6px 8px; border-radius: 12px; }
 .group-grid .category-badge { background-color: transparent; padding: 0 6px; }
@@ -1181,9 +1181,22 @@ textarea {
 
 /* Кнопки на секциях главного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
-.section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-.section-action-btn i { font-size: 1.3rem; }
-.section-action-btn .action-text { font-size: 0.95rem; }
+.section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
+.section-action-btn i { font-size: 1.2rem; }
+.section-action-btn .action-text { font-size: 0.9rem; opacity: 0.95; }
+.section-action-btn:active { transform: scale(0.98); }
+.section-action-btn:focus { outline: 2px solid rgba(0,0,0,0.08); outline-offset: 2px; }
+
+/* Цвета в тон стикеров по секциям */
+.mandatory .section-action-btn { background-color: rgba(255,213,79,0.20); }
+.mandatory .section-action-btn:hover { background-color: rgba(255,213,79,0.30); }
+.security .section-action-btn { background-color: rgba(100,181,246,0.18); }
+.security .section-action-btn:hover { background-color: rgba(100,181,246,0.28); }
+.joys .section-action-btn { background-color: rgba(129,199,132,0.18); }
+.joys .section-action-btn:hover { background-color: rgba(129,199,132,0.28); }
+
+/* Специальный стиль для круглой кнопки "+" */
+.section-action-btn.section-add-btn { padding: 8px; width: 40px; height: 40px; border-radius: 10px; }
 
 /* Верхняя панель действий задачи (категория + галочка) */
 .task-top-actions { display: inline-flex; align-items: center; gap: 6px; }
