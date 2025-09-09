@@ -47,7 +47,7 @@ let showArchive = false;
 // Элем��нты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия открытого выпадающего меню категорий
+// Глобальный обработчик для закрытия отк��ытого выпадающего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -716,7 +716,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отображения таймера
+// Функция для отоб��ажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -856,7 +856,7 @@ function populateTaskSubcategoryDropdown(task) {
         addBtn.textContent = 'Добавить сложную радость';
         addBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const name = prompt('Введите название сл��жной радости:');
+            const name = prompt('Введите название сложной радости:');
             if (name && name.trim()) {
                 const val = name.trim();
                 const arr = Array.isArray(customSubs[2]) ? customSubs[2] : [];
@@ -1081,7 +1081,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае�� серверу о расписани�� пуш-уведомления
+    // Сообщае�� серверу о расп��сании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1300,7 +1300,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Без категории',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
