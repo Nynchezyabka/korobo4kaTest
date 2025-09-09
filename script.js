@@ -654,7 +654,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-з��дачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -808,6 +808,69 @@ function createBrowserNotification(message) {
 }
 
 // Добавляем запрос разрешения при загрузке страницы
+function populateTaskSubcategoryDropdown(task) {
+    const dd = document.getElementById(`dropdown-${task.id}`);
+    if (!dd) return;
+    dd.innerHTML = '';
+    // option: none
+    const noneBtn = document.createElement('button');
+    noneBtn.type = 'button';
+    noneBtn.className = 'category-option';
+    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeTaskCategory(task.id, task.category, null);
+        dd.classList.remove('show');
+        activeDropdown = null;
+    });
+    dd.appendChild(noneBtn);
+
+    // gather subcategories: defaults + saved
+    const customSubsRaw = localStorage.getItem('customSubcategories');
+    const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+    const list = [];
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
+    const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
+    saved.forEach(s => list.push({ key: s, label: s }));
+
+    list.forEach(item => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'category-option';
+        b.dataset.sub = item.key;
+        b.textContent = item.label;
+        b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            changeTaskCategory(task.id, task.category, item.key);
+            dd.classList.remove('show');
+            activeDropdown = null;
+        });
+        dd.appendChild(b);
+    });
+
+    // for security category (2) provide add-button
+    if (task.category === 2) {
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'category-option add-sub-btn';
+        addBtn.textContent = 'Добавить сложную радость';
+        addBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const name = prompt('Введите название сложной радости:');
+            if (name && name.trim()) {
+                const val = name.trim();
+                const arr = Array.isArray(customSubs[2]) ? customSubs[2] : [];
+                if (!arr.includes(val)) arr.push(val);
+                customSubs[2] = arr;
+                localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+                populateTaskSubcategoryDropdown(task);
+                if (addTaskModal && addTaskModal.style.display === 'flex') showAddSubcategoriesFor(2, modalSubcategories);
+            }
+        });
+        dd.appendChild(addBtn);
+    }
+}
+
 function setupAddCategorySelector() {
     if (!taskCategory) return;
     let container = document.querySelector('.add-category-selector');
@@ -880,7 +943,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn';
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкатегори��';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1135,7 +1198,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функция для сброса таймера
+// Функци�� для сброса таймера
 function resetTimer() {
     // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
@@ -1167,7 +1230,7 @@ sections.forEach(section => {
     if (add) add.addEventListener('click', (e) => {
         e.stopPropagation();
         showArchive = false;
-        // open modal restricted to this section: only show "Без категории" or subcategories for this section
+        // open modal restricted to this section: only show "Без катего��ии" or subcategories for this section
         openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
     });
 });
