@@ -151,7 +151,7 @@ function getCategoryName(category) {
         0: "Без категории",
         1: "Обязательные",
         2: "Безопасность",
-        3: "Простые ра��ости",
+        3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность радостей"
     };
@@ -329,7 +329,7 @@ function displayTasks() {
                 }
             }
 
-            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу г��аз и урна
+            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -495,6 +495,23 @@ function displayTasks() {
             if (idx !== -1) {
                 tasks[idx].completed = true;
                 tasks[idx].active = false;
+                tasks[idx].statusChangedAt = Date.now();
+                saveTasks();
+                displayTasks();
+            }
+        });
+    });
+
+    // Return completed task back to active
+    document.querySelectorAll('.return-task-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                tasks[idx].completed = false;
+                tasks[idx].active = true;
+                tasks[idx].statusChangedAt = Date.now();
                 saveTasks();
                 displayTasks();
             }
@@ -597,7 +614,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указанной категории
+// Переключение активности подкатего��ии по имени для указанной кате��ории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -969,7 +986,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска тайме��а
+// Функци�� для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1003,7 +1020,7 @@ function startTimer() {
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `��адача: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -1070,7 +1087,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функц��я для остановки тайм���ра
+// Функция для остановки тайм���ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1448,9 +1465,9 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Уведомлени�� включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                alert('Уведомления не включены. Подтвердите запрос браузера или разр��шите их в настройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
