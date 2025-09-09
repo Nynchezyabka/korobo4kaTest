@@ -635,7 +635,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная ве��сия — компактное отображение */
+/* Мобильная ве����сия — компактное отображение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -924,7 +924,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* По��заголовки категорий для мобильной группировки */
+/* По��заголовк�� категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1117,7 +1117,7 @@ textarea {
     .subcategory-columns { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 }
 
-/* Стикер на всю ��троку для длинных задач */
+/* Стикер на всю строку для длинных задач */
 .group-grid .sticker-wide { grid-column: 1 / -1; }
 .group-grid .task { padding: 6px 8px; border-radius: 12px; }
 .group-grid .category-badge { background-color: transparent; padding: 0 6px; }
@@ -1139,7 +1139,7 @@ textarea {
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группировк�� опций в выпадающих списках катег��рий */
+/* Группировк�� опций в выпадающих списках категорий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1294,9 +1294,9 @@ textarea {
     overflow-wrap: break-word !important;
     white-space: normal !important;
 }
-.add-subcategory-controls .add-subcategory-btn { padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,0.05); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1rem; }
+.add-subcategory-controls .add-subcategory-btn { padding: 8px 12px; border-radius: 8px; background: rgba(0,0,0,0.05); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1rem; white-space: normal; text-align: center; min-width: 120px; max-width: 260px; word-wrap: break-word; overflow-wrap: break-word; }
 .add-subcategory-controls .add-subcategory-btn.selected { background: #5d4037; color: #fff; }
-.add-subcategory-controls .add-subcategory-btn { min-width: 86px; flex: 0 1 auto; }
+.add-subcategory-controls .add-subcategory-btn { flex: 0 1 auto; }
 
 @media (max-width: 480px) {
     /* Ensure modal content fits and subcategory buttons wrap nicely */
@@ -1423,7 +1423,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* по��воляет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1581,7 +1581,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных уст��ойств */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
