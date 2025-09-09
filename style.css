@@ -134,7 +134,7 @@ button:active {
     transform: scale(0.98);
 }
 
-/* Кнопка-колокольчик уведом��ений в шапке */
+/* Кнопка-колокольчик уведомлений в шапке */
 .notify-toggle {
     position: absolute;
     top: 4px;
@@ -1245,9 +1245,16 @@ textarea {
 .category-add-btn { margin-left: 8px; border: none; background: #5d4037; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; }
 .category-add-btn.small { width: 22px; height: 22px; font-size: 0.9rem; }
 
-/* sticker visual + button */
-.sticker-add-btn { margin-left: 8px; padding: 6px; width: 34px; height: 34px; border-radius: 8px; }
-.sticker-add-btn i { font-size: 0.95rem; }
+/* category + button near category title: match section + style but colored per category */
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; padding: 8px; cursor: pointer; }
+.category-add-btn i { color: #5d4037; font-size: 1.05rem; }
+/* category-specific backgrounds matching section sticker backgrounds */
+.category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
+.category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
+.category-group.category-5 .category-add-btn { background-color: rgba(100,181,246,0.18); }
+.category-group.category-3 .category-add-btn { background-color: rgba(129,199,132,0.18); }
+.category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
+.category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
 .modal-category-options .modal-category-btn.selected { outline: 3px solid rgba(0,0,0,0.08); transform: translateY(-1px); }
 
 /* Category color variants */
@@ -1577,7 +1584,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на всех экранах */
+/* Показываем подзаголовки на в��ех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
