@@ -761,6 +761,8 @@ textarea {
 
 /* Медиа-з��прос для десктопов */
 @media (min-width: 1024px) {
+    /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
+    .section { display: flex; flex-direction: column; }
     /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
     .task {
         display: grid;
