@@ -399,7 +399,7 @@ function displayTasks() {
         }
     });
 
-    // Добавляем обработчики событий для новых элементов
+    // Добав��яем обработчики событий для новых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         const nameEl = badge.querySelector('.category-name');
         if (nameEl) {
@@ -461,7 +461,13 @@ function displayTasks() {
 
     document.querySelectorAll('.category-option').forEach(option => {
         option.addEventListener('click', function() {
-            const taskId = parseInt(this.closest('.category-selector').querySelector('.category-badge').dataset.id);
+            const badge = this.closest('.category-selector').querySelector('.category-badge');
+            const taskId = parseInt(badge.dataset.id);
+            const idx = tasks.findIndex(t => t.id === taskId);
+            if (idx !== -1 && tasks[idx].completed) {
+                // don't allow changing category of completed tasks
+                return;
+            }
             const newCategory = parseInt(this.dataset.category);
             const newSub = null;
             changeTaskCategory(taskId, newCategory, newSub);
@@ -614,7 +620,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указанной кате��ории
+// Переключение активности подкатего��ии по имени для указанной категории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -685,7 +691,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной задачи из категории
 function getRandomTask(categories) {
-    // Преобразуем строку категорий в массив чисел
+    // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -721,7 +727,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управление ��аймером
+    // Скрываем опции завершения и показываем управлени�� ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -938,7 +944,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во время таймера
 async function requestWakeLock() {
@@ -986,7 +992,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функци�� для запуска таймера
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1020,7 +1026,7 @@ function startTimer() {
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `��адача: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -1465,9 +1471,9 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомлени�� включены');
+                createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разр��шите их в настройках сайта.');
+                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
