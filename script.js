@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция д��я п��лучения на��вания категории по номеру
+// Функция д��я п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -229,7 +229,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачива��ие группы
+        // Клик по названию категории — сворачивание/разворачивание группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -324,7 +324,7 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
-                            <button class=\"category-option\" data-category=\"4\">Эго-рад��сти</button>
+                            <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
                 </div>
@@ -362,7 +362,7 @@ function displayTasks() {
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
                     ret.dataset.id = String(task.id);
-                    ret.title = 'Вернуть в акт��вные';
+                    ret.title = 'Вернуть в активные';
                     ret.innerHTML = '<i class="fas fa-undo"></i>';
                     controls.appendChild(ret);
                 }
@@ -671,7 +671,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указанной категории
+// Переключение активности подкатего��ии по имени для указанной катег��рии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -742,7 +742,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной ��адачи из категории
 function getRandomTask(categories) {
-    // Преобразуем строку категорий в мас��ив чисел
+    // Прео��разуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -1093,7 +1093,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИ�� ТАЙ��ЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
 async function requestWakeLock() {
@@ -1230,7 +1230,7 @@ function startTimer() {
     }
 }
 
-// Функция для �����аузы таймера
+// Функция для ���аузы тайме��а
 function pauseTimer() {
     if (!timerRunning) return;
 
