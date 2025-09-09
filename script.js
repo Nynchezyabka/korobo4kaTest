@@ -27,7 +27,7 @@ function getNextId() {
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
-let timerTime = 15 * 60; // 15 мину�� в секундах
+let timerTime = 15 * 60; // 15 мину���� в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
@@ -149,7 +149,7 @@ function updateNotifyToggle() {
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "Обязательные",
+        1: "Обязатель��ые",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
@@ -167,12 +167,13 @@ function escapeHtml(unsafe) {
 // Prevent single-letter words from being pushed to the next line by replacing the space before them with a non-breaking space
 function fixOrphans(text) {
     if (!text) return '';
-    // Replace occurrences of ' <single-letter> ' with '\u00A0<letter> '
-    // Use Cyrillic and Latin single letters
-    const singleLetterRegex = /\s([A-Za-zА-Яа-яЁё])\s/g;
-    let res = text.replace(singleLetterRegex, function(m, p1) { return '\u00A0' + p1 + ' '; });
-    // start of string single letter
-    res = res.replace(/^([A-Za-zА-Яа-яЁё])\s/, function(m,p1) { return p1 + '\u00A0'; });
+    // Prefer non-breaking space after single-letter prepositions: replace 'x ' where x is single letter with 'x\u00A0'
+    // Handle both Latin and Cyrillic letters
+    const afterSingleRegex = /(^|\s)([A-Za-zА-Яа-яЁё])\s+/g;
+    let res = text.replace(afterSingleRegex, function(m, p1, p2) { return p1 + p2 + '\u00A0'; });
+    // Also ensure that occurrences of ' space single-letter space ' are normalized (rare)
+    const isolatedSingle = /\s([A-Za-zА-Яа-яЁё])\s/g;
+    res = res.replace(isolatedSingle, function(m,p1){ return '\u00A0' + p1 + ' '; });
     return res;
 }
 
