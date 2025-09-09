@@ -1133,13 +1133,13 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрытие задач при свёрнутой группе */
+/* Скрыти�� задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группировка опций в выпадающих списках категорий */
+/* Группировк�� опций в выпадающих списках категорий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1246,8 +1246,8 @@ textarea {
 .category-add-btn.small { width: 22px; height: 22px; font-size: 0.9rem; }
 
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; padding: 8px; cursor: pointer; }
-.category-add-btn i { color: #5d4037; font-size: 1.05rem; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; padding: 8px; cursor: pointer; background: transparent; }
+.category-add-btn i { color: #5d4037; font-size: 1.1rem; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
@@ -1255,6 +1255,16 @@ textarea {
 .category-group.category-3 .category-add-btn { background-color: rgba(129,199,132,0.18); }
 .category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
 .category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
+
+/* Make sure the + looks like the section add button: brown icon on light category background, square */
+.category-add-btn { box-shadow: none; }
+
+/* Mobile: make bell smaller and move to corner */
+@media (max-width: 480px) {
+    header { position: relative; }
+    .notify-toggle { width: 30px; height: 30px; top: 6px; right: 6px; }
+    .notify-toggle i { font-size: 1rem; }
+}
 .modal-category-options .modal-category-btn.selected { outline: 3px solid rgba(0,0,0,0.08); transform: translateY(-1px); }
 
 /* Category color variants */
