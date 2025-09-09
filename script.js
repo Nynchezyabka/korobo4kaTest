@@ -1097,8 +1097,8 @@ sections.forEach(section => {
     if (add) add.addEventListener('click', (e) => {
         e.stopPropagation();
         showArchive = false;
-        const firstCat = parseInt((section.dataset.category || '1').split(',')[0]);
-        openAddModal(firstCat);
+        // open modal restricted to this section: only show "Без категории" or subcategories for this section
+        openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
     });
 });
 
@@ -1130,35 +1130,81 @@ addTaskBtn.addEventListener('click', (e) => { e.preventDefault(); openAddModal(p
 const addTaskModal = document.getElementById('addTaskModal');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalTaskText = document.getElementById('modalTaskText');
-const modalTaskCategory = document.getElementById('modalTaskCategory');
+const modalCategoryOptions = document.getElementById('modalCategoryOptions');
 const modalSubcategories = document.getElementById('modalSubcategories');
 const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-function openAddModal(initialCategory) {
+function renderModalCategoryOptions(allowedCategories = null) {
+    const container = modalCategoryOptions;
+    if (!container) return;
+    container.innerHTML = '';
+    const cats = [0,1,2,5,3,4];
+    const labels = {0: 'Без категории',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
+    cats.forEach(c => {
+        if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `modal-category-btn cat-${c}`;
+        btn.dataset.category = String(c);
+        btn.textContent = labels[c] || String(c);
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.modal-category-btn').forEach(x => x.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (parseInt(btn.dataset.category) === 1) showAddSubcategoriesFor(1, modalSubcategories);
+            else { if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; } }
+            container.dataset.selected = btn.dataset.category;
+        });
+        container.appendChild(btn);
+    });
+}
+
+function openAddModal(initialCategory, options = {}) {
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
     modalTaskText.value = '';
-    modalTaskCategory.value = typeof initialCategory !== 'undefined' ? String(initialCategory) : '0';
-    showAddSubcategoriesFor(parseInt(modalTaskCategory.value), modalSubcategories);
+
+    if (options.restrict === 'section') {
+        const sectionCats = options.sectionCats || '';
+        const arr = String(sectionCats).split(',').map(s => s.trim()).filter(Boolean);
+        if (arr.includes('1')) {
+            renderModalCategoryOptions(['0']);
+            showAddSubcategoriesFor(1, modalSubcategories);
+            if (modalCategoryOptions) modalCategoryOptions.dataset.selected = '0';
+        } else {
+            renderModalCategoryOptions(['0']);
+            if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+        }
+    } else {
+        renderModalCategoryOptions();
+        if (modalCategoryOptions && typeof initialCategory !== 'undefined' && initialCategory !== null) {
+            const btn = modalCategoryOptions.querySelector(`.modal-category-btn[data-category="${initialCategory}"]`);
+            if (btn) btn.click();
+        }
+        showAddSubcategoriesFor(parseInt(initialCategory) || 0, modalSubcategories);
+    }
+
     setTimeout(() => modalTaskText.focus(), 50);
 }
+
 function closeAddModal() {
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'true');
     addTaskModal.style.display = 'none';
     if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
 }
+
 modalBackdrop && modalBackdrop.addEventListener('click', () => closeAddModal());
 modalCloseBtn && modalCloseBtn.addEventListener('click', () => closeAddModal());
 modalCancelBtn && modalCancelBtn.addEventListener('click', (e) => { e.preventDefault(); closeAddModal(); });
-modalTaskCategory && modalTaskCategory.addEventListener('change', () => showAddSubcategoriesFor(parseInt(modalTaskCategory.value), modalSubcategories));
+
 modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     const raw = modalTaskText.value;
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    let category = parseInt(modalTaskCategory.value);
+    let category = 0;
+    if (modalCategoryOptions && modalCategoryOptions.dataset && modalCategoryOptions.dataset.selected) category = parseInt(modalCategoryOptions.dataset.selected);
     if (lines.length === 0) return;
     const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
     let selectedSub = null;
