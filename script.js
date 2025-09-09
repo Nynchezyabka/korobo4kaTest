@@ -2,13 +2,37 @@
 let tasks = [];
 
 // Функции для работы с localStorage
+function sanitizeStoredText(s) {
+    if (typeof s !== 'string') return s;
+    let t = s.replace(/\uFFFD/g, '');
+    t = t.replace(/&shy;|&#173;|\u00AD/g, '');
+    t = t.replace(/\u200B/g, '');
+    t = t.replace(/[\r\n]+/g, ' ');
+    t = t.replace(/\s{2,}/g, ' ').trim();
+    return t;
+}
+
 function loadTasks() {
     const tasksJSON = localStorage.getItem('tasks');
     if (tasksJSON) {
         tasks = JSON.parse(tasksJSON);
+        // sanitize stored texts
+        tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     } else {
         tasks = [];
     }
+    // sanitize custom subcategories if any
+    try {
+        const customSubsRaw = localStorage.getItem('customSubcategories');
+        if (customSubsRaw) {
+            const cs = JSON.parse(customSubsRaw);
+            Object.keys(cs).forEach(k => {
+                cs[k] = cs[k].map(v => sanitizeStoredText(v));
+            });
+            localStorage.setItem('customSubcategories', JSON.stringify(cs));
+        }
+    } catch (e) {}
     return tasks;
 }
 
@@ -27,13 +51,13 @@ function getNextId() {
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
-let timerTime = 15 * 60; // 15 мину�� в секундах
+let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны не засы��ают во время таймера (где поддерж��вается)
+let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
 
-// Новые переменные для точного таймера
+// Новые переменные для точного аймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -41,10 +65,13 @@ let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
 
-// Элем��нты DOM
+// ежим отображеия архива ыолненных задач
+let showArchive = false;
+
+// Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия открытого выпадающего меню категорий
+// Глобальный обработчик для закрытия откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -55,6 +82,7 @@ document.addEventListener('click', function(e) {
 const showTasksBtn = document.getElementById('showTasksBtn');
 const addMultipleBtn = document.getElementById('addMultipleBtn');
 const addSingleBtn = document.getElementById('addSingleBtn');
+const archiveBtn = document.getElementById('archiveBtn');
 const exportTasksBtn = document.getElementById('exportTasksBtn');
 const taskList = document.getElementById('taskList');
 const tasksContainer = document.getElementById('tasksContainer');
@@ -141,10 +169,10 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категории по номеру
+// Функция дя плучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Без категории",
+        0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
@@ -154,16 +182,43 @@ function getCategoryName(category) {
     return categories[category] || "Неизвестно";
 }
 
-// Функция отображения всех задач
+// Escape HTML to avoid injection when inserting task text into innerHTML
+function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+// Prevent single-letter words from being pushed to the next line by replacing the space before them with a non-breaking space
+function fixOrphans(text) {
+    if (!text) return '';
+    // Prefer non-breaking space after single-letter prepositions: replace 'x ' where x is single letter with 'x\u00A0'
+    // Handle both Latin and Cyrillic letters
+    const afterSingleRegex = /(^|\s)([A-Za-zА-Яа-яЁё])\s+/g;
+    let res = text.replace(afterSingleRegex, function(m, p1, p2) { return p1 + p2 + '\u00A0'; });
+    // Also ensure that occurrences of ' space single-letter space ' are normalized (rare)
+    const isolatedSingle = /\s([A-Za-zА-Яа-яЁё])\s/g;
+    res = res.replace(isolatedSingle, function(m,p1){ return '\u00A0' + p1 + ' '; });
+    return res;
+}
+
+// Функция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
+
+    const titleEl = taskList.querySelector('h2');
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
+
+    // hide import/export controls when viewing archive
+    const importExportEl = document.querySelector('.import-export');
+    if (importExportEl) importExportEl.style.display = showArchive ? 'none' : 'flex';
 
     const isMobile = window.matchMedia('(max-width: 480px)').matches;
     tasksContainer.classList.remove('sticker-grid');
     tasksContainer.classList.toggle('mobile-compact', isMobile);
 
     const groups = new Map();
-    tasks.forEach(t => {
+    const source = tasks.filter(t => showArchive ? t.completed : !t.completed);
+    source.forEach(t => {
         const arr = groups.get(t.category) || [];
         arr.push(t);
         groups.set(t.category, arr);
@@ -174,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённые пользовательские подкатегории
+    // Загружаем сохранённе пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -185,7 +240,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span>`;
+        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\">+</button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -198,26 +253,25 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — добавление пользовательской подкатегории
+        // Клик по названию категории — сворачивание/разворачивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
+            headSpan.style.cursor = 'pointer';
             headSpan.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const name = prompt('Введите название подкатегории:');
-                if (name !== null) {
-                    const val = name.trim();
-                    if (val) {
-                        const arr = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-                        if (!arr.includes(val)) arr.push(val);
-                        customSubs[cat] = arr;
-                        localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
-                        displayTasks();
-                    }
+                const c = parseInt(group.dataset.category);
+                if (group.classList.contains('collapsed')) {
+                    group.classList.remove('collapsed');
+                    collapsedCategories.delete(c);
+                } else {
+                    group.classList.add('collapsed');
+                    collapsedCategories.add(c);
                 }
+                localStorage.setItem('collapsedCategories', JSON.stringify(Array.from(collapsedCategories)));
             });
         }
 
-        // Клик по иконке папки — сворачивание/разворачивание
+        // Клик по иконк папки — ворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -256,16 +310,35 @@ function displayTasks() {
 
             const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
+            // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
+            let raw = String(task.text || '');
+            raw = raw.replace(/\uFFFD/g, '');
+            // remove soft hyphens and common HTML soft-hyphen entities
+            raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
+            raw = raw.replace(/\u200B/g, '');
+            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            // Replace remaining explicit newlines with spaces (users may paste multi-line text)
+            raw = raw.replace(/[\r\n]+/g, ' ');
+            // collapse multiple spaces
+            raw = raw.replace(/\s{2,}/g, ' ').trim();
+            const safeText = escapeHtml(raw);
+            const displayText = fixOrphans(safeText);
             taskElement.innerHTML = `
                 <div class=\"task-content\">
-                    <div class=\"task-text\">${task.text}</div>
+                    <div class=\"task-text\">${displayText}</div>
                     <div class=\"category-selector\">
-                        <div class=\"category-badge\" data-id=\"${task.id}\">
-                            ${categoryDisplay}
-                            <i class=\"fas fa-caret-down\"></i>
+                        <div class=\"task-top-actions\">
+                            <div class=\"category-badge\" data-id=\"${task.id}\">
+                                ${categoryDisplay}
+                                <i class=\"fas fa-caret-down\"></i>
+                            </div>
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                                <i class=\"fas fa-check\"></i>
+                            </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -290,7 +363,41 @@ function displayTasks() {
                     </button>
                 </div>
             `;
-            // Перестав����яем элементы для мобильного: папка сверху справа, ниже сразу глаз и урна
+            // If task is completed, adjust UI: strike-through, remove edit controls, add return button
+            if (task.completed) {
+                taskElement.classList.add('completed');
+                const ttxt = taskElement.querySelector('.task-text');
+                if (ttxt) ttxt.style.textDecoration = 'line-through';
+                // remove dropdown caret if present
+                const caret = taskElement.querySelector('.category-badge .fa-caret-down');
+                if (caret) caret.remove();
+                // remove complete and toggle buttons
+                const completeBtn = taskElement.querySelector('.complete-task-btn'); if (completeBtn) completeBtn.remove();
+                const toggleBtn = taskElement.querySelector('.toggle-active-btn'); if (toggleBtn) toggleBtn.remove();
+                // ensure delete button remains available for completed tasks and add return button
+                const controls = taskElement.querySelector('.task-controls');
+                if (controls) {
+                    controls.innerHTML = '';
+                    const del = document.createElement('button');
+                    del.className = 'task-control-btn delete-task-btn';
+                    del.dataset.id = String(task.id);
+                    del.title = 'Удалить задачу';
+                    del.innerHTML = '<i class="fas fa-trash"></i>';
+                    controls.appendChild(del);
+
+                    const ret = document.createElement('button');
+                    ret.className = 'task-control-btn return-task-btn';
+                    ret.dataset.id = String(task.id);
+                    ret.title = 'Вернуть в активные';
+                    ret.innerHTML = '<i class="fas fa-undo"></i>';
+                    controls.appendChild(ret);
+                }
+                // remove folder icon from category badge for completed tasks
+                const folderIcon = taskElement.querySelector('.category-badge i.fa-folder');
+                if (folderIcon) folderIcon.remove();
+            }
+
+            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -309,9 +416,17 @@ function displayTasks() {
                 taskElement.classList.add('sticker-wide');
             }
             grid.appendChild(taskElement);
+
+
+            // If this task belongs to security-related categories (2 or 5), render subcategory selector in the dropdown
+            if (!task.completed && task.category !== 0) {
+                populateTaskSubcategoryDropdown(task);
+            } else if (!task.completed) {
+                // task.category === 0 -> leave full category selection (default HTML)
+            }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -331,7 +446,53 @@ function displayTasks() {
             subNames.forEach(name => {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${name}</span>`;
+                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                // make heading clickable to allow renaming of the subcategory
+                const headingSpan = titleEl.querySelector('.category-heading');
+                if (headingSpan) {
+                    headingSpan.style.cursor = 'pointer';
+                    headingSpan.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        try {
+                            const newNameRaw = prompt('Переименовать подкатегорию', name);
+                            if (newNameRaw === null) return; // cancelled
+                            const newName = (newNameRaw || '').trim();
+                            if (!newName || newName === name) return;
+
+                            // load saved custom subcategories
+                            const customSubsRawLocal = localStorage.getItem('customSubcategories');
+                            const customSubsLocal = customSubsRawLocal ? JSON.parse(customSubsRawLocal) : {};
+                            const arrSavedLocal = Array.isArray(customSubsLocal[cat]) ? customSubsLocal[cat].slice() : [];
+
+                            const idx = arrSavedLocal.indexOf(name);
+                            if (idx !== -1) {
+                                // replace existing saved name if newName not present
+                                if (!arrSavedLocal.includes(newName)) {
+                                    arrSavedLocal[idx] = newName;
+                                } else {
+                                    // newName already exists, remove the old duplicate
+                                    arrSavedLocal.splice(idx, 1);
+                                }
+                            } else {
+                                // name wasn't a saved custom subcategory (could be a builtin); add newName if missing
+                                if (!arrSavedLocal.includes(newName)) arrSavedLocal.push(newName);
+                            }
+
+                            // ensure uniqueness
+                            customSubsLocal[cat] = Array.from(new Set(arrSavedLocal));
+
+                            // update tasks that reference this subcategory
+                            tasks = tasks.map(t => (t.category === cat && t.subcategory === name) ? { ...t, subcategory: newName } : t);
+
+                            localStorage.setItem('customSubcategories', JSON.stringify(customSubsLocal));
+                            saveTasks();
+                            displayTasks();
+                        } catch (err) {
+                            console.error('Ошибка при переименовании подкатегории', err);
+                        }
+                    });
+                }
+
                 const hasActive = list.some(t => t.subcategory === name && t.active);
                 const toggle = document.createElement('button');
                 toggle.className = 'task-control-btn subcategory-toggle-all';
@@ -352,31 +513,32 @@ function displayTasks() {
         // Обработчик сворачивания перенесён на иконку папки выше
     });
 
-    // Добавляем обработчики событий для новых элементов
+    // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
+    document.querySelectorAll('.category-group').forEach(groupEl => {
+        const catNum = parseInt(groupEl.dataset.category);
+        if (catNum === 2 || catNum === 5) {
+            groupEl.querySelectorAll('.subcategory-toggle-all').forEach(btn => btn.remove());
+        }
+    });
+
+    // Добавяем обработчики событий для ноых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
+        // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
         if (nameEl) {
-            nameEl.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                const id = parseInt(badge.getAttribute('data-id'));
-                const idx = tasks.findIndex(t => t.id === id);
-                if (idx === -1) return;
-                const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для этой задачи (пусто — без подкатегории):', curr);
-                if (entered === null) return;
-                const val = (entered || '').trim();
-                if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
-                saveTasks();
-                displayTasks();
-            });
+            nameEl.style.cursor = 'default';
         }
         badge.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (activeDropdown && activeDropdown !== this.nextElementSibling) {
+            const id = parseInt(badge.getAttribute('data-id'));
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1 && tasks[idx].completed) return; // don't open dropdown for completed tasks
+            const dropdown = this.closest('.category-selector').querySelector('.category-dropdown');
+            if (activeDropdown && activeDropdown !== dropdown) {
                 activeDropdown.classList.remove('show');
                 if (activeDropdown.parentElement) activeDropdown.parentElement.style.zIndex = '';
             }
-            const dropdown = this.nextElementSibling;
+            /* dropdown is resolved above */
             dropdown.classList.toggle('show');
             activeDropdown = dropdown;
             if (dropdown.classList.contains('show')) {
@@ -407,8 +569,28 @@ function displayTasks() {
     });
 
     document.querySelectorAll('.category-option').forEach(option => {
+        // attach + button on category titles and task badges to open add modal
+    });
+
+    // attach handlers for category-add buttons (open modal restricted to this category)
+    document.querySelectorAll('.category-add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const cat = btn.dataset.cat ? parseInt(btn.dataset.cat) : null;
+            openAddModal(undefined, { restrict: 'section', sectionCats: String(cat) });
+        });
+    });
+
+    // continue with category-option bindings
+    document.querySelectorAll('.category-option').forEach(option => {
         option.addEventListener('click', function() {
-            const taskId = parseInt(this.closest('.category-selector').querySelector('.category-badge').dataset.id);
+            const badge = this.closest('.category-selector').querySelector('.category-badge');
+            const taskId = parseInt(badge.dataset.id);
+            const idx = tasks.findIndex(t => t.id === taskId);
+            if (idx !== -1 && tasks[idx].completed) {
+                // don't allow changing category of completed tasks
+                return;
+            }
             const newCategory = parseInt(this.dataset.category);
             const newSub = null;
             changeTaskCategory(taskId, newCategory, newSub);
@@ -431,6 +613,37 @@ function displayTasks() {
         btn.addEventListener('click', (e) => {
             const id = parseInt(e.target.closest('.delete-task-btn').dataset.id);
             deleteTask(id);
+        });
+    });
+
+    document.querySelectorAll('.complete-task-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                tasks[idx].completed = true;
+                tasks[idx].active = false;
+                tasks[idx].statusChangedAt = Date.now();
+                saveTasks();
+                displayTasks();
+            }
+        });
+    });
+
+    // Return completed task back to active
+    document.querySelectorAll('.return-task-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                tasks[idx].completed = false;
+                tasks[idx].active = true;
+                tasks[idx].statusChangedAt = Date.now();
+                saveTasks();
+                displayTasks();
+            }
         });
     });
 
@@ -486,7 +699,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из��е��ения категории задачи
+// Функция для изеения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -508,7 +721,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// Функция для переключения активности задачи
+// ункция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -521,7 +734,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач внутри категории
+// Пееключение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -530,7 +743,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатегории по имени для указанной категории
+// Переклюение активности подкатегоии по имени для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -542,16 +755,16 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Функц����я для удаления задачи
+// Функця для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Удалит�� эту задачу?')) {
+    if (confirm('Удалить эту задачу?')) {
         tasks = tasks.filter(t => t.id !== taskId);
         saveTasks();
         displayTasks();
     }
 }
 
-// Функция для экспорта задач в файл
+// Функия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -564,7 +777,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция для импорта задач из файла
+// Функция дл импорта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -573,19 +786,19 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать массив задач');
+                alert('Ошибка: файл должен содержать ма��сив задач');
                 return;
             }
             
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправильный формат файла');
+                    alert('Ошибка: неправльный формат файла');
                     return;
                 }
             }
             
-            // Добавляем задачи в базу данных
+            // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -599,9 +812,9 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной задачи из категории
+// Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преобразуем строку категорий в массив чисел
+    // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -610,7 +823,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        alert('Нет активных задач �� этой категор��и!');
+        alert('Нет активных задач в этой категории!');
         return null;
     }
     
@@ -618,12 +831,12 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отображения таймера
+// Функция для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
 
-    // Полный сб��ос состояния таймера перед новым запуском
+    // Полный сбос состояния таймера перед новым запуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -637,7 +850,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управление таймером
+    // Скрываем опции завершения и показываем управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -645,12 +858,12 @@ function showTimer(task) {
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
-    stopTimer(); // Останавливаем тайм��р при закрыт��и
+    document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
+    stopTimer(); // Останавливем таймр при закрыти
     releaseWakeLock();
 }
 
-// Функция для обновления о��ображения таймера
+// Функция для обновления оображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -659,7 +872,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача ����авершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -676,11 +889,11 @@ function showNotification(message) {
     }
 }
 
-// Создание браузерного уведомления
+// Сздани браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время ��ышло! ��адача завершена.",
+        body: message || "Время ышло! адача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -710,6 +923,87 @@ function createBrowserNotification(message) {
 }
 
 // Добавляем запрос разрешения при загрузке страницы
+function populateTaskSubcategoryDropdown(task) {
+    const dd = document.getElementById(`dropdown-${task.id}`);
+    if (!dd) return;
+    dd.innerHTML = '';
+    // Apply category-colored background for the dropdown
+    try { dd.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.92); dd.style.color = '#222'; } catch (e) {}
+    // option: none
+    const noneBtn = document.createElement('button');
+    noneBtn.type = 'button';
+    noneBtn.className = 'category-option';
+    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeTaskCategory(task.id, task.category, null);
+        dd.classList.remove('show');
+        activeDropdown = null;
+    });
+    dd.appendChild(noneBtn);
+
+    // gather subcategories: defaults + saved
+    const customSubsRaw = localStorage.getItem('customSubcategories');
+    const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+    const list = [];
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
+    const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
+    saved.forEach(s => list.push({ key: s, label: s }));
+
+    list.forEach(item => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'category-option';
+        b.dataset.sub = item.key;
+        b.textContent = item.label;
+        b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            changeTaskCategory(task.id, task.category, item.key);
+            dd.classList.remove('show');
+            activeDropdown = null;
+        });
+        dd.appendChild(b);
+    });
+
+    // for security category (2) provide add-button
+    if (task.category === 2 || task.category === 4) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'category-option add-sub-btn-wrapper';
+        const inline = document.createElement('div');
+        inline.className = 'inline-add-form';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        const save = document.createElement('button');
+        save.type = 'button';
+        save.className = 'inline-save-btn';
+        save.textContent = 'Добавить';
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'inline-cancel-btn';
+        cancel.textContent = 'Отмена';
+        inline.appendChild(input);
+        inline.appendChild(save);
+        inline.appendChild(cancel);
+        wrapper.appendChild(inline);
+        dd.appendChild(wrapper);
+
+        save.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const name = input.value && input.value.trim();
+            if (!name) return;
+            const val = name;
+            const arr = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
+            if (!arr.includes(val)) arr.push(val);
+            customSubs[task.category] = arr;
+            localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+            populateTaskSubcategoryDropdown(task);
+            if (addTaskModal && addTaskModal.style.display === 'flex') showAddSubcategoriesFor(task.category, modalSubcategories);
+        });
+        cancel.addEventListener('click', (e) => { e.stopPropagation(); populateTaskSubcategoryDropdown(task); });
+    }
+}
+
 function setupAddCategorySelector() {
     if (!taskCategory) return;
     let container = document.querySelector('.add-category-selector');
@@ -721,7 +1015,7 @@ function setupAddCategorySelector() {
         const dropdown = document.createElement('div');
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
-            <button class="add-category-option" data-category="0">Б��з ка��егории</button>
+            <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность радостей</button>
@@ -735,6 +1029,8 @@ function setupAddCategorySelector() {
                 applyCategoryVisualToSelect();
                 dropdown.classList.remove('show');
                 activeDropdown = null;
+                // show subcategory picker if available
+                showAddSubcategoriesFor(parseInt(v));
             });
         });
         badge.addEventListener('click', (e) => {
@@ -750,6 +1046,97 @@ function setupAddCategorySelector() {
         taskCategory.insertAdjacentElement('afterend', container);
     }
     applyCategoryVisualToSelect();
+
+    // Ensure subcategory controls container exists
+    if (!document.querySelector('.add-subcategory-controls')) {
+        const sc = document.createElement('div');
+        sc.className = 'add-subcategory-controls';
+        sc.style.display = 'none';
+        taskCategory.parentElement.appendChild(sc);
+    }
+}
+
+function showAddSubcategoriesFor(cat, targetContainer = null) {
+    const controls = targetContainer || document.querySelector('.add-subcategory-controls');
+    if (!controls) return;
+    const customSubsRaw = localStorage.getItem('customSubcategories');
+    const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+    const list = [];
+    if (String(cat) === '1') {
+        list.push({ key: 'work', label: 'Работа' });
+        list.push({ key: 'home', label: 'Дом' });
+    }
+    const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+    saved.forEach(s => list.push({ key: s, label: s }));
+
+    controls.innerHTML = '';
+
+    // option for none
+    const noneBtn = document.createElement('button');
+    noneBtn.className = 'add-subcategory-btn';
+    noneBtn.type = 'button';
+    noneBtn.dataset.sub = '';
+    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.addEventListener('click', () => {
+        controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
+        noneBtn.classList.add('selected');
+        const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', '');
+    });
+    controls.appendChild(noneBtn);
+
+    list.forEach(item => {
+        const b = document.createElement('button');
+        b.className = 'add-subcategory-btn';
+        b.type = 'button';
+        b.dataset.sub = item.key;
+        b.textContent = item.label;
+        b.addEventListener('click', () => {
+            controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected');
+            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', item.key);
+        });
+        controls.appendChild(b);
+    });
+
+    // inline add form instead of prompt
+    const addWrapper = document.createElement('div');
+    addWrapper.className = 'add-subcategory-btn add-subcategory-add';
+    const inline = document.createElement('div');
+    inline.className = 'inline-add-form';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'inline-save-btn';
+    saveBtn.textContent = 'Добавить';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'inline-cancel-btn';
+    cancelBtn.textContent = 'Отмена';
+    inline.appendChild(inp);
+    inline.appendChild(saveBtn);
+    inline.appendChild(cancelBtn);
+    addWrapper.appendChild(inline);
+    controls.appendChild(addWrapper);
+
+    saveBtn.addEventListener('click', () => {
+        const name = inp.value && inp.value.trim();
+        if (!name) return;
+        const val = name;
+        const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+        if (!arrSaved.includes(val)) arrSaved.push(val);
+        customSubs[cat] = arrSaved;
+        localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+        showAddSubcategoriesFor(cat, targetContainer);
+        if (addTaskModal && addTaskModal.style.display === 'flex') {
+            showAddSubcategoriesFor(cat, modalSubcategories);
+        }
+    });
+    cancelBtn.addEventListener('click', () => { showAddSubcategoriesFor(cat, targetContainer); });
+
+    controls.classList.add('show');
+    controls.style.display = 'flex';
 }
 
 window.addEventListener('load', async () => {
@@ -774,13 +1161,13 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибрация не поддерживается на этом устройстве");
+        console.log("Вибраци не поддерживается на этом устройстве");
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во время таймера
+// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -837,14 +1224,14 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при первом запуске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
     }
     timerStartTime = Date.now();
 
-    // Сообщаем серверу о расписании пуш-уведомления
+    // Сообщае серверу о распсании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -855,7 +1242,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // Планируем локальный fallback
+    // ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -868,7 +1255,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ��ем Web Worker для точного отсчета времени в фоне
+    // Использем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -900,14 +1287,14 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback для браузеров без подде����жки Web Workers
+        // Fallback дл браузеров без поддежки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
 
             if (timerTime <= 0) {
                 stopTimer();
-                showNotification(currentTask ? `За��ача: ${currentTask.text}` : undefined);
+                showNotification(currentTask ? `Заача: ${currentTask.text}` : undefined);
                 timerCompleteOptions.style.display = 'flex';
                 document.querySelector('.timer-controls').style.display = 'none';
             }
@@ -915,7 +1302,7 @@ function startTimer() {
     }
 }
 
-// Функция для паузы таймера
+// Функция для аузы таймеа
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -927,7 +1314,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм���ра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -961,9 +1348,9 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функция для сброса таймера
+// Ф��нкци для сброса таймера
 function resetTimer() {
-    // отменяе�� только локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -975,28 +1362,44 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обра��отч��ки событий
+// Обраотчки обытий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
         const task = getRandomTask(categories);
         if (task) showTimer(task);
     });
+    const rnd = section.querySelector('.section-random-btn');
+    if (rnd) rnd.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const categories = section.dataset.category;
+        const task = getRandomTask(categories);
+        if (task) showTimer(task);
+    });
+    const add = section.querySelector('.section-add-btn');
+    if (add) add.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showArchive = false;
+        // open modal restricted to this section: only show "Без катгоии" or subcategories for this section
+        openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
+    });
 });
+
+
 
 showTasksBtn.addEventListener('click', () => {
+    showArchive = false;
     taskList.style.display = 'block';
     displayTasks();
+    showAddSubcategoriesFor(parseInt(taskCategory.value));
 });
 
-if (addSingleBtn) {
-    addSingleBtn.addEventListener('click', () => {
+if (archiveBtn) {
+    archiveBtn.addEventListener('click', () => {
+        showArchive = true;
         taskList.style.display = 'block';
         displayTasks();
-        setTimeout(() => {
-            taskText.focus();
-            taskText.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 0);
+        const sc = document.querySelector('.add-subcategory-controls'); if (sc) { sc.classList.remove('show'); sc.style.display = 'none'; }
     });
 }
 
@@ -1006,41 +1409,178 @@ hideTasksBtn.addEventListener('click', () => {
 
 taskCategory.addEventListener('change', applyCategoryVisualToSelect);
 
-addTaskBtn.addEventListener('click', () => {
-    const raw = taskText.value;
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    let category = parseInt(taskCategory.value);
-    if (lines.length === 0) return;
+addTaskBtn.addEventListener('click', (e) => { e.preventDefault(); openAddModal(parseInt(taskCategory.value) || 0); });
 
-    // Для надёжности: если выбрана подкатегория, принудительно устанавливаем категорию 1
-    if (category !== 1) {
-        const selBtn = document.querySelector('.add-subcategory-controls .add-subcategory-btn.selected');
-        if (selBtn && selBtn.dataset.sub) {
-            if (taskCategory) taskCategory.value = '1';
-            category = 1;
+// Modal elements
+const addTaskModal = document.getElementById('addTaskModal');
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalTaskText = document.getElementById('modalTaskText');
+const modalCategoryOptions = document.getElementById('modalCategoryOptions');
+const modalSubcategories = document.getElementById('modalSubcategories');
+const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+function getCategoryColor(cat) {
+    switch (Number(cat)) {
+        case 0: return '#f5f5f5';
+        case 1: return '#fff9c4';
+        case 2: return '#bbdefb';
+        case 3: return '#c8e6c9';
+        case 4: return '#ffcdd2';
+        case 5: return '#d1c4e9';
+        default: return '#ffffff';
+    }
+}
+
+// Lighten hex color towards white by factor (0..1) where 1 keeps original, 0 -> white
+function lightenHex(hex, factor) {
+    try {
+        if (!hex) return hex;
+        const h = hex.replace('#','');
+        const r = parseInt(h.substring(0,2),16);
+        const g = parseInt(h.substring(2,4),16);
+        const b = parseInt(h.substring(4,6),16);
+        const nr = Math.round(r + (255 - r) * (1 - factor));
+        const ng = Math.round(g + (255 - g) * (1 - factor));
+        const nb = Math.round(b + (255 - b) * (1 - factor));
+        return `rgb(${nr}, ${ng}, ${nb})`;
+    } catch (e) { return hex; }
+}
+
+function getCategoryGroupBg(cat) {
+    switch (Number(cat)) {
+        case 0: return '#fafafa';
+        case 1: return '#fffde7';
+        case 2: return '#e3f2fd';
+        case 3: return '#e8f5e9';
+        case 4: return '#ffebee';
+        case 5: return '#ede7f6';
+        default: return '#ffffff';
+    }
+}
+
+function applyModalBackground(cat) {
+    const modalContent = addTaskModal ? addTaskModal.querySelector('.modal-content') : null;
+    if (!modalContent) return;
+    // use category group background (lighter) instead of sticker color
+    const color = getCategoryGroupBg(cat);
+    modalContent.style.backgroundColor = color;
+    // ensure readable text color
+    modalContent.style.color = '#333';
+}
+
+function renderModalCategoryOptions(allowedCategories = null) {
+    const container = modalCategoryOptions;
+    if (!container) return;
+    container.innerHTML = '';
+    const cats = [0,1,2,5,3,4];
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
+    cats.forEach(c => {
+        if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `modal-category-btn cat-${c}`;
+        btn.dataset.category = String(c);
+        btn.textContent = labels[c] || String(c);
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.modal-category-btn').forEach(x => x.classList.remove('selected'));
+            btn.classList.add('selected');
+            applyModalBackground(btn.dataset.category);
+            // show subcategory controls for any category that supports them
+            showAddSubcategoriesFor(parseInt(btn.dataset.category), modalSubcategories);
+            container.dataset.selected = btn.dataset.category;
+        });
+        container.appendChild(btn);
+    });
+}
+
+let modalPrimaryCategory = null;
+
+function openAddModal(initialCategory, options = {}) {
+    if (!addTaskModal) return;
+    addTaskModal.setAttribute('aria-hidden', 'false');
+    addTaskModal.style.display = 'flex';
+    modalTaskText.value = '';
+    modalPrimaryCategory = null;
+
+    if (options.restrict === 'section') {
+        const sectionCats = options.sectionCats || '';
+        const arr = String(sectionCats).split(',').map(s => s.trim()).filter(Boolean);
+        // allowed categories are those in the section (do NOT include category 0 when opening from a section)
+        const allowed = arr.length ? arr.map(Number) : [0];
+        const primary = allowed.length ? Number(allowed[0]) : 0;
+        modalPrimaryCategory = primary;
+        renderModalCategoryOptions(allowed);
+
+        // preselect first category button if present
+        if (modalCategoryOptions) {
+            const firstBtn = modalCategoryOptions.querySelector('.modal-category-btn');
+            if (firstBtn) {
+                firstBtn.click();
+                modalCategoryOptions.dataset.selected = firstBtn.dataset.category;
+            }
         }
+
+        // determine if this primary category supports subcategories (defaults or saved)
+        const customSubsRaw = localStorage.getItem('customSubcategories');
+        const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+        const hasDefaults = (primary === 1 || primary === 2 || primary === 4);
+        const hasSaved = Array.isArray(customSubs[primary]) && customSubs[primary].length > 0;
+        if (hasDefaults || hasSaved) {
+            showAddSubcategoriesFor(primary, modalSubcategories);
+        } else {
+            if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+        }
+        applyModalBackground(primary);
+    } else {
+        renderModalCategoryOptions();
+        if (modalCategoryOptions && typeof initialCategory !== 'undefined' && initialCategory !== null) {
+            const btn = modalCategoryOptions.querySelector(`.modal-category-btn[data-category="${initialCategory}"]`);
+            if (btn) btn.click();
+            else applyModalBackground(initialCategory);
+        } else {
+            // default neutral background
+            applyModalBackground(initialCategory || 0);
+        }
+        showAddSubcategoriesFor(parseInt(initialCategory) || 0, modalSubcategories);
     }
 
-    if (lines.length > 1) {
-        if (!confirm(`Добав��ть ${lines.length} задач?`)) return;
-    }
+    setTimeout(() => modalTaskText.focus(), 50);
+}
 
+function closeAddModal() {
+    if (!addTaskModal) return;
+    addTaskModal.setAttribute('aria-hidden', 'true');
+    addTaskModal.style.display = 'none';
+    if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+}
+
+modalBackdrop && modalBackdrop.addEventListener('click', () => closeAddModal());
+modalCloseBtn && modalCloseBtn.addEventListener('click', () => closeAddModal());
+modalCancelBtn && modalCancelBtn.addEventListener('click', (e) => { e.preventDefault(); closeAddModal(); });
+
+modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
+    const raw = modalTaskText.value;
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    let category = 0;
+    if (modalCategoryOptions && modalCategoryOptions.dataset && modalCategoryOptions.dataset.selected) category = parseInt(modalCategoryOptions.dataset.selected);
+    if (lines.length === 0) return;
+    const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
+    let selectedSub = null;
+    if (selBtn && typeof selBtn.dataset.sub !== 'undefined') selectedSub = selBtn.dataset.sub || null;
+    // if a subcategory chosen and modalPrimaryCategory is set, ensure category is that primary
+    if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
+        category = modalPrimaryCategory;
+    }
+    if (lines.length > 1) { if (!confirm(`Добавть ${lines.length} задач?`)) return; }
     const active = true;
     lines.forEach(text => {
-        const newTask = {
-            id: getNextId(),
-            text,
-            category,
-            completed: false,
-            active,
-            statusChangedAt: Date.now()
-        };
+        const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
+        if (selectedSub) newTask.subcategory = selectedSub;
         tasks.push(newTask);
     });
-
-    saveTasks();
-    taskText.value = '';
-    displayTasks();
+    saveTasks(); closeAddModal(); displayTasks();
 });
 
 if (typeof addMultipleBtn !== 'undefined' && addMultipleBtn) {
@@ -1054,6 +1594,36 @@ importFile.addEventListener('change', (e) => {
         importTasks(e.target.files[0]);
         e.target.value = ''; // Сбрасываем значение input
     }
+});
+
+// Paste tasks area handling
+const pasteTasksBtn = document.getElementById('pasteTasksBtn');
+const pasteTasksArea = document.getElementById('pasteTasksArea');
+const pasteTasksTextarea = document.getElementById('pasteTasksTextarea');
+const pasteTasksSaveBtn = document.getElementById('pasteTasksSaveBtn');
+const pasteTasksCancelBtn = document.getElementById('pasteTasksCancelBtn');
+
+if (pasteTasksBtn) {
+    pasteTasksBtn.addEventListener('click', () => {
+        if (pasteTasksArea) pasteTasksArea.style.display = pasteTasksArea.style.display === 'none' ? 'block' : 'none';
+        if (pasteTasksArea && pasteTasksArea.style.display === 'block' && pasteTasksTextarea) pasteTasksTextarea.focus();
+    });
+}
+if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
+if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
+    if (!pasteTasksTextarea) return;
+    const raw = pasteTasksTextarea.value || '';
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) return;
+    if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
+    lines.forEach(text => {
+        const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+        tasks.push(newTask);
+    });
+    saveTasks();
+    if (pasteTasksArea) pasteTasksArea.style.display = 'none';
+    pasteTasksTextarea.value = '';
+    displayTasks();
 });
 
 startTimerBtn.addEventListener('click', startTimer);
@@ -1109,7 +1679,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возвра���е на вкладку/разворачивании окна
+// Пересчет при возрае на кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
@@ -1191,10 +1761,10 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
         }
         updateNotifyToggle();
     });
