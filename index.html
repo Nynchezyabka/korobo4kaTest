@@ -67,7 +67,7 @@
             <button id="showTasksBtn">Все задачи</button>
             <button id="archiveBtn">Архив</button>
             <button id="addMultipleBtn">Добавить несколько задач</button>
-            <button id="exportTasksBtn">Скач��ть задачи</button>
+            <button id="exportTasksBtn">Скачать задачи</button>
         </div>
         
         <div class="task-list" id="taskList" style="display: none;">
@@ -134,14 +134,7 @@
             <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">&times;</button>
             <h3>Добавить задачу</h3>
             <textarea id="modalTaskText" placeholder="Введите новую задачу или несколько (каждая с новой строки)..."></textarea>
-            <select id="modalTaskCategory">
-                <option value="0">Без категории (неактивна)</option>
-                <option value="1">Обязательные дела</option>
-                <option value="2">Система безопасности</option>
-                <option value="5">Доступность простых радостей</option>
-                <option value="3">Простые радости</option>
-                <option value="4">Эго-радости</option>
-            </select>
+            <div id="modalCategoryOptions" class="modal-category-options" aria-label="Выбор категории"></div>
             <div class="add-subcategory-controls" id="modalSubcategories" style="display:none;"></div>
             <div class="modal-actions">
                 <button id="modalAddTaskBtn">Добавить</button>
