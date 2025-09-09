@@ -350,11 +350,10 @@ function displayTasks() {
             grid.appendChild(taskElement);
 
             // If this task belongs to security-related categories (2 or 5), render subcategory selector in the dropdown
-            if (!task.completed && (task.category === 2 || task.category === 5)) {
+            if (!task.completed && task.category !== 0) {
                 populateTaskSubcategoryDropdown(task);
             } else if (!task.completed) {
-                // For non-security tasks, populate with default category options if needed (keep existing HTML)
-                // ensure category-option listeners are attached later
+                // task.category === 0 -> leave full category selection (default HTML)
             }
         });
 
@@ -678,7 +677,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправильный формат файла');
+                    alert('��шибка: неправильный формат файла');
                     return;
                 }
             }
@@ -748,7 +747,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления о����ображения таймера
+// Функция для обн��вления о����ображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -774,7 +773,7 @@ function showNotification(message) {
     }
 }
 
-// С��здани�� браузерного уведомления
+// Создани�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -816,7 +815,7 @@ function populateTaskSubcategoryDropdown(task) {
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
     noneBtn.className = 'category-option';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкате��ории';
     noneBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         changeTaskCategory(task.id, task.category, null);
@@ -988,7 +987,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подк��тегория';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
@@ -1060,7 +1059,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибки
+        // игнориру��м ошибки
     }
 }
 
@@ -1577,7 +1576,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в нас��ройках сайта.');
+                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
