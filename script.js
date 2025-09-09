@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категории по номеру
+// Функция для получения на��вания категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Без категории",
@@ -790,8 +790,8 @@ function setupAddCategorySelector() {
     }
 }
 
-function showAddSubcategoriesFor(cat) {
-    const controls = document.querySelector('.add-subcategory-controls');
+function showAddSubcategoriesFor(cat, targetContainer = null) {
+    const controls = targetContainer || document.querySelector('.add-subcategory-controls');
     if (!controls) return;
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
@@ -913,7 +913,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершении
+// Звуковой сигнал по завершени��
 function playBeep() {
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
