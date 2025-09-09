@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения на��вания категории по номеру
+// Функция для получения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Без категории",
@@ -558,7 +558,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатегории по имени для указанной категории
+// Переключение активности подкатего��ии по имени для указанной категории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -913,7 +913,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершени��
+// Звуковой сигнал по завершении
 function playBeep() {
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1097,13 +1097,8 @@ sections.forEach(section => {
     if (add) add.addEventListener('click', (e) => {
         e.stopPropagation();
         showArchive = false;
-        taskList.style.display = 'block';
-        displayTasks();
-        setTimeout(() => {
-            taskText.focus();
-            taskText.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            showAddSubcategoriesFor(parseInt(taskCategory.value));
-        }, 0);
+        const firstCat = parseInt((section.dataset.category || '1').split(',')[0]);
+        openAddModal(firstCat);
     });
 });
 
