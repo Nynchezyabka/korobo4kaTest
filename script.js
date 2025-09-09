@@ -362,7 +362,7 @@ function displayTasks() {
             grid.appendChild(frag);
         }
 
-        // Обработчик сворачивания перенесён на иконку папки выше
+        // Обработчик сворачивания перенесён на иконку пап��и выше
     });
 
     // Добавляем обработчики событий для новых элементов
@@ -584,7 +584,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-задач��.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -737,7 +737,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос раз��ешения при загрузке страницы
+// Добавляем запрос разрешения при загрузке страницы
 function setupAddCategorySelector() {
     if (!taskCategory) return;
     let container = document.querySelector('.add-category-selector');
@@ -1031,7 +1031,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм���ра
+// Функц��я для остановки тайм���ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1199,9 +1199,11 @@ function openAddModal(initialCategory, options = {}) {
             renderModalCategoryOptions(['0']);
             showAddSubcategoriesFor(1, modalSubcategories);
             if (modalCategoryOptions) modalCategoryOptions.dataset.selected = '0';
+            applyModalBackground(1); // show modal in category 1 color when subcategories are relevant
         } else {
             renderModalCategoryOptions(['0']);
             if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+            applyModalBackground(0);
         }
     } else {
         renderModalCategoryOptions();
@@ -1377,7 +1379,7 @@ if (notifyToggleBtn) {
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомления включены');
+            createBrowserNotification('Уведомлени�� включены');
             updateNotifyToggle();
             return;
         }
@@ -1385,7 +1387,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включ��ны');
+                createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
