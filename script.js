@@ -375,7 +375,7 @@ function displayTasks() {
                 const idx = tasks.findIndex(t => t.id === id);
                 if (idx === -1) return;
                 const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для этой задачи (пусто — без подкатегории):', curr);
+                const entered = prompt('Введите подкатегорию для этой задачи (пус��о — без подкатегории):', curr);
                 if (entered === null) return;
                 const val = (entered || '').trim();
                 if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
@@ -536,7 +536,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// Функция для переключения активности задачи
+// ��ункция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -835,7 +835,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const addBtn = document.createElement('button');
     addBtn.className = 'add-subcategory-btn add-subcategory-add';
     addBtn.type = 'button';
-    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : '��обавить подкатегорию...';
+    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
     addBtn.addEventListener('click', () => {
         const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
         const name = prompt(promptText);
