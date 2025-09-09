@@ -158,7 +158,7 @@ function getCategoryName(category) {
     return categories[category] || "Неизвестно";
 }
 
-// Функция отображения всех задач
+// Функция отображения всех за��ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -362,7 +362,7 @@ function displayTasks() {
             grid.appendChild(frag);
         }
 
-        // Обработчик сворачивания перенесён на иконку пап��и выше
+        // Обработчик сворачивания перенесён на иконку папки выше
     });
 
     // Добавляем обработчики событий для новых элементов
@@ -584,7 +584,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задач��.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -1031,7 +1031,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функц��я для остановки тайм���ра
+// Функция для остановки тайм���ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1210,6 +1210,10 @@ function openAddModal(initialCategory, options = {}) {
         if (modalCategoryOptions && typeof initialCategory !== 'undefined' && initialCategory !== null) {
             const btn = modalCategoryOptions.querySelector(`.modal-category-btn[data-category="${initialCategory}"]`);
             if (btn) btn.click();
+            else applyModalBackground(initialCategory);
+        } else {
+            // default neutral background
+            applyModalBackground(initialCategory || 0);
         }
         showAddSubcategoriesFor(parseInt(initialCategory) || 0, modalSubcategories);
     }
@@ -1379,7 +1383,7 @@ if (notifyToggleBtn) {
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомлени�� включены');
+            createBrowserNotification('Уведомления включены');
             updateNotifyToggle();
             return;
         }
