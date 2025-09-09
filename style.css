@@ -1057,7 +1057,7 @@ textarea {
     .tasks.sticker-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Группы зад��ч по категории с фоновым блоком */
+/* Группы зад��ч по категории с фоновым б��оком */
 .category-group {
     border-radius: 10px;
     padding: 8px;
@@ -1196,6 +1196,13 @@ textarea {
 .inline-add-form input { padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); min-width: 120px; }
 .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { padding: 6px 8px; border-radius: 6px; border: none; cursor: pointer; background: #5d4037; color: #fff; }
 .inline-add-form .inline-cancel-btn { background: #9E9E9E; }
+
+/* Paste tasks area (inline paste list) */
+.paste-tasks-area { display: none; margin-top: 8px; }
+.paste-tasks-area .paste-textarea { min-height: 80px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
+.paste-tasks-area .paste-actions { display: flex; gap: 8px; margin-top: 6px; }
+.paste-tasks-area .paste-actions button { padding: 10px 12px; border-radius: 6px; border: none; background: #5d4037; color: #fff; cursor: pointer; }
+.paste-tasks-area .paste-actions button[type="button"] { background: #9E9E9E; }
 
 /* Category dropdown background adapts via inline style from JS; ensure text/buttons visible */
 .category-dropdown { color: #222; }
