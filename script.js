@@ -158,7 +158,7 @@ function getCategoryName(category) {
     return categories[category] || "Неизвестно";
 }
 
-// Функция отображения всех за��ач
+// Функция отображения ��сех за��ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -273,7 +273,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отм��тить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -1270,6 +1270,40 @@ sections.forEach(section => {
 });
 
 
+// Section-level ego project add button (inline input)
+document.querySelectorAll('.section-ego-add-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const parent = btn.parentElement;
+        if (parent.querySelector('.inline-add-form')) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'inline-add-form';
+        const input = document.createElement('input'); input.type = 'text'; input.placeholder = 'Новый эго-проект';
+        const save = document.createElement('button'); save.type = 'button'; save.textContent = 'Добавить'; save.className = 'inline-save-btn';
+        const cancel = document.createElement('button'); cancel.type = 'button'; cancel.textContent = 'Отмена'; cancel.className = 'inline-cancel-btn';
+        wrapper.appendChild(input); wrapper.appendChild(save); wrapper.appendChild(cancel);
+        parent.appendChild(wrapper);
+        input.focus();
+        save.addEventListener('click', () => {
+            const name = input.value && input.value.trim(); if (!name) return;
+            const customSubsRaw = localStorage.getItem('customSubcategories');
+            const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+            const arr = Array.isArray(customSubs[4]) ? customSubs[4] : [];
+            if (!arr.includes(name)) arr.push(name);
+            customSubs[4] = arr; localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+            // refresh tasks with category 4
+            document.querySelectorAll(`[id^=dropdown-]`).forEach(d => {
+                const tid = parseInt(d.id.replace('dropdown-',''));
+                const t = tasks.find(x=>x.id===tid);
+                if (t && t.category === 4) populateTaskSubcategoryDropdown(t);
+            });
+            if (addTaskModal && addTaskModal.style.display === 'flex') showAddSubcategoriesFor(4, modalSubcategories);
+            wrapper.remove();
+        });
+        cancel.addEventListener('click', () => wrapper.remove());
+    });
+});
+
 showTasksBtn.addEventListener('click', () => {
     showArchive = false;
     taskList.style.display = 'block';
@@ -1583,7 +1617,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйт�� снова.');
         }
         updateNotifyToggle();
     });
