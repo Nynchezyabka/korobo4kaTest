@@ -41,7 +41,7 @@ let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
 
-// ��ежим отображе��ия архива выполненных задач
+// ��ежим отображе��ия архива ��ыполненных задач
 let showArchive = false;
 
 // Элем��нты DOM
@@ -225,7 +225,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк�� папки — сворачивание/разворачивание
+        // Клик по иконк�� папки — ��ворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -665,7 +665,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управление таймером
+    // Скрываем опции завершения и показываем управление ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -704,7 +704,7 @@ function showNotification(message) {
     }
 }
 
-// Создание браузерного уведомления
+// Создани�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1223,16 +1223,21 @@ function openAddModal(initialCategory, options = {}) {
     if (options.restrict === 'section') {
         const sectionCats = options.sectionCats || '';
         const arr = String(sectionCats).split(',').map(s => s.trim()).filter(Boolean);
-        if (arr.includes('1')) {
-            renderModalCategoryOptions(['0']);
-            showAddSubcategoriesFor(1, modalSubcategories);
-            if (modalCategoryOptions) modalCategoryOptions.dataset.selected = '0';
-            applyModalBackground(1); // show modal in category 1 color when subcategories are relevant
+        const primary = arr.length ? parseInt(arr[0]) : 0;
+        // always allow choosing 'Без категории' or a subcategory for this section
+        renderModalCategoryOptions(['0']);
+        // determine if this primary category supports subcategories (defaults or saved)
+        const customSubsRaw = localStorage.getItem('customSubcategories');
+        const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+        const hasDefaults = (primary === 1 || primary === 2);
+        const hasSaved = Array.isArray(customSubs[primary]) && customSubs[primary].length > 0;
+        if (hasDefaults || hasSaved) {
+            showAddSubcategoriesFor(primary, modalSubcategories);
         } else {
-            renderModalCategoryOptions(['0']);
             if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
-            applyModalBackground(0);
         }
+        if (modalCategoryOptions) modalCategoryOptions.dataset.selected = '0';
+        applyModalBackground(primary);
     } else {
         renderModalCategoryOptions();
         if (modalCategoryOptions && typeof initialCategory !== 'undefined' && initialCategory !== null) {
