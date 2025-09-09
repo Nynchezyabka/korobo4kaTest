@@ -47,7 +47,7 @@ let showArchive = false;
 // Элем��нты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия отк���ытого выпадающего меню категорий
+// Глобальный обработчик для закрытия отк��ытого выпадающего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -210,22 +210,21 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик п�� названи�� категории — добавление пользовательской подкатегории
+        // Клик по названию категории — сворачивание/разворачивание группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
+            headSpan.style.cursor = 'pointer';
             headSpan.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const name = prompt('Введите название подкатегории:');
-                if (name !== null) {
-                    const val = name.trim();
-                    if (val) {
-                        const arr = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-                        if (!arr.includes(val)) arr.push(val);
-                        customSubs[cat] = arr;
-                        localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
-                        displayTasks();
-                    }
+                const c = parseInt(group.dataset.category);
+                if (group.classList.contains('collapsed')) {
+                    group.classList.remove('collapsed');
+                    collapsedCategories.delete(c);
+                } else {
+                    group.classList.add('collapsed');
+                    collapsedCategories.add(c);
                 }
+                localStorage.setItem('collapsedCategories', JSON.stringify(Array.from(collapsedCategories)));
             });
         }
 
@@ -639,7 +638,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указанной категории
+// Переключение активн��сти подкатего��ии по имени для указанной категории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -673,7 +672,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция дл�� импорта задач из файла
+// Функция дл�� им��орта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -708,7 +707,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной ��адачи из категории
+// Функция для выбора случайной ��адачи из кат��гории
 function getRandomTask(categories) {
     // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -746,7 +745,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // ��крываем опции завершения и показываем управлени�� ��аймером
+    // Скрываем опции завершения и показываем управлени�� ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1061,7 +1060,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦ��Я ТАЙ��ЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
 async function requestWakeLock() {
@@ -1138,7 +1137,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ���ланируем локальный fallback
+    // ��ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1198,7 +1197,7 @@ function startTimer() {
     }
 }
 
-// Функция для ����аузы таймера
+// Функция для ���аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1246,7 +1245,7 @@ async function cancelServerSchedule() {
 
 // Функци�� для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, с��рвер��ый не тр��гаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, сервер��ый не ��р��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1464,7 +1463,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбрасываем значение input
+        e.target.value = ''; // Сбрасываем значен��е input
     }
 });
 
