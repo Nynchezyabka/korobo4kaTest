@@ -618,7 +618,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активнос��и всех задач вн���три категории
+// Пе��еключение активности всех задач вн���три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1368,7 +1368,7 @@ function openAddModal(initialCategory, options = {}) {
         const arr = String(sectionCats).split(',').map(s => s.trim()).filter(Boolean);
         const primary = arr.length ? parseInt(arr[0]) : 0;
         modalPrimaryCategory = primary;
-        // always allow choosing 'Без категории' or a subcategory for this section
+        // always allow choosing 'Категория не определена' or a subcategory for this section
         renderModalCategoryOptions(['0']);
         // determine if this primary category supports subcategories (defaults or saved)
         const customSubsRaw = localStorage.getItem('customSubcategories');
@@ -1583,7 +1583,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомлен��я. Откройте сайт напрямую и попробуйте снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
