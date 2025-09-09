@@ -319,7 +319,7 @@ function displayTasks() {
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
-                            <button class=\"category-option\" data-category=\"5\">Доступность ��адостей</button>
+                            <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
@@ -668,7 +668,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указа��ной категории
+// Переключение активности подкатего��ии по имени для указанной категории
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -739,7 +739,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной ��адачи из категории
 function getRandomTask(categories) {
-    // Преобразуем строку категорий в мас��ив чисел
+    // Преобразуем строку категор��й в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -775,7 +775,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем о��ции завершения и показываем управлени�� ��аймером
+    // Скрываем опции завершения и показываем уп��авлени�� ��аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -941,7 +941,7 @@ function setupAddCategorySelector() {
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
-            <button class="add-category-option" data-category="1">Об��зательные</button>
+            <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
@@ -1086,7 +1086,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци�� не поддерживается на этом устройст��е");
+        console.log("Вибраци�� не поддерживается на этом устройстве");
     }
 });
 
@@ -1227,7 +1227,7 @@ function startTimer() {
     }
 }
 
-// Функция для ���аузы таймера
+// Функция для ���аузы ��аймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1275,7 +1275,7 @@ async function cancelServerSchedule() {
 
 // Функци�� для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк��� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
