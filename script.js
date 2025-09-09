@@ -303,6 +303,32 @@ function displayTasks() {
                     </button>
                 </div>
             `;
+            // If task is completed, adjust UI: strike-through, remove edit controls, add return button
+            if (task.completed) {
+                taskElement.classList.add('completed');
+                const ttxt = taskElement.querySelector('.task-text');
+                if (ttxt) ttxt.style.textDecoration = 'line-through';
+                // remove dropdown caret if present
+                const caret = taskElement.querySelector('.category-badge .fa-caret-down');
+                if (caret) caret.remove();
+                // remove complete and toggle buttons
+                const completeBtn = taskElement.querySelector('.complete-task-btn'); if (completeBtn) completeBtn.remove();
+                const toggleBtn = taskElement.querySelector('.toggle-active-btn'); if (toggleBtn) toggleBtn.remove();
+                // remove delete button and replace controls with return button
+                const delBtn = taskElement.querySelector('.delete-task-btn');
+                if (delBtn) delBtn.remove();
+                const controls = taskElement.querySelector('.task-controls');
+                if (controls) {
+                    controls.innerHTML = '';
+                    const ret = document.createElement('button');
+                    ret.className = 'task-control-btn return-task-btn';
+                    ret.dataset.id = String(task.id);
+                    ret.title = 'Вернуть в активные';
+                    ret.innerHTML = '<i class="fas fa-undo"></i>';
+                    controls.appendChild(ret);
+                }
+            }
+
             // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
@@ -549,7 +575,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач внутри категории
+// Пе��еключение активности всех задач вн��три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -752,7 +778,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Без категории</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность радостей</button>
+            <button class="add-category-option" data-category="5">Доступность ��адостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1067,7 +1093,7 @@ async function cancelServerSchedule() {
 
 // Функция для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, серверный не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
