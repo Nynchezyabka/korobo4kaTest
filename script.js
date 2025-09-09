@@ -152,7 +152,7 @@ function getCategoryName(category) {
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
-        4: "Эго-��адости",
+        4: "Эго-радости",
         5: "Доступность радостей"
     };
     return categories[category] || "Неизвестно";
@@ -514,7 +514,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из����е��ения категории задачи
+// Функция для из��е��ения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -616,7 +616,7 @@ function importTasks(file) {
             // Добавляем задачи в базу данных
             tasks = importedTasks;
             saveTasks();
-            alert(`Успешно импортирован�� ${importedTasks.length} задач`);
+            alert(`Успешно импортировано ${importedTasks.length} задач`);
             displayTasks();
             
         } catch (error) {
@@ -674,7 +674,7 @@ function showTimer(task) {
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
-    stopTimer(); // Останавливаем тайм��р при закрыт��и
+    stopTimer(); // Останавлив��ем тайм��р при закрыт��и
     releaseWakeLock();
 }
 
@@ -977,7 +977,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ��ем Web Worker для точного отсчета времени в фоне
+    // Использ����ем Web Worker для точного отсчета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1072,7 +1072,7 @@ async function cancelServerSchedule() {
 
 // Функция для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локал��ный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1104,6 +1104,29 @@ sections.forEach(section => {
         showArchive = false;
         // open modal restricted to this section: only show "Без категории" or subcategories for this section
         openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
+    });
+});
+
+// Section-level "X+" buttons that add a subcategory directly
+document.querySelectorAll('.section-add-subcat-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const target = btn.getAttribute('data-target-cat') || btn.dataset.targetCat;
+        const cat = String(target || '2');
+        const customSubsRaw = localStorage.getItem('customSubcategories');
+        const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+        const promptText = (cat === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
+        const name = prompt(promptText);
+        if (name && name.trim()) {
+            const val = name.trim();
+            const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+            if (!arrSaved.includes(val)) { arrSaved.push(val); customSubs[cat] = arrSaved; localStorage.setItem('customSubcategories', JSON.stringify(customSubs)); }
+            // feedback: if modal open for this category, refresh
+            if (addTaskModal && addTaskModal.style.display === 'flex') {
+                showAddSubcategoriesFor(parseInt(cat), modalSubcategories);
+            }
+            showToastNotification('Сохранено', `Подкатегория "${val}" добавлена в категорию ${cat}`, 2500);
+        }
     });
 });
 
@@ -1318,7 +1341,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возвра���е на вкладку/разворачивании окна
+// Пересчет при возвра���е на ��кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
