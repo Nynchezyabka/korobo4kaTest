@@ -186,7 +186,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённые пользовательские подкатегории
+    // Загружаем сохранённые пользовательские по��категории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -287,7 +287,7 @@ function displayTasks() {
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без категори��</button>
                             <div class=\"category-option-group\">
-                                <button class=\"category-option\" data-category=\"1\">Обязательные</button>
+                                <button class=\"category-option\" data-category=\"1\">Обязательны��</button>
                                 <div class=\"category-subrow\">
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
@@ -363,6 +363,22 @@ function displayTasks() {
                 taskElement.classList.add('sticker-wide');
             }
             grid.appendChild(taskElement);
+
+            // insert visual + button on the sticker (no functionality) matching section-add-btn style
+            try {
+                const topActions = taskElement.querySelector('.task-top-actions');
+                if (topActions) {
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = stickerAddHtml;
+                    const node = wrapper.querySelector('button');
+                    if (node) {
+                        node.classList.add('sticker-add-btn');
+                        // ensure it does not have any click handlers
+                        node.addEventListener('click', (e) => { e.stopPropagation(); /* decorative only */ });
+                        topActions.insertBefore(node, topActions.querySelector('.complete-task-btn'));
+                    }
+                }
+            } catch (e) {}
 
             // If this task belongs to security-related categories (2 or 5), render subcategory selector in the dropdown
             if (!task.completed && task.category !== 0) {
@@ -1655,7 +1671,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попр��буйт�� снова.');
         }
         updateNotifyToggle();
     });
