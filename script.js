@@ -2,13 +2,37 @@
 let tasks = [];
 
 // Функции для работы с localStorage
+function sanitizeStoredText(s) {
+    if (typeof s !== 'string') return s;
+    let t = s.replace(/\uFFFD/g, '');
+    t = t.replace(/&shy;|&#173;|\u00AD/g, '');
+    t = t.replace(/\u200B/g, '');
+    t = t.replace(/[\r\n]+/g, ' ');
+    t = t.replace(/\s{2,}/g, ' ').trim();
+    return t;
+}
+
 function loadTasks() {
     const tasksJSON = localStorage.getItem('tasks');
     if (tasksJSON) {
         tasks = JSON.parse(tasksJSON);
+        // sanitize stored texts
+        tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     } else {
         tasks = [];
     }
+    // sanitize custom subcategories if any
+    try {
+        const customSubsRaw = localStorage.getItem('customSubcategories');
+        if (customSubsRaw) {
+            const cs = JSON.parse(customSubsRaw);
+            Object.keys(cs).forEach(k => {
+                cs[k] = cs[k].map(v => sanitizeStoredText(v));
+            });
+            localStorage.setItem('customSubcategories', JSON.stringify(cs));
+        }
+    } catch (e) {}
     return tasks;
 }
 
@@ -671,7 +695,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переключение активности подкатего��ии по имени для указанной катег��рии
+// Переклю��ение активности подкатего��ии по имени для указанной катег��рии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -1308,7 +1332,7 @@ sections.forEach(section => {
     if (add) add.addEventListener('click', (e) => {
         e.stopPropagation();
         showArchive = false;
-        // open modal restricted to this section: only show "Без катего��ии" or subcategories for this section
+        // open modal restricted to this section: only show "Без кат��го��ии" or subcategories for this section
         openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
     });
 });
@@ -1492,7 +1516,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
         category = modalPrimaryCategory;
     }
-    if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
+    if (lines.length > 1) { if (!confirm(`Добав��ть ${lines.length} задач?`)) return; }
     const active = true;
     lines.forEach(text => {
         const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
