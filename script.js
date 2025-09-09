@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категории по номеру
+// Функция для п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Без категории",
@@ -572,7 +572,7 @@ function toggleSubcategoryActiveByName(category, subName) {
 
 // Функц����я для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Удалит�� эту задачу?')) {
+    if (confirm('Удалит�� эту з��дачу?')) {
         tasks = tasks.filter(t => t.id !== taskId);
         saveTasks();
         displayTasks();
@@ -678,7 +678,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления о��ображения таймера
+// Функция для обновления о����ображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -804,11 +804,6 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     saved.forEach(s => list.push({ key: s, label: s }));
 
     controls.innerHTML = '';
-    if (list.length === 0) {
-        controls.classList.remove('show');
-        controls.style.display = 'none';
-        return;
-    }
 
     // option for none
     const noneBtn = document.createElement('button');
@@ -840,7 +835,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const addBtn = document.createElement('button');
     addBtn.className = 'add-subcategory-btn add-subcategory-add';
     addBtn.type = 'button';
-    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
+    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : '��обавить подкатегорию...';
     addBtn.addEventListener('click', () => {
         const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
         const name = prompt(promptText);
@@ -953,7 +948,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщаем серверу о расписании пуш-уведомления
+    // Сообщае�� серверу о расписании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
