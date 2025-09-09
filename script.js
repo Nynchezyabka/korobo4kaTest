@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция от��бражения ��сех за���ач
+// Функция отображения ��сех за���ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -395,7 +395,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз �� урна
+            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -424,7 +424,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка з��дач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -769,7 +769,7 @@ function getRandomTask(categories) {
     // Прео��разуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все актив��ые задачи из указанных категорий
+    // Получаем все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -815,7 +815,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления о����ображения таймера
+// Функция для обновления о�����ображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1400,17 +1400,26 @@ function lightenHex(hex, factor) {
     } catch (e) { return hex; }
 }
 
+function getCategoryGroupBg(cat) {
+    switch (Number(cat)) {
+        case 0: return '#fafafa';
+        case 1: return '#fffde7';
+        case 2: return '#e3f2fd';
+        case 3: return '#e8f5e9';
+        case 4: return '#ffebee';
+        case 5: return '#ede7f6';
+        default: return '#ffffff';
+    }
+}
+
 function applyModalBackground(cat) {
     const modalContent = addTaskModal ? addTaskModal.querySelector('.modal-content') : null;
     if (!modalContent) return;
-    const color = getCategoryColor(cat);
+    // use category group background (lighter) instead of sticker color
+    const color = getCategoryGroupBg(cat);
     modalContent.style.backgroundColor = color;
-    // adjust text color for grey background
-    if (String(cat) === '0') {
-        modalContent.style.color = '#333';
-    } else {
-        modalContent.style.color = '#333';
-    }
+    // ensure readable text color
+    modalContent.style.color = '#333';
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
