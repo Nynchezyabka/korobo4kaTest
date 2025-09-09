@@ -145,7 +145,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция д��я п��лучения названия категории по номеру
+// Функция д��я п��лучения на��вания категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -229,7 +229,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачивание группы
+        // Клик по названию категории — сворачивание/разворачива��ие группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -323,8 +323,8 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Простые р��дости</button>
-                            <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
+                            <button class=\"category-option\" data-category=\"4\">Эго-рад��сти</button>
                         </div>
                     </div>
                 </div>
@@ -355,7 +355,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'Уда��ить задачу';
+                    del.title = 'Удалить задачу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -1093,7 +1093,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИ�� ТАЙ��ЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
 async function requestWakeLock() {
@@ -1230,7 +1230,7 @@ function startTimer() {
     }
 }
 
-// Функция для ���аузы таймера
+// Функция для �����аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1276,7 +1276,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци�� для сброса ��аймера
+// Функци�� для сброса таймера
 function resetTimer() {
     // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
@@ -1598,7 +1598,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при воз��ра���е на ��кладку/раз��орачивании окна
+// Пересчет при воз��ра���е на ��кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
