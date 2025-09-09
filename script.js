@@ -419,23 +419,10 @@ function displayTasks() {
 
     // Добав��яем обработчики событий для новых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
+        // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
         if (nameEl) {
-            nameEl.addEventListener('click', (ev) => {
-                ev.stopPropagation();
-                const id = parseInt(badge.getAttribute('data-id'));
-                const idx = tasks.findIndex(t => t.id === id);
-                if (idx === -1) return;
-                // don't allow changing subcategory of completed tasks
-                if (tasks[idx].completed) return;
-                const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для этой задачи (пусто — без подкатегории):', curr);
-                if (entered === null) return;
-                const val = (entered || '').trim();
-                if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
-                saveTasks();
-                displayTasks();
-            });
+            nameEl.style.cursor = 'default';
         }
         badge.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -764,7 +751,7 @@ function showTimer(task) {
     document.querySelector('.timer-controls').style.display = 'flex';
 }
 
-// Функция для скрытия таймера
+// Функция для скрытия тайм��ра
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
@@ -973,7 +960,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     if (String(cat) === '1') {
         list.push({ key: 'work', label: 'Работа' });
-        list.push({ key: 'home', label: 'Дом' });
+        list.push({ key: 'home', label: 'До��' });
     }
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => list.push({ key: s, label: s }));
