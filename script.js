@@ -318,12 +318,12 @@ function displayTasks() {
                                 <div class=\"category-subrow\">
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">��ом</button>
+                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Простые р��дости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -1276,7 +1276,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци�� для сброса таймера
+// Функци�� для сброса ��аймера
 function resetTimer() {
     // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
@@ -1598,7 +1598,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при воз��ра���е на ��кладку/разворачивании окна
+// Пересчет при воз��ра���е на ��кладку/раз��орачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
