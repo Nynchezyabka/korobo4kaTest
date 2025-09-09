@@ -33,13 +33,16 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны не засы��ают во время таймера (где поддерж��вается)
 
-// Новые переменные для точного таймера
+// Новые переменные для точного ��аймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
 let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
+
+// Режим отображе��ия архива выполненных задач
+let showArchive = false;
 
 // Элем��нты DOM
 const sections = document.querySelectorAll('.section');
@@ -55,6 +58,7 @@ document.addEventListener('click', function(e) {
 const showTasksBtn = document.getElementById('showTasksBtn');
 const addMultipleBtn = document.getElementById('addMultipleBtn');
 const addSingleBtn = document.getElementById('addSingleBtn');
+const archiveBtn = document.getElementById('archiveBtn');
 const exportTasksBtn = document.getElementById('exportTasksBtn');
 const taskList = document.getElementById('taskList');
 const tasksContainer = document.getElementById('tasksContainer');
@@ -158,12 +162,16 @@ function getCategoryName(category) {
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
+    const titleEl = taskList.querySelector('h2');
+    if (titleEl) titleEl.textContent = showArchive ? 'Архив' : 'Все задачи';
+
     const isMobile = window.matchMedia('(max-width: 480px)').matches;
     tasksContainer.classList.remove('sticker-grid');
     tasksContainer.classList.toggle('mobile-compact', isMobile);
 
     const groups = new Map();
-    tasks.forEach(t => {
+    const source = tasks.filter(t => showArchive ? t.completed : !t.completed);
+    source.forEach(t => {
         const arr = groups.get(t.category) || [];
         arr.push(t);
         groups.set(t.category, arr);
@@ -217,7 +225,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконке папки — сворачивание/разворачивание
+        // Клик по иконк�� папки — сворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -260,9 +268,14 @@ function displayTasks() {
                 <div class=\"task-content\">
                     <div class=\"task-text\">${task.text}</div>
                     <div class=\"category-selector\">
-                        <div class=\"category-badge\" data-id=\"${task.id}\">
-                            ${categoryDisplay}
-                            <i class=\"fas fa-caret-down\"></i>
+                        <div class=\"task-top-actions\">
+                            <div class=\"category-badge\" data-id=\"${task.id}\">
+                                ${categoryDisplay}
+                                <i class=\"fas fa-caret-down\"></i>
+                            </div>
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                                <i class=\"fas fa-check\"></i>
+                            </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без категори��</button>
@@ -372,11 +385,12 @@ function displayTasks() {
         }
         badge.addEventListener('click', function(e) {
             e.stopPropagation();
-            if (activeDropdown && activeDropdown !== this.nextElementSibling) {
+            const dropdown = this.closest('.category-selector').querySelector('.category-dropdown');
+            if (activeDropdown && activeDropdown !== dropdown) {
                 activeDropdown.classList.remove('show');
                 if (activeDropdown.parentElement) activeDropdown.parentElement.style.zIndex = '';
             }
-            const dropdown = this.nextElementSibling;
+            /* dropdown is resolved above */
             dropdown.classList.toggle('show');
             activeDropdown = dropdown;
             if (dropdown.classList.contains('show')) {
@@ -431,6 +445,20 @@ function displayTasks() {
         btn.addEventListener('click', (e) => {
             const id = parseInt(e.target.closest('.delete-task-btn').dataset.id);
             deleteTask(id);
+        });
+    });
+
+    document.querySelectorAll('.complete-task-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                tasks[idx].completed = true;
+                tasks[idx].active = false;
+                saveTasks();
+                displayTasks();
+            }
         });
     });
 
@@ -774,7 +802,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибрация не поддерживается на этом устройстве");
+        console.log("Вибраци�� не поддерживается на этом устройстве");
     }
 });
 
@@ -963,7 +991,7 @@ async function cancelServerSchedule() {
 
 // Функция для сброса таймера
 function resetTimer() {
-    // отменяе�� только локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, серверный не трогаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -982,21 +1010,37 @@ sections.forEach(section => {
         const task = getRandomTask(categories);
         if (task) showTimer(task);
     });
-});
-
-showTasksBtn.addEventListener('click', () => {
-    taskList.style.display = 'block';
-    displayTasks();
-});
-
-if (addSingleBtn) {
-    addSingleBtn.addEventListener('click', () => {
+    const rnd = section.querySelector('.section-random-btn');
+    if (rnd) rnd.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const categories = section.dataset.category;
+        const task = getRandomTask(categories);
+        if (task) showTimer(task);
+    });
+    const add = section.querySelector('.section-add-btn');
+    if (add) add.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showArchive = false;
         taskList.style.display = 'block';
         displayTasks();
         setTimeout(() => {
             taskText.focus();
             taskText.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 0);
+    });
+});
+
+showTasksBtn.addEventListener('click', () => {
+    showArchive = false;
+    taskList.style.display = 'block';
+    displayTasks();
+});
+
+if (archiveBtn) {
+    archiveBtn.addEventListener('click', () => {
+        showArchive = true;
+        taskList.style.display = 'block';
+        displayTasks();
     });
 }
 
