@@ -348,6 +348,14 @@ function displayTasks() {
                 taskElement.classList.add('sticker-wide');
             }
             grid.appendChild(taskElement);
+
+            // If this task belongs to security-related categories (2 or 5), render subcategory selector in the dropdown
+            if (!task.completed && (task.category === 2 || task.category === 5)) {
+                populateTaskSubcategoryDropdown(task);
+            } else if (!task.completed) {
+                // For non-security tasks, populate with default category options if needed (keep existing HTML)
+                // ensure category-option listeners are attached later
+            }
         });
 
         // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
@@ -611,7 +619,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач вн��три категории
+// Пе��еключение активности всех задач вн���три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1081,7 +1089,7 @@ function startTimer() {
     }
 }
 
-// Функция для паузы таймера
+// Функция для ��аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1129,7 +1137,7 @@ async function cancelServerSchedule() {
 
 // Функция для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, серверный не тр��гаем, чтобы пауза/сброс был явным
+    // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
