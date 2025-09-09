@@ -163,7 +163,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Архив' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
 
     const isMobile = window.matchMedia('(max-width: 480px)').matches;
     tasksContainer.classList.remove('sticker-grid');
@@ -206,7 +206,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — добавление пользовательской подкатегории
+        // Клик по названи�� категории — добавление пользовательской подкатегории
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.addEventListener('click', (e) => {
@@ -375,7 +375,7 @@ function displayTasks() {
                 const idx = tasks.findIndex(t => t.id === id);
                 if (idx === -1) return;
                 const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для этой задачи (пус��о — без подкатегории):', curr);
+                const entered = prompt('Введите подкатегорию для этой задачи (п��с��о — без подкатегории):', curr);
                 if (entered === null) return;
                 const val = (entered || '').trim();
                 if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
@@ -673,7 +673,7 @@ function showTimer(task) {
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
     stopTimer(); // Останавлив��ем тайм��р при закрыт��и
     releaseWakeLock();
 }
@@ -972,7 +972,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ����ем Web Worker для т��чного отсчета времени в фоне
+    // Использ����ем Web Worker для т��чного отс��ета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
