@@ -418,7 +418,7 @@ function displayTasks() {
                 // don't allow changing subcategory of completed tasks
                 if (tasks[idx].completed) return;
                 const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для ��той задачи (пусто — без подкатегории):', curr);
+                const entered = prompt('Введите подкатегорию для этой задачи (пусто — без подкатегории):', curr);
                 if (entered === null) return;
                 const val = (entered || '').trim();
                 if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
@@ -618,7 +618,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач вн���три категории
+// Пе��еключение активнос��и всех задач вн���три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -641,7 +641,7 @@ function toggleSubcategoryActiveByName(category, subName) {
 
 // Функц����я для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Уд��лит�� эту з��дачу?')) {
+    if (confirm('Удалит�� эту з��дачу?')) {
         tasks = tasks.filter(t => t.id !== taskId);
         saveTasks();
         displayTasks();
@@ -960,7 +960,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn';
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатегори��';
+    noneBtn.textContent = 'Без подкатегории';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1583,7 +1583,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разреш��ние на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            alert('Не удалось запросить разрешение на уведомлен��я. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
