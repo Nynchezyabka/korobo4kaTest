@@ -774,7 +774,7 @@ function showNotification(message) {
     }
 }
 
-// Создани�� браузерного уведомления
+// С��здани�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -981,25 +981,42 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    const addBtn = document.createElement('button');
-    addBtn.className = 'add-subcategory-btn add-subcategory-add';
-    addBtn.type = 'button';
-    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
-    addBtn.addEventListener('click', () => {
-        const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
-        const name = prompt(promptText);
-        if (name && name.trim()) {
-            const val = name.trim();
-            const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-            if (!arrSaved.includes(val)) { arrSaved.push(val); customSubs[cat] = arrSaved; localStorage.setItem('customSubcategories', JSON.stringify(customSubs)); }
-            showAddSubcategoriesFor(cat, targetContainer);
-            // If modal open, refresh modal subcategories too
-            if (addTaskModal && addTaskModal.style.display === 'flex') {
-                showAddSubcategoriesFor(cat, modalSubcategories);
-            }
+    // inline add form instead of prompt
+    const addWrapper = document.createElement('div');
+    addWrapper.className = 'add-subcategory-btn add-subcategory-add';
+    const inline = document.createElement('div');
+    inline.className = 'inline-add-form';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'inline-save-btn';
+    saveBtn.textContent = 'Добавить';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'inline-cancel-btn';
+    cancelBtn.textContent = 'Отмена';
+    inline.appendChild(inp);
+    inline.appendChild(saveBtn);
+    inline.appendChild(cancelBtn);
+    addWrapper.appendChild(inline);
+    controls.appendChild(addWrapper);
+
+    saveBtn.addEventListener('click', () => {
+        const name = inp.value && inp.value.trim();
+        if (!name) return;
+        const val = name;
+        const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
+        if (!arrSaved.includes(val)) arrSaved.push(val);
+        customSubs[cat] = arrSaved;
+        localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+        showAddSubcategoriesFor(cat, targetContainer);
+        if (addTaskModal && addTaskModal.style.display === 'flex') {
+            showAddSubcategoriesFor(cat, modalSubcategories);
         }
     });
-    controls.appendChild(addBtn);
+    cancelBtn.addEventListener('click', () => { showAddSubcategoriesFor(cat, targetContainer); });
 
     controls.classList.add('show');
     controls.style.display = 'flex';
@@ -1560,7 +1577,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в нас��ройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
