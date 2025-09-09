@@ -277,7 +277,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отм��тить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отм��тить выполн��нной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -653,7 +653,7 @@ function toggleSubcategoryActiveByName(category, subName) {
 
 // Функц����я для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Удалит�� эту з��дачу?')) {
+    if (confirm('Удалить эту задачу?')) {
         tasks = tasks.filter(t => t.id !== taskId);
         saveTasks();
         displayTasks();
@@ -665,7 +665,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-з��дачи.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -708,7 +708,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной задачи из категории
+// Функция для выбора случайной ��адачи из категории
 function getRandomTask(categories) {
     // Преобразуем строку категорий в мас��ив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -719,7 +719,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        alert('Нет активных задач �� этой категор��и!');
+        alert('Нет активных задач в этой категории!');
         return null;
     }
     
@@ -768,7 +768,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача ����авершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -1138,7 +1138,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // Планируем локальный fallback
+    // ��ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1198,7 +1198,7 @@ function startTimer() {
     }
 }
 
-// Функция для ��аузы таймера
+// Функция для ���аузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
