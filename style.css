@@ -789,7 +789,7 @@ textarea {
         gap: 12px;
     }
 
-    /* Кно��ки действий выравниваем п�� сетке (3 колонки) */
+    /* Кно��ки действий выравниваем п�� ��етке (3 колонки) */
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1242,7 +1242,7 @@ textarea {
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.4rem; font-weight: 700; }
 .category-add-btn i { color: #5d4037; font-size: 1.4rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
@@ -1402,7 +1402,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверх�� категория, снизу под ней кнопки */
+    /* Выро��нять элементы задачи в сетку: текст слева, справа сверх�� категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
