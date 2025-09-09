@@ -51,13 +51,13 @@ function getNextId() {
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
-let timerTime = 15 * 60; // 15 мину���� в секундах
+let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны не засы��ают во время таймера (где поддерж��вается)
+let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
 
-// Новые переменные для точного ��аймера
+// Новые переменные для точного аймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -65,13 +65,13 @@ let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
 
-// ��ежим отображе��ия архива ��ы��олненных задач
+// ежим отображеия архива ыолненных задач
 let showArchive = false;
 
-// Элем��нты DOM
+// Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия отк��ытого выпада��щего меню категорий
+// Глобальный обработчик для закрытия откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -169,7 +169,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция д��я п��лучения названия категории по номеру
+// Функция дя плучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения ��сех за���ач
+// Функция отображения сех за�ач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -229,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённые пользовательск��е подкатегории
+    // Загружаем сохранённ��е пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -271,7 +271,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк�� папки — ��ворачивание/разворачивание
+        // Клик по иконк папки — ворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -395,7 +395,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
+            // Переставяем элменты для мобильного: папка с��ерху спраа, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -473,7 +473,7 @@ function displayTasks() {
         }
     });
 
-    // Добав��яем обработчики событий для новых элементов
+    // Добавяем обработчики событий для но��ых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -651,7 +651,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из��е��ения категории задачи
+// Функция для изеения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -673,7 +673,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ��ункция для переключения активности задачи
+// ункция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -686,7 +686,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пе��еключение активности всех задач вн���три категории
+// Пееключение активности всех задач вн�три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -695,7 +695,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклю��ение активности подкатего��ии по имени для указанной катег��рии
+// Переклюение активности подкатегоии по имени для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -707,7 +707,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Функц����я для удаления задачи
+// Функця для удаления задачи
 function deleteTask(taskId) {
     if (confirm('Удалить эту задачу?')) {
         tasks = tasks.filter(t => t.id !== taskId);
@@ -716,7 +716,7 @@ function deleteTask(taskId) {
     }
 }
 
-// Функ��ия для экспорта задач в ф��йл
+// Функия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -729,7 +729,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция дл�� импорта задач из файла
+// Функция дл импорта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -745,12 +745,12 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправ��льный формат файла');
+                    alert('Ошибка: неправльный формат файла');
                     return;
                 }
             }
             
-            // Добавля��м задачи в б���зу данных
+            // Добавлям задачи в б�зу данных
             tasks = importedTasks;
             saveTasks();
             alert(`Успешно импортировано ${importedTasks.length} задач`);
@@ -764,9 +764,9 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной ��адачи из категории
+// Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Прео��разуем строку категорий в мас��ив чисел
+    // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -783,12 +783,12 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отоб��ажения таймера
+// Функция для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
 
-    // Полный сб��ос состояния таймера перед новым запуском
+    // Полный сбос состояния таймера перед новым запуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -802,7 +802,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управлени�� ��аймером
+    // Скрываем опции завершения и показываем управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -810,12 +810,12 @@ function showTimer(task) {
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавлива��м прокрутку
-    stopTimer(); // Останавлив��ем тайм��р при закрыт��и
+    document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
+    stopTimer(); // Останавливем таймр при закрыти
     releaseWakeLock();
 }
 
-// Функция для обновления о�����ображения таймера
+// Функция для обновления оображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -841,11 +841,11 @@ function showNotification(message) {
     }
 }
 
-// Создани�� браузерного уведомления
+// С��здани браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время ��ышло! ��адача завершена.",
+        body: message || "Время ышло! адача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1113,13 +1113,13 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци�� не поддерживается на этом устройстве");
+        console.log("Вибраци не поддерживается на этом устройстве");
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙ��ЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во вре��я таймера
+// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1176,14 +1176,14 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво�� за��уске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
     }
     timerStartTime = Date.now();
 
-    // Сообщае�� серверу о расп��сании пуш-уведомления
+    // Сообщае серверу о распсании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1194,7 +1194,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ��ланируем локальный fallback
+    // ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1207,7 +1207,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использ����ем Web Worker для т����чного отс��ета времени в фоне
+    // Использем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1239,14 +1239,14 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback дл�� браузеров без подде�������жки Web Workers
+        // Fallback дл браузеров без подде�жки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
 
             if (timerTime <= 0) {
                 stopTimer();
-                showNotification(currentTask ? `За��ача: ${currentTask.text}` : undefined);
+                showNotification(currentTask ? `Заача: ${currentTask.text}` : undefined);
                 timerCompleteOptions.style.display = 'flex';
                 document.querySelector('.timer-controls').style.display = 'none';
             }
@@ -1254,7 +1254,7 @@ function startTimer() {
     }
 }
 
-// Функция для ���аузы тайме��а
+// Функция для �аузы таймеа
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1266,7 +1266,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм���ра
+// Функция для остановки тайм�ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1300,9 +1300,9 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци�� для сброса таймера
+// Функци для сброса таймера
 function resetTimer() {
-    // отменяе�� тольк�� локальный тайм��р, сервер��ый не тр��гаем, чтобы пауза/сброс был явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс был явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1314,7 +1314,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обра��отч��ки ��обытий
+// Обраотчки обытий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -1332,7 +1332,7 @@ sections.forEach(section => {
     if (add) add.addEventListener('click', (e) => {
         e.stopPropagation();
         showArchive = false;
-        // open modal restricted to this section: only show "Без кат��го��ии" or subcategories for this section
+        // open modal restricted to this section: only show "Без катгоии" or subcategories for this section
         openAddModal(undefined, { restrict: 'section', sectionCats: section.dataset.category });
     });
 });
@@ -1525,7 +1525,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
         category = modalPrimaryCategory;
     }
-    if (lines.length > 1) { if (!confirm(`Добав��ть ${lines.length} задач?`)) return; }
+    if (lines.length > 1) { if (!confirm(`Добавть ${lines.length} задач?`)) return; }
     const active = true;
     lines.forEach(text => {
         const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
@@ -1631,7 +1631,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при воз��ра���е на ��кладку/разворачивании окна
+// Пересчет при возра�е на кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
@@ -1713,10 +1713,10 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Отк��ойте с��йт напрямую и попробуйт�� с��ова.');
+            alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
         }
         updateNotifyToggle();
     });
