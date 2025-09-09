@@ -149,7 +149,7 @@ function updateNotifyToggle() {
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "Обязатель��ые",
+        1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
@@ -617,7 +617,7 @@ function displayTasks() {
     });
 }
 
-// Функция для из��е��ения категории задачи
+// Функция для из��е��ения категори�� задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -891,7 +891,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новы�� эго-проект';
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1588,7 +1588,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при воз��ра���е на ��кладку/разворачивании окна
+// Пересчет при воз��ра���е на ��кладку/разворачив��нии окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
