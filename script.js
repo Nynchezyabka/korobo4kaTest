@@ -253,7 +253,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачивание группы
+        // Клик по названию категории — сворачивание/разворачивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -446,7 +446,53 @@ function displayTasks() {
             subNames.forEach(name => {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${name}</span>`;
+                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                // make heading clickable to allow renaming of the subcategory
+                const headingSpan = titleEl.querySelector('.category-heading');
+                if (headingSpan) {
+                    headingSpan.style.cursor = 'pointer';
+                    headingSpan.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        try {
+                            const newNameRaw = prompt('Переименовать подкатегорию', name);
+                            if (newNameRaw === null) return; // cancelled
+                            const newName = (newNameRaw || '').trim();
+                            if (!newName || newName === name) return;
+
+                            // load saved custom subcategories
+                            const customSubsRawLocal = localStorage.getItem('customSubcategories');
+                            const customSubsLocal = customSubsRawLocal ? JSON.parse(customSubsRawLocal) : {};
+                            const arrSavedLocal = Array.isArray(customSubsLocal[cat]) ? customSubsLocal[cat].slice() : [];
+
+                            const idx = arrSavedLocal.indexOf(name);
+                            if (idx !== -1) {
+                                // replace existing saved name if newName not present
+                                if (!arrSavedLocal.includes(newName)) {
+                                    arrSavedLocal[idx] = newName;
+                                } else {
+                                    // newName already exists, remove the old duplicate
+                                    arrSavedLocal.splice(idx, 1);
+                                }
+                            } else {
+                                // name wasn't a saved custom subcategory (could be a builtin); add newName if missing
+                                if (!arrSavedLocal.includes(newName)) arrSavedLocal.push(newName);
+                            }
+
+                            // ensure uniqueness
+                            customSubsLocal[cat] = Array.from(new Set(arrSavedLocal));
+
+                            // update tasks that reference this subcategory
+                            tasks = tasks.map(t => (t.category === cat && t.subcategory === name) ? { ...t, subcategory: newName } : t);
+
+                            localStorage.setItem('customSubcategories', JSON.stringify(customSubsLocal));
+                            saveTasks();
+                            displayTasks();
+                        } catch (err) {
+                            console.error('Ошибка при переименовании подкатегории', err);
+                        }
+                    });
+                }
+
                 const hasActive = list.some(t => t.subcategory === name && t.active);
                 const toggle = document.createElement('button');
                 toggle.className = 'task-control-btn subcategory-toggle-all';
@@ -1302,9 +1348,9 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Функци для сброса таймера
+// Ф��нкци для сброса таймера
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс был явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
