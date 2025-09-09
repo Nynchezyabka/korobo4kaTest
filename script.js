@@ -755,7 +755,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для пок��за уведомления
+// Функция для показа уведомления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача ����авершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -856,7 +856,7 @@ function populateTaskSubcategoryDropdown(task) {
         addBtn.textContent = 'Добавить сложную радость';
         addBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const name = prompt('Введите название сложной радости:');
+            const name = prompt('Введите название сл��жной радости:');
             if (name && name.trim()) {
                 const val = name.trim();
                 const arr = Array.isArray(customSubs[2]) ? customSubs[2] : [];
@@ -882,7 +882,7 @@ function setupAddCategorySelector() {
         const dropdown = document.createElement('div');
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
-            <button class="add-category-option" data-category="0">Без категории</button>
+            <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность ��адостей</button>
@@ -968,7 +968,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const addBtn = document.createElement('button');
     addBtn.className = 'add-subcategory-btn add-subcategory-add';
     addBtn.type = 'button';
-    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить ��одкатегорию...';
+    addBtn.textContent = (String(cat) === '2') ? 'Добавить сложную радость' : 'Добавить подкатегорию...';
     addBtn.addEventListener('click', () => {
         const promptText = (String(cat) === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
         const name = prompt(promptText);
@@ -1081,7 +1081,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае�� сер��еру о расписании пуш-уведомления
+    // Сообщае�� серверу о расписани�� пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
