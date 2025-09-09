@@ -44,7 +44,7 @@ let timerEndTimeoutId = null;
 // ��ежим отображе��ия архива ��ыполненных задач
 let showArchive = false;
 
-// Элем����ты DOM
+// Элем��нты DOM
 const sections = document.querySelectorAll('.section');
 
 // Глобальный обработчик для закрытия открытого выпадающего меню категорий
@@ -592,7 +592,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция для импорта задач из файла
+// Функция дл�� импорта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -632,7 +632,7 @@ function getRandomTask(categories) {
     // Преобразуем строку категорий в массив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получае�� все активные задачи из указанных категорий
+    // Получаем все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -673,7 +673,7 @@ function showTimer(task) {
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливае�� прокрутку
+    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
     stopTimer(); // Останавлив��ем тайм��р при закрыт��и
     releaseWakeLock();
 }
@@ -1192,16 +1192,20 @@ function renderModalCategoryOptions(allowedCategories = null) {
     });
 }
 
+let modalPrimaryCategory = null;
+
 function openAddModal(initialCategory, options = {}) {
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
     modalTaskText.value = '';
+    modalPrimaryCategory = null;
 
     if (options.restrict === 'section') {
         const sectionCats = options.sectionCats || '';
         const arr = String(sectionCats).split(',').map(s => s.trim()).filter(Boolean);
         const primary = arr.length ? parseInt(arr[0]) : 0;
+        modalPrimaryCategory = primary;
         // always allow choosing 'Без категории' or a subcategory for this section
         renderModalCategoryOptions(['0']);
         // determine if this primary category supports subcategories (defaults or saved)
@@ -1406,7 +1410,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокированы в на��тройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
