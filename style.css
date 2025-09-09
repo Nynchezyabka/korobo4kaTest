@@ -372,7 +372,6 @@ textarea {
 
 .inactive {
     opacity: 0.6;
-    text-decoration: line-through;
 }
 
 .category-selector {
@@ -735,7 +734,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-запрос для планшетов в альбомной ориентации и небольших ноутбуков */
+/* Медиа-запрос для планшет��в в альбомной ориентации и небольших ноутбуков */
 @media (min-width: 768px) {
     .sections {
         display: grid;
@@ -1179,6 +1178,16 @@ textarea {
 
 /* Кнопка актива��ии/деактивации всей категории в з��головке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
+
+/* Кнопки на секциях главного экрана */
+.section-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+.section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.section-action-btn i { font-size: 1.3rem; }
+.section-action-btn .action-text { font-size: 0.95rem; }
+
+/* Верхняя панель действий задачи (категория + галочка) */
+.task-top-actions { display: inline-flex; align-items: center; gap: 6px; }
+.task-top-actions .task-control-btn { padding: 4px; }
 
 /* Контролы подкатегорий при добавлении задачи (для "Обязательные") */
 .add-subcategory-controls { display: none; margin-top: 6px; gap: 6px; }
