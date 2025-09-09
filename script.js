@@ -44,7 +44,7 @@ let timerEndTimeoutId = null;
 // ��ежим отображе��ия архива ��ыполненных задач
 let showArchive = false;
 
-// Элем��нты DOM
+// Элем����ты DOM
 const sections = document.querySelectorAll('.section');
 
 // Глобальный обработчик для закрытия открытого выпадающего меню категорий
@@ -632,7 +632,7 @@ function getRandomTask(categories) {
     // Преобразуем строку категорий в массив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных категорий
+    // Получае�� все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -673,7 +673,7 @@ function showTimer(task) {
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    document.body.style.overflow = 'auto'; // Восстанавливае�� прокрутку
     stopTimer(); // Останавлив��ем тайм��р при закрыт��и
     releaseWakeLock();
 }
@@ -1107,28 +1107,6 @@ sections.forEach(section => {
     });
 });
 
-// Section-level "X+" buttons that add a subcategory directly
-document.querySelectorAll('.section-add-subcat-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const target = btn.getAttribute('data-target-cat') || btn.dataset.targetCat;
-        const cat = String(target || '2');
-        const customSubsRaw = localStorage.getItem('customSubcategories');
-        const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
-        const promptText = (cat === '2') ? 'Введите название сложной радости:' : 'Введите название подкатегории:';
-        const name = prompt(promptText);
-        if (name && name.trim()) {
-            const val = name.trim();
-            const arrSaved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-            if (!arrSaved.includes(val)) { arrSaved.push(val); customSubs[cat] = arrSaved; localStorage.setItem('customSubcategories', JSON.stringify(customSubs)); }
-            // feedback: if modal open for this category, refresh
-            if (addTaskModal && addTaskModal.style.display === 'flex') {
-                showAddSubcategoriesFor(parseInt(cat), modalSubcategories);
-            }
-            showToastNotification('Сохранено', `Подкатегория "${val}" добавлена в категорию ${cat}`, 2500);
-        }
-    });
-});
 
 showTasksBtn.addEventListener('click', () => {
     showArchive = false;
@@ -1428,7 +1406,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокированы в на��тройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
