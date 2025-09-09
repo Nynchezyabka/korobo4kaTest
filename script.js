@@ -253,7 +253,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачивание группы
+        // Клик по названию категории — сворачивание/ра��ворачивание группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -316,7 +316,9 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // Replace explicit newlines with spaces (users may paste multi-line text) to avoid forced breaks
+            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Разобрать')
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
             // collapse multiple spaces
             raw = raw.replace(/\s{2,}/g, ' ').trim();
@@ -764,7 +766,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной адачи из категории
+// Функция для выбора случайной адачи из категор��и
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
