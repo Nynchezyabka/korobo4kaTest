@@ -265,7 +265,11 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span><button type=\"button\" class=\"category-add-btn small\" data-cat=\"${task.category}\" title=\"Добавить задачу в категорию\">+</button>`;
+            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            // add a visual + button on the sticker (visually matches section add), no add-functionality here
+            const stickerAddHtml = `<button type=\"button\" class=\"section-action-btn section-add-btn sticker-add-btn\" aria-hidden=\"true\">`+
+                `<i class=\"fas fa-plus\"></i>`+
+                `</button>`;
 
             taskElement.innerHTML = `
                 <div class=\"task-content\">
@@ -660,7 +664,7 @@ function deleteTask(taskId) {
     }
 }
 
-// Функция для экспорта задач в файл
+// Функ��ия для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -1001,7 +1005,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радо��ть' : 'Новая подкатегория';
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
@@ -1109,7 +1113,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска тай��ера
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1183,7 +1187,7 @@ function startTimer() {
         }
         timerWorker.postMessage('start');
     } else {
-        // Fallback для браузеров без подде����жки Web Workers
+        // Fallback дл�� браузеров без подде����жки Web Workers
         timerInterval = setInterval(() => {
             timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
             updateTimerDisplay();
@@ -1651,7 +1655,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокир��ваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйт�� снова.');
+            alert('Не удалось запросить разрешение на уведомления. Откройте с��йт напрямую и попробуйт�� снова.');
         }
         updateNotifyToggle();
     });
