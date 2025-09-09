@@ -59,7 +59,6 @@
                     <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button class="section-ego-add-btn" aria-label="Добавить эго-проект">Добавить эго-проект</button>
                 </div>
             </div>
         </div>
@@ -68,7 +67,7 @@
             <button id="showTasksBtn">Все задачи</button>
             <button id="archiveBtn">Выполненные</button>
             <button id="addMultipleBtn">Добавить несколько задач</button>
-            <button id="exportTasksBtn">Скачать задачи</button>
+            <button id="exportTasksBtn">Ск��чать задачи</button>
         </div>
         
         <div class="task-list" id="taskList" style="display: none;">
@@ -89,9 +88,19 @@
             
             <div class="import-export">
                 <label for="importFile" class="file-label">
-                    <i class="fas fa-upload"></i> Загрузить задачи из файла
+                    <i class="fas fa-upload"></i> Загрузить задачи и�� файла
                 </label>
                 <input type="file" id="importFile" class="file-input" accept=".json">
+                <button id="pasteTasksBtn" class="file-label" type="button">
+                    <i class="fas fa-clipboard"></i> Вставить список задач
+                </button>
+                <div id="pasteTasksArea" class="paste-tasks-area" style="display:none; margin-top:8px;">
+                    <textarea id="pasteTasksTextarea" placeholder="Вставьте задачи, каждая с новой строки..."></textarea>
+                    <div style="display:flex; gap:8px; margin-top:6px;">
+                        <button id="pasteTasksSaveBtn">Добавить</button>
+                        <button id="pasteTasksCancelBtn" type="button">Отмена</button>
+                    </div>
+                </div>
             </div>
             
             <div class="tasks" id="tasksContainer">
