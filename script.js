@@ -151,7 +151,7 @@ function getCategoryName(category) {
         0: "Без категории",
         1: "Обязательные",
         2: "Безопасность",
-        3: "Простые радости",
+        3: "Простые ра��ости",
         4: "Эго-радости",
         5: "Доступность радостей"
     };
@@ -329,7 +329,7 @@ function displayTasks() {
                 }
             }
 
-            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу глаз и урна
+            // Перестав����яем эл��менты для мобильного: папка сверху спра��а, ниже сразу г��аз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -391,6 +391,14 @@ function displayTasks() {
         // Обработчик сворачивания перенесён на иконку папки выше
     });
 
+    // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
+    document.querySelectorAll('.category-group').forEach(groupEl => {
+        const catNum = parseInt(groupEl.dataset.category);
+        if (catNum === 2 || catNum === 5) {
+            groupEl.querySelectorAll('.subcategory-toggle-all').forEach(btn => btn.remove());
+        }
+    });
+
     // Добавляем обработчики событий для новых элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         const nameEl = badge.querySelector('.category-name');
@@ -400,8 +408,10 @@ function displayTasks() {
                 const id = parseInt(badge.getAttribute('data-id'));
                 const idx = tasks.findIndex(t => t.id === id);
                 if (idx === -1) return;
+                // don't allow changing subcategory of completed tasks
+                if (tasks[idx].completed) return;
                 const curr = tasks[idx].subcategory || '';
-                const entered = prompt('Введите подкатегорию для этой задачи (п��с��о — без подкатегории):', curr);
+                const entered = prompt('Введите подкатегорию для этой задачи (пусто — без подкатегории):', curr);
                 if (entered === null) return;
                 const val = (entered || '').trim();
                 if (val) tasks[idx].subcategory = val; else delete tasks[idx].subcategory;
@@ -411,6 +421,9 @@ function displayTasks() {
         }
         badge.addEventListener('click', function(e) {
             e.stopPropagation();
+            const id = parseInt(badge.getAttribute('data-id'));
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1 && tasks[idx].completed) return; // don't open dropdown for completed tasks
             const dropdown = this.closest('.category-selector').querySelector('.category-dropdown');
             if (activeDropdown && activeDropdown !== dropdown) {
                 activeDropdown.classList.remove('show');
@@ -956,7 +969,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// Функция для запуска тайме��а
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1057,7 +1070,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки тайм���ра
+// Функц��я для остановки тайм���ра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
