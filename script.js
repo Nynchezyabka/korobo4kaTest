@@ -229,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользовательске подкатегории
+    // Загружаем сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -316,7 +316,7 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Р��зобрат\nь' -> 'Ра��обрать')
+            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
             raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
@@ -696,7 +696,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееключение активности всех задач внтри категории
+// Пееклю��ение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1076,7 +1076,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
@@ -1730,7 +1730,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подт��ердите запрос браузера или разрешите их в настройках сайта.');
+                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
