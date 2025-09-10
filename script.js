@@ -1,7 +1,7 @@
 // Переменная для хранения задач
 let tasks = [];
 
-// Функции д��я работы с localStorage
+// Функции для работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
     let t = s.replace(/\uFFFD/g, '');
@@ -169,7 +169,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категории по номеру
+// Функци�� дя плучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -196,7 +196,7 @@ function fixOrphans(text) {
     const afterSingleRegex = /(^|\s)([A-Za-zА-Яа-яЁё])\s+/g;
     let res = text.replace(afterSingleRegex, function(m, p1, p2) { return p1 + p2 + '\u00A0'; });
     // Also ensure that occurrences of ' space single-letter space ' are normalized (rare)
-    const isolatedSingle = /\s([A-Za-z��-Яа-яЁё])\s/g;
+    const isolatedSingle = /\s([A-Za-zА-Яа-яЁё])\s/g;
     res = res.replace(isolatedSingle, function(m,p1){ return '\u00A0' + p1 + ' '; });
     return res;
 }
@@ -229,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем ��охранённе пользовательске подкатегории
+    // Загружаем сохранённе пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -349,7 +349,7 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">П��остые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -510,7 +510,7 @@ function displayTasks() {
             grid.appendChild(frag);
         }
 
-        // Обработчик сворачивания перенесён на иконку папки выше
+        // Обработчик сворачивания перенесён на ик��нку папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -812,7 +812,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайно�� адачи из категории
+// Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -835,6 +835,7 @@ function getRandomTask(categories) {
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
+    try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
     // Полный сбос состояния таймера перед новым запуском
     if (timerEndTimeoutId) {
@@ -1242,7 +1243,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем л��кальный fallback
+    // ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
