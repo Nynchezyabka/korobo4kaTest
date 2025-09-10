@@ -1,7 +1,7 @@
 // Переменная для хранения задач
 let tasks = [];
 
-// Функции для работы с localStorage
+// Функции д��я работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
     let t = s.replace(/\uFFFD/g, '');
@@ -196,7 +196,7 @@ function fixOrphans(text) {
     const afterSingleRegex = /(^|\s)([A-Za-zА-Яа-яЁё])\s+/g;
     let res = text.replace(afterSingleRegex, function(m, p1, p2) { return p1 + p2 + '\u00A0'; });
     // Also ensure that occurrences of ' space single-letter space ' are normalized (rare)
-    const isolatedSingle = /\s([A-Za-zА-Яа-яЁё])\s/g;
+    const isolatedSingle = /\s([A-Za-z��-Яа-яЁё])\s/g;
     res = res.replace(isolatedSingle, function(m,p1){ return '\u00A0' + p1 + ' '; });
     return res;
 }
@@ -206,7 +206,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задач��';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -229,7 +229,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользовательске подкатегории
+    // Загружаем ��охранённе пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -349,7 +349,7 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">П��остые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -426,7 +426,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей кате��ории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -786,7 +786,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать ма����сив задач');
+                alert('Ошибка: файл должен содержать ма��сив задач');
                 return;
             }
             
@@ -812,7 +812,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной адачи из категории
+// Функция для выбора случайно�� адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -1242,7 +1242,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локальный fallback
+    // ланируем л��кальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1475,7 +1475,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые р��дости',4: 'Эго-радости',5: 'Доступность'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
