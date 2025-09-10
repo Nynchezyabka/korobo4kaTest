@@ -426,7 +426,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохр��нённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -450,7 +450,7 @@ function displayTasks() {
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','��еню подкатегории');
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
                 titleEl.appendChild(menuBtn);
@@ -705,7 +705,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Перек��юение активности подкатегоии по имени для указанной категрии
+// Переклюение активности подкатегоии по имени для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -739,7 +739,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-задач��.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -1195,7 +1195,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво за��ске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1226,7 +1226,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчного отсета врем��ни в фоне
+    // Использем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1590,7 +1590,27 @@ if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
     const raw = pasteTasksTextarea.value || '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
-    if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
+    if (lines.length > 1) {
+        openConfirmModal({
+            title: 'Подтверждение',
+            message: `Добавить ${lines.length} задач?`,
+            confirmText: 'Добавить',
+            cancelText: 'Отмена',
+            requireCheck: true,
+            checkboxLabel: 'Подтверждаю добавление',
+            onConfirm: () => {
+                lines.forEach(text => {
+                    const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+                    tasks.push(newTask);
+                });
+                saveTasks();
+                if (pasteTasksArea) pasteTasksArea.style.display = 'none';
+                pasteTasksTextarea.value = '';
+                displayTasks();
+            }
+        });
+        return;
+    }
     lines.forEach(text => {
         const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
         tasks.push(newTask);
@@ -1736,7 +1756,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокир��аны в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
