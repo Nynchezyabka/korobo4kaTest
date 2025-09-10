@@ -316,7 +316,7 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
+            // merge letters split by explicit newlines (e.g. 'Р��зобрат\nь' -> 'Ра��обрать')
             raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
@@ -683,7 +683,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для перек��ючения активности задачи
+// ункция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -717,7 +717,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Фун��ця для удаления задачи
+// Функця для удаления задачи
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
@@ -787,7 +787,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные зада��и из указанных категорий
+    // Получаем все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -937,14 +937,14 @@ function populateTaskSubcategoryDropdown(task) {
     });
 
     // for security category (2) provide add-button
-    if (task.category === 2 || task.category === 4) {
+    if ([2,3,4,5].includes(task.category)) {
         const wrapper = document.createElement('div');
         wrapper.className = 'category-option add-sub-btn-wrapper';
         const inline = document.createElement('div');
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1730,7 +1730,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                alert('Уведомления не включены. Подт��ердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
