@@ -447,51 +447,13 @@ function displayTasks() {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
                 titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
-                // make heading clickable to allow renaming of the subcategory
-                const headingSpan = titleEl.querySelector('.category-heading');
-                if (headingSpan) {
-                    headingSpan.style.cursor = 'pointer';
-                    headingSpan.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        try {
-                            const newNameRaw = prompt('Переименовать подкатегорию', name);
-                            if (newNameRaw === null) return; // cancelled
-                            const newName = (newNameRaw || '').trim();
-                            if (!newName || newName === name) return;
-
-                            // load saved custom subcategories
-                            const customSubsRawLocal = localStorage.getItem('customSubcategories');
-                            const customSubsLocal = customSubsRawLocal ? JSON.parse(customSubsRawLocal) : {};
-                            const arrSavedLocal = Array.isArray(customSubsLocal[cat]) ? customSubsLocal[cat].slice() : [];
-
-                            const idx = arrSavedLocal.indexOf(name);
-                            if (idx !== -1) {
-                                // replace existing saved name if newName not present
-                                if (!arrSavedLocal.includes(newName)) {
-                                    arrSavedLocal[idx] = newName;
-                                } else {
-                                    // newName already exists, remove the old duplicate
-                                    arrSavedLocal.splice(idx, 1);
-                                }
-                            } else {
-                                // name wasn't a saved custom subcategory (could be a builtin); add newName if missing
-                                if (!arrSavedLocal.includes(newName)) arrSavedLocal.push(newName);
-                            }
-
-                            // ensure uniqueness
-                            customSubsLocal[cat] = Array.from(new Set(arrSavedLocal));
-
-                            // update tasks that reference this subcategory
-                            tasks = tasks.map(t => (t.category === cat && t.subcategory === name) ? { ...t, subcategory: newName } : t);
-
-                            localStorage.setItem('customSubcategories', JSON.stringify(customSubsLocal));
-                            saveTasks();
-                            displayTasks();
-                        } catch (err) {
-                            console.error('Ошибка при переименовании подкатегории', err);
-                        }
-                    });
-                }
+                const menuBtn = document.createElement('button');
+                menuBtn.className = 'subcategory-menu-btn';
+                menuBtn.type = 'button';
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
+                titleEl.appendChild(menuBtn);
 
                 const hasActive = list.some(t => t.subcategory === name && t.active);
                 const toggle = document.createElement('button');
@@ -721,7 +683,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для переключения активности задачи
+// ункция для перек��ючения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -755,7 +717,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Функця для удаления задачи
+// Фун��ця для удаления задачи
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
@@ -825,7 +787,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных категорий
+    // Получаем все активные зада��и из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
