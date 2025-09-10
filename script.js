@@ -177,7 +177,7 @@ function getCategoryName(category) {
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
-        5: "Доступность радостей"
+        5: "Доступность простых радостей"
     };
     return categories[category] || "Неизвестно";
 }
@@ -206,7 +206,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задач��';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -348,7 +348,7 @@ function displayTasks() {
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
-                            <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
+                            <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
@@ -426,7 +426,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей кате��ории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -786,7 +786,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать ма��сив задач');
+                alert('Ошибка: файл должен содержать ма����сив задач');
                 return;
             }
             
@@ -1018,7 +1018,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность радостей</button>
+            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1475,7 +1475,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые р��дости',4: 'Эго-радости',5: 'Доступность'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
