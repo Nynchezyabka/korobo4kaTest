@@ -48,7 +48,7 @@ function getNextId() {
     return maxId + 1;
 }
 
-// Переменны�� состояния
+// Переменные состояния
 let currentTask = null;
 let timerInterval = null;
 let timerTime = 15 * 60; // 15 мину в секундах
@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех заач
+// Фу��кция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -333,7 +333,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненн��й\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -350,7 +350,7 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
-                            <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
+                            <button class=\"category-option\" data-category=\"4\">Эго-р��дости</button>
                         </div>
                     </div>
                 </div>
@@ -696,7 +696,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех зад��ч внтри категории
+// Пееклю��ение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -763,7 +763,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: н��правльный формат файла');
+                    alert('Ошибка: неправльный формат файла');
                     return;
                 }
             }
@@ -771,7 +771,7 @@ function importTasks(file) {
             // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            alert(`Успешно импортировано ${importedTasks.length} задач`);
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -834,7 +834,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция д��я обновления оображения таймера
+// Функция для обновления оображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1285,7 +1285,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для ост��новки таймра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1759,7 +1759,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
+            alert('Не удалось запросить раз��ешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
         }
         updateNotifyToggle();
     });
