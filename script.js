@@ -48,7 +48,7 @@ function getNextId() {
     return maxId + 1;
 }
 
-// Переменные состояния
+// Переменны�� состояния
 let currentTask = null;
 let timerInterval = null;
 let timerTime = 15 * 60; // 15 мину в секундах
@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отоб��ажения сех заач
+// Функция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -333,7 +333,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненн��й\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -696,7 +696,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри категории
+// Пееклю��ение активности всех зад��ч внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -756,14 +756,14 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать ма��сив задач');
+                openInfoModal('Ошибка: файл должен содержать массив задач');
                 return;
             }
             
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправльный формат файла');
+                    alert('Ошибка: н��правльный формат файла');
                     return;
                 }
             }
@@ -834,7 +834,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления оображения таймера
+// Функция д��я обновления оображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1076,7 +1076,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'но��ая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
@@ -1285,7 +1285,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функция для ост��новки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
