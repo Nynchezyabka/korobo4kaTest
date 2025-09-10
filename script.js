@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Фу��кция отображения сех заач
+// Функция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -350,7 +350,7 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
-                            <button class=\"category-option\" data-category=\"4\">Эго-р��дости</button>
+                            <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
                 </div>
@@ -696,7 +696,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри категории
+// Пееклю��ение активности всех задач внтри ��атегории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -763,7 +763,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправльный формат файла');
+                    alert('Ошибка: неправльн��й формат файла');
                     return;
                 }
             }
@@ -1739,7 +1739,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            alert('Уведомления не поддерживаются этим браузером');
+            openInfoModal('Уведомления не поддерживаются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
@@ -1759,7 +1759,7 @@ if (notifyToggleBtn) {
                 alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить раз��ешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
+            alert('��е удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
         }
         updateNotifyToggle();
     });
