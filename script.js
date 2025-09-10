@@ -169,7 +169,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функци�� дя плучения названия категории по номеру
+// Функция дя плучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -388,7 +388,7 @@ function displayTasks() {
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
                     ret.dataset.id = String(task.id);
-                    ret.title = 'Вернуть в активные';
+                    ret.title = 'Вернуть в актив��ые';
                     ret.innerHTML = '<i class="fas fa-undo"></i>';
                     controls.appendChild(ret);
                 }
@@ -510,7 +510,7 @@ function displayTasks() {
             grid.appendChild(frag);
         }
 
-        // Обработчик сворачивания перенесён на ик��нку папки выше
+        // Обработчик сворачивания перенесён на иконку папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -757,14 +757,22 @@ function toggleSubcategoryActiveByName(category, subName) {
 
 // Функця для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Удалить эту задачу?')) {
-        tasks = tasks.filter(t => t.id !== taskId);
-        saveTasks();
-        displayTasks();
-    }
+    openConfirmModal({
+        title: 'Удаление задачи',
+        message: 'Удалить эту задачу?',
+        confirmText: 'Удалить',
+        cancelText: 'Отмена',
+        requireCheck: true,
+        checkboxLabel: 'Подтверждаю удаление',
+        onConfirm: () => {
+            tasks = tasks.filter(t => t.id !== taskId);
+            saveTasks();
+            displayTasks();
+        }
+    });
 }
 
-// Функия для экспорта задач в фйл
+// Ф��нкия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -1018,7 +1026,7 @@ function setupAddCategorySelector() {
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
-            <button class="add-category-option" data-category="2">Безопасность</button>
+            <button class="add-category-option" data-category="2">Безопасн��сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
@@ -1593,7 +1601,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбрасываем значение input
+        e.target.value = ''; // Сбра��ываем значение input
     }
 });
 
