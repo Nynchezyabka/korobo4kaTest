@@ -426,7 +426,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохр��нённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -450,7 +450,7 @@ function displayTasks() {
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.setAttribute('aria-label','��еню подкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
                 titleEl.appendChild(menuBtn);
@@ -705,7 +705,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по имени для указанной категрии
+// Перек��юение активности подкатегоии по имени для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -1195,7 +1195,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво зауске
+    // при перво за��ске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1226,7 +1226,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчного отсета времени в фоне
+    // Использем Web Worker для тчного отсета врем��ни в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1540,18 +1540,22 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
     let selectedSub = null;
     if (selBtn && typeof selBtn.dataset.sub !== 'undefined') selectedSub = selBtn.dataset.sub || null;
-    // if a subcategory chosen and modalPrimaryCategory is set, ensure category is that primary
     if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
         category = modalPrimaryCategory;
     }
-    if (lines.length > 1) { if (!confirm(`Добавть ${lines.length} задач?`)) return; }
-    const active = true;
-    lines.forEach(text => {
-        const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
-        if (selectedSub) newTask.subcategory = selectedSub;
-        tasks.push(newTask);
-    });
-    saveTasks(); closeAddModal(); displayTasks();
+    if (lines.length > 1) {
+        openConfirmModal({
+            title: 'Подтверждение',
+            message: `Добавить ${lines.length} задач?`,
+            confirmText: 'Добавить',
+            cancelText: 'Отмена',
+            requireCheck: true,
+            checkboxLabel: 'Подтверждаю добавление',
+            onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
+        });
+        return;
+    }
+    addLinesAsTasks(lines, category, selectedSub);
 });
 
 if (typeof addMultipleBtn !== 'undefined' && addMultipleBtn) {
@@ -1732,7 +1736,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
+                alert('Уведомления заблокир��аны в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
