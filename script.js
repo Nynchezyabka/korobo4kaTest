@@ -201,7 +201,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех заач
+// Функция отоб��ажения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -739,7 +739,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задач��.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -793,7 +793,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        alert('Нет активных задач в этой категории!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
     
@@ -1076,7 +1076,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'но��ая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn';
