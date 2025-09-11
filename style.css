@@ -781,12 +781,14 @@ textarea {
     
     .section {
         max-width: none;
+        min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
     }
 
     .sections {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
+        align-items: start; /* ensure section tops align so actions (+) sit consistently */
     }
 
     /* Кноки действий выравниваем п етке (3 колонки) */
@@ -937,7 +939,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на всех экранах */
+/* Показываем подзаго��овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1102,7 +1104,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатегорий внутри "Обязательные" */
+/* Сетка колонок подкатег��рий внутри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1124,7 +1126,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* Переопределяем сару десктопную раскладку внутри групп */
+/* ��ереопределяем сару десктопную раскладку внутри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1178,7 +1180,7 @@ textarea {
 .joys .section-action-btn { background-color: rgba(129,199,132,0.18); }
 .joys .section-action-btn:hover { background-color: rgba(129,199,132,0.28); }
 
-/* Специальный стиль для круглой кнопки "+" */
+/* Специальный стиль для к��углой кнопки "+" */
 .section-action-btn.section-add-btn { padding: 8px; width: 40px; height: 40px; border-radius: 10px; }
 
 .section-add-subcat-btn { padding: 6px 8px; border-radius: 8px; border: none; cursor: pointer; background: rgba(0,0,0,0.06); color: #5d4037; font-weight: 700; min-width: 36px; }
@@ -1196,6 +1198,19 @@ textarea {
 .inline-add-form input { padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); min-width: 120px; }
 .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { padding: 6px 8px; border-radius: 6px; border: none; cursor: pointer; background: #5d4037; color: #fff; }
 .inline-add-form .inline-cancel-btn { background: #9E9E9E; }
+
+/* Mobile adjustments: stack subcategory add controls under the input and make controls full-width */
+@media (max-width: 480px) {
+    .add-subcategory-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .add-subcategory-controls .add-subcategory-btn { width: 100%; }
+    .inline-add-form { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+    .inline-add-form input { min-width: 0; width: 100%; }
+    .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { width: 100%; padding: 10px; }
+    /* Ensure the main task input textarea stretches fully on mobile inside modal */
+    #modalTaskText { width: 100%; box-sizing: border-box; }
+    /* Keep modal actions below and full width (already handled elsewhere) */
+    .modal-actions { width: 100%; }
+}
 
 /* Paste tasks area (inline paste list) */
 .paste-tasks-area { display: none; margin-top: 8px; width: 100%; order: 99; }
@@ -1224,17 +1239,47 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
-#modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
-.modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-.modal-category-options .modal-category-btn { padding: 10px 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; color: #5d4037; min-width: 110px; max-width: 260px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; text-align: center; font-size: 1rem; }
 
-/* Ensure category titles/buttons remain compact and aligned */
-.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
-.category-title .category-heading { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 44px); }
+/* Make add-task modal actions responsive so they don't overlap the input and are fully visible */
+#addTaskModal .modal-actions { gap: 10px; }
+#addTaskModal .modal-actions button { white-space: nowrap; }
+@media (max-width:480px) {
+    #addTaskModal .modal-actions { flex-direction: column-reverse; width: 100%; padding-top: 8px; }
+    #addTaskModal .modal-actions button { width: 100%; }
+}
+
+/* Subcategory actions modal — nicer layout and spacing */
+.subcat-actions { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
+.subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
+.subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
+.subcat-action-btn.destructive { background: #ffcdd2; color: #8B0000; }
+#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; }
+#subcatActionsModal .modal-actions { justify-content: center; }
+@media (min-width:481px) {
+    #subcatActionsModal .subcat-actions { flex-direction: row; gap: 12px; }
+    #subcatActionsModal .subcat-action-btn { flex: 1; }
+}
+#modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
+.modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+.modal-category-options .modal-category-btn { padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); background: transparent; cursor: pointer; font-weight: 600; color: #333; min-width: 80px; max-width: 260px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; text-align: center; font-size: 0.95rem; }
+.modal-category-options .modal-category-btn:hover { transform: translateY(-2px); }
+.modal-category-options .modal-category-btn.selected { box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+
+/* Strong selected variants per category for better contrast */
+.modal-category-btn.cat-0.selected { background-color: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.06); }
+.modal-category-btn.cat-1.selected { background-color: #FFD54F; color: #5d4037; border-color: rgba(0,0,0,0.06); }
+.modal-category-btn.cat-2.selected { background-color: #64B5F6; color: #fff; border-color: rgba(0,0,0,0.06); }
+.modal-category-btn.cat-3.selected { background-color: #81C784; color: #fff; border-color: rgba(0,0,0,0.06); }
+.modal-category-btn.cat-4.selected { background-color: #E57373; color: #fff; border-color: rgba(0,0,0,0.06); }
+.modal-category-btn.cat-5.selected { background-color: #9575CD; color: #fff; border-color: rgba(0,0,0,0.06); }
+
+/* Ensure category titles/buttons remain readable; allow wrapping */
+.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
+.category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; }
 .category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
 
-/* Make add-category options compact and prevent buttons from expanding with long text */
-.add-category-option, .add-category-badge, .add-category-badge button { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; font-size: 0.95rem; }
+/* Make add-category options readable; allow wrapping of long labels */
+.add-category-option, .add-category-badge, .add-category-badge button { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; font-size: 0.95rem; }
 .add-category-option { padding: 6px 10px; border-radius: 6px; }
 
 /* Category dropdown background lighter than subcategory color (JS sets inline color but fallback here) */
@@ -1247,13 +1292,19 @@ textarea {
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
-.category-group.category-5 .category-add-btn { background-color: rgba(100,181,246,0.18); }
+.category-group.category-5 .category-add-btn { background-color: rgba(149,117,205,0.22); }
 .category-group.category-3 .category-add-btn { background-color: rgba(129,199,132,0.18); }
 .category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
 .category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
 
 /* Small variant if needed */
 .category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
+
+/* Three dots button for subcategory titles (use vertical dots icon, minimal visual chrome) */
+.category-title .subcategory-menu-btn { margin-left: 12px; background: transparent; border: none; border-radius: 6px; padding: 6px; color: #5d4037; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; line-height: 1; }
+.category-title .subcategory-menu-btn i { display: block; width: 1em; text-align: center; }
+.category-title .subcategory-menu-btn:active { transform: scale(0.97); background: rgba(0,0,0,0.04); }
+@media (max-width:480px) { .category-title .subcategory-menu-btn { margin-left: 8px; padding: 4px; } }
 
 /* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
 .task-text { font-size: 0.95rem; line-height: 1.25; word-break: normal; overflow-wrap: break-word; hyphens: none; white-space: normal; }
@@ -1281,11 +1332,56 @@ textarea {
 .modal-category-btn.cat-4 { background-color: #ffcdd2; border-left: 4px solid #E57373; }
 .modal-category-btn.cat-5 { background-color: #d1c4e9; border-left: 4px solid #9575CD; }
 
-#modalAddTaskBtn, #modalCancelBtn { padding: 10px 14px; border-radius: 8px; border: none; background-color: #5d4037; color: #fff; cursor: pointer; }
-#modalCancelBtn { background-color: #9E9E9E; }
+#modalAddTaskBtn, #modalCancelBtn { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+#modalCancelBtn { background-color: #9E9E9E; color: #fff; }
 
-/* Responsive subcategory controls */
-.add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+/* Base modal button class - will receive category classes */
+.modal-btn { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+
+/* Category color variants for modal buttons */
+.modal-btn.cat-0 { background-color: #9E9E9E; color: #fff; }
+.modal-btn.cat-1 { background-color: #FFD54F; color: #5d4037; }
+.modal-btn.cat-2 { background-color: #64B5F6; color: #ffffff; }
+.modal-btn.cat-3 { background-color: #81C784; color: #ffffff; }
+.modal-btn.cat-4 { background-color: #E57373; color: #ffffff; }
+.modal-btn.cat-5 { background-color: #9575CD; color: #ffffff; }
+
+/* Slight hover/active styles */
+.modal-btn:hover { filter: brightness(0.95); transform: translateY(-1px); }
+.modal-btn:active { transform: translateY(0); filter: brightness(0.9); }
+
+/* Cancel button should be slightly muted - use opacity overlay */
+#modalCancelBtn.modal-btn { opacity: 0.95; box-shadow: none; }
+#modalCancelBtn.modal-btn:hover { opacity: 1; }
+
+/* Responsive subcategory controls — compact, grouped, no scroll */
+.add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
+.add-subcategory-controls.show { max-height: none; overflow: visible; padding-right: 0; }
+
+/* Compact subcategory buttons: tighter padding, compact font, allow wrapping */
+.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 70px; }
+.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+/* When subcategory buttons carry category classes, selected becomes colored */
+.add-subcategory-controls .add-subcategory-btn.selected.cat-1 { background: #FFD54F; color: #5d4037; }
+.add-subcategory-controls .add-subcategory-btn.selected.cat-2 { background: #64B5F6; color: #fff; }
+.add-subcategory-controls .add-subcategory-btn.selected.cat-3 { background: #81C784; color: #fff; }
+.add-subcategory-controls .add-subcategory-btn.selected.cat-4 { background: #E57373; color: #fff; }
+.add-subcategory-controls .add-subcategory-btn.selected.cat-5 { background: #9575CD; color: #fff; }
+
+/* Inline add form: input keeps full placeholder and buttons sit below input left/right */
+.inline-add-form { display: flex; flex-direction: column; gap: 6px; align-items: stretch; width: 100%; }
+.inline-add-form input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; }
+.inline-add-actions { display: flex; gap: 8px; justify-content: space-between; }
+.inline-add-actions button { width: 48%; padding: 10px 12px; border-radius: 8px; }
+
+/* Ensure buttons remain compact but readable on small screens */
+@media (max-width: 480px) {
+    .add-subcategory-controls { gap: 6px; }
+    .add-subcategory-controls .add-subcategory-btn { padding: 8px 6px; font-size: 0.95rem; min-width: 0; flex: 1 1 auto; }
+    .add-subcategory-controls .add-subcategory-add { width: 100%; }
+    .inline-add-form input { min-width: 0; }
+}
 
 /* Strong overrides to prevent breaking single letters in task text */
 .tasks .task-text, .tasks.mobile-compact .task-text, .tasks.sticker-grid .task-text, .group-grid .task-text {
@@ -1293,16 +1389,6 @@ textarea {
     hyphens: none !important;
     overflow-wrap: break-word !important;
     white-space: normal !important;
-}
-.add-subcategory-controls .add-subcategory-btn { padding: 8px 12px; border-radius: 8px; background: rgba(0,0,0,0.05); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1rem; white-space: normal; text-align: center; min-width: 120px; max-width: 260px; word-wrap: break-word; overflow-wrap: break-word; }
-.add-subcategory-controls .add-subcategory-btn.selected { background: #5d4037; color: #fff; }
-.add-subcategory-controls .add-subcategory-btn { flex: 0 1 auto; }
-
-@media (max-width: 480px) {
-    /* Ensure modal content fits and subcategory buttons wrap nicely */
-    .modal-content { width: 96%; padding: 12px; }
-    .add-subcategory-controls { gap: 6px; }
-    .add-subcategory-controls .add-subcategory-btn { min-width: 70px; padding: 6px 8px; font-size: 0.95rem; }
 }
 
 /* Адаптивность для мобильных устройств */
@@ -1414,7 +1500,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выронять элементы задачи в сетку: текст слева, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: т��кст слева, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1451,12 +1537,14 @@ textarea {
     
     .section {
         max-width: none;
+        min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
     }
 
     .sections {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
+        align-items: start; /* ensure section tops align so actions (+) sit consistently */
     }
 
     /* Кнопки действий выравниваем п сетке (3 колонки) */
