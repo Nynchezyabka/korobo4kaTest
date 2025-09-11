@@ -473,6 +473,17 @@ function displayTasks() {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
                 titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                if (Number(cat) === 1 && !showArchive) {
+                    const eyeBtn = document.createElement('button');
+                    eyeBtn.className = 'task-control-btn subcategory-toggle-all';
+                    eyeBtn.type = 'button';
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
+                    const hasActive = tasks.some(t => t.category === cat && t.subcategory === name && t.active && !t.completed);
+                    eyeBtn.innerHTML = `<i class="fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+                    eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, name); });
+                    titleEl.appendChild(eyeBtn);
+                }
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
@@ -777,7 +788,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать массив задач');
+                openInfoModal('Ошибка: файл должен содержать мас��ив задач');
                 return;
             }
             
@@ -1920,7 +1931,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
