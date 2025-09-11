@@ -71,7 +71,7 @@ let showArchive = false;
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия откытого выпадащего меню категорий
+// Глобальный обработчик для закрыт��я откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -753,7 +753,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат файла');
+                    openInfoModal('Ошибка: неправильный формат ��айла');
                     return;
                 }
             }
@@ -1696,6 +1696,7 @@ if (pasteTasksBtn) {
 }
 if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!pasteTasksTextarea) return;
     const raw = pasteTasksTextarea.value || '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
