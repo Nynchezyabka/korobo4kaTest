@@ -55,7 +55,7 @@ let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
+let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
 
 // Новые переменные для точного аймера
 let timerStartTime = 0;
@@ -397,7 +397,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и урна
+            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -661,7 +661,7 @@ function displayTasks() {
     });
 }
 
-// Функция для ��зеения категории задачи
+// Функция для изеения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -763,7 +763,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат файл��');
+                    openInfoModal('Ошибка: неправильный формат файла');
                     return;
                 }
             }
@@ -775,7 +775,7 @@ function importTasks(file) {
             displayTasks();
             
         } catch (error) {
-            alert('Ошибка при чтении файла: ' + error.message);
+            openInfoModal('Ошибка при чтении файла: ' + error.message);
         }
     };
     
@@ -1184,7 +1184,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// ��ункция для запуска таймера
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1218,7 +1218,7 @@ function startTimer() {
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `Зад��ча: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -1333,7 +1333,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// О��раотчки обытий
+// Обраотчки обытий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -1739,7 +1739,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уведомления не поддерживаются этим браузером');
+            openInfoModal('Уве��омления не поддерживаются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
@@ -1759,7 +1759,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('��е удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
