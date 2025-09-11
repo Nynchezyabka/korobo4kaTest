@@ -1104,7 +1104,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатегорий внутри "Обязательные" */
+/* Сетка колонок подкатег��рий внутри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1389,16 +1389,6 @@ textarea {
     hyphens: none !important;
     overflow-wrap: break-word !important;
     white-space: normal !important;
-}
-.add-subcategory-controls .add-subcategory-btn { padding: 8px 12px; border-radius: 8px; background: rgba(0,0,0,0.05); border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1rem; white-space: normal; text-align: center; min-width: 120px; max-width: 260px; word-wrap: break-word; overflow-wrap: break-word; }
-.add-subcategory-controls .add-subcategory-btn.selected { background: #5d4037; color: #fff; }
-.add-subcategory-controls .add-subcategory-btn { flex: 0 1 auto; }
-
-@media (max-width: 480px) {
-    /* Ensure modal content fits and subcategory buttons wrap nicely */
-    .modal-content { width: 96%; padding: 12px; }
-    .add-subcategory-controls { gap: 6px; }
-    .add-subcategory-controls .add-subcategory-btn { min-width: 70px; padding: 6px 8px; font-size: 0.95rem; }
 }
 
 /* Адаптивность для мобильных устройств */
