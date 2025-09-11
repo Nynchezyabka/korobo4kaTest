@@ -179,7 +179,7 @@ function getCategoryName(category) {
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[category] || "Неизвестно";
+    return categories[category] || "Неизв��стно";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -206,7 +206,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все ��адачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -801,7 +801,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отобажения таймера
+// Функц��я для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1184,7 +1184,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// Функция для запуска та��мера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1446,7 +1446,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система ��езопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1465,6 +1465,126 @@ function renderModalCategoryOptions(allowedCategories = null) {
         container.appendChild(btn);
     });
 }
+
+// Modal helper functions
+function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, onConfirm=null }) {
+    const m = document.getElementById('confirmModal'); if (!m) return;
+    const backdrop = document.getElementById('confirmBackdrop');
+    m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
+    const titleEl = m.querySelector('#confirmTitle'); const msgEl = m.querySelector('#confirmMessage');
+    const wrap = m.querySelector('#confirmCheckWrap'); const chk = m.querySelector('#confirmCheckbox'); const chkLabel = m.querySelector('#confirmCheckboxLabel');
+    const okBtn = m.querySelector('#confirmOkBtn'); const cancelBtn = m.querySelector('#confirmCancelBtn'); const closeBtn = m.querySelector('#confirmCloseBtn');
+    if (titleEl) titleEl.textContent = title || '';
+    if (msgEl) msgEl.textContent = message || '';
+    if (chkLabel) chkLabel.textContent = checkboxLabel || '';
+    if (wrap) wrap.style.display = requireCheck ? 'flex' : 'none';
+    if (chk) chk.checked = false;
+    okBtn.disabled = !!requireCheck;
+    const onChange = () => { okBtn.disabled = requireCheck && !chk.checked; };
+    if (chk) chk.addEventListener('change', onChange);
+    const cleanup = () => {
+        if (chk) chk.removeEventListener('change', onChange);
+        okBtn.removeEventListener('click', onOk);
+        cancelBtn.removeEventListener('click', onClose);
+        closeBtn.removeEventListener('click', onClose);
+        backdrop.removeEventListener('click', onClose);
+        m.setAttribute('aria-hidden','true'); m.style.display = 'none';
+    };
+    const onClose = () => { cleanup(); };
+    const onOk = () => { if (typeof onConfirm === 'function') onConfirm(); cleanup(); };
+    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отмена';
+    cancelBtn.style.display = hideCancel ? 'none' : 'inline-flex';
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onClose);
+    closeBtn.addEventListener('click', onClose);
+    backdrop.addEventListener('click', onClose);
+}
+function openInfoModal(message, title='Сообщение') { openConfirmModal({ title, message, confirmText: 'Ок', hideCancel: true }); }
+
+function renderCategoryButtons(container, allowed=null) {
+    if (!container) return;
+    container.innerHTML = '';
+    const cats = [0,1,2,5,3,4];
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    cats.forEach(c => {
+        if (allowed && !allowed.map(String).includes(String(c))) return;
+        const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.modal-category-btn').forEach(x=>x.classList.remove('selected'));
+            btn.classList.add('selected');
+            // when used in move modal, show relevant subcategories
+            const subCont = document.getElementById('moveSubcategories'); if (subCont) showAddSubcategoriesFor(parseInt(btn.dataset.category), subCont);
+        });
+        container.appendChild(btn);
+    });
+}
+
+let currentSubcatContext = null;
+function openSubcategoryActions(category, subName) {
+    currentSubcatContext = { category: parseInt(category), subName };
+    const m = document.getElementById('subcatActionsModal'); if (!m) return;
+    m.setAttribute('aria-hidden','false'); m.style.display='flex';
+}
+
+// Setup subcategory actions modal behavior: rename, move, delete
+(function setupSubcatActions(){
+    const m = document.getElementById('subcatActionsModal'); if (!m) return;
+    const close = () => { m.setAttribute('aria-hidden','true'); m.style.display='none'; };
+    const closeBtn = document.getElementById('subcatActionsClose'); const cancelBtn = document.getElementById('subcatActionsCancel'); const backdrop = document.getElementById('subcatActionsBackdrop');
+    [closeBtn,cancelBtn,backdrop].forEach(el => el && el.addEventListener('click', close));
+
+    const renameOk = document.getElementById('renameSubcatOk'); const renameCancel = document.getElementById('renameSubcatCancel'); const renameClose = document.getElementById('renameSubcatClose');
+    const renameModal = document.getElementById('renameSubcatModal'); const renameInput = document.getElementById('renameSubcatInput');
+    if (renameOk) {
+        renameOk.addEventListener('click', () => {
+            const ctx = currentSubcatContext; if (!ctx) return; const newName = (renameInput.value||'').trim(); if (!newName) return;
+            // update customSubcategories and tasks
+            const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category].slice():[];
+            const idx = arr.indexOf(ctx.subName);
+            if (idx !== -1) arr[idx] = newName; else if (!arr.includes(newName)) arr.push(newName);
+            cs[ctx.category] = Array.from(new Set(arr)); localStorage.setItem('customSubcategories', JSON.stringify(cs));
+            tasks = tasks.map(t => (t.category === ctx.category && t.subcategory === ctx.subName) ? ({...t, subcategory: newName}) : t);
+            saveTasks(); displayTasks();
+            // close rename modal
+            if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; }
+        });
+    }
+    if (renameCancel) renameCancel.addEventListener('click', () => { if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; } });
+    if (renameClose) renameClose.addEventListener('click', () => { if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; } });
+
+    // wire subcat action buttons
+    m.querySelectorAll('.subcat-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action; const ctx = currentSubcatContext; if (!ctx) return; close();
+            if (action === 'rename') {
+                const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
+            } else if (action === 'delete') {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                    const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
+            } else if (action === 'move') {
+                const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
+                // render category options
+                const catCont = document.getElementById('moveCategoryOptions'); const subCont = document.getElementById('moveSubcategories'); renderCategoryButtons(catCont);
+                // clear subCont until a category selected
+                if (subCont) { subCont.innerHTML=''; subCont.style.display='none'; }
+                // wire ok/cancel
+                const okBtn = document.getElementById('moveTasksOk'); const cancel = document.getElementById('moveTasksCancel'); const closeBtn = document.getElementById('moveTasksClose'); const backdrop2 = document.getElementById('moveTasksBackdrop');
+                const chk = document.getElementById('moveConfirmCheck'); if (chk) chk.checked = false; if (okBtn) okBtn.disabled = true;
+                const enableOk = () => { if (okBtn) okBtn.disabled = !chk.checked; };
+                chk.addEventListener('change', enableOk);
+                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; chk.removeEventListener('change', enableOk); };
+                if (cancel) cancel.onclick = closeMove; if (closeBtn) closeBtn.addEventListener('click', closeMove); if (backdrop2) backdrop2.addEventListener('click', closeMove);
+                okBtn.onclick = () => {
+                    const sel = catCont.querySelector('.modal-category-btn.selected'); if (!sel) return; const targetCat = parseInt(sel.dataset.category);
+                    const selSub = subCont ? subCont.querySelector('.add-subcategory-btn.selected') : null; const targetSub = selSub ? selSub.dataset.sub || null : null;
+                    // perform move
+                    tasks = tasks.map(t => (t.category === ctx.category && t.subcategory === ctx.subName) ? ({...t, category: targetCat, subcategory: targetSub || undefined, statusChangedAt: Date.now()}) : t);
+                    saveTasks(); displayTasks(); closeMove();
+                };
+            }
+        });
+    });
+})();
 
 let modalPrimaryCategory = null;
 
@@ -1756,7 +1876,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Увед��мления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
