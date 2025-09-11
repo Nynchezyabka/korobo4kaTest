@@ -937,7 +937,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на всех экранах */
+/* Показываем подзаголовки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1124,7 +1124,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* Переопределяем сару десктопную раскладку внутри групп */
+/* ��ереопределяем сару десктопную раскладку внутри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1196,6 +1196,19 @@ textarea {
 .inline-add-form input { padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); min-width: 120px; }
 .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { padding: 6px 8px; border-radius: 6px; border: none; cursor: pointer; background: #5d4037; color: #fff; }
 .inline-add-form .inline-cancel-btn { background: #9E9E9E; }
+
+/* Mobile adjustments: stack subcategory add controls under the input and make controls full-width */
+@media (max-width: 480px) {
+    .add-subcategory-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .add-subcategory-controls .add-subcategory-btn { width: 100%; }
+    .inline-add-form { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+    .inline-add-form input { min-width: 0; width: 100%; }
+    .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { width: 100%; padding: 10px; }
+    /* Ensure the main task input textarea stretches fully on mobile inside modal */
+    #modalTaskText { width: 100%; box-sizing: border-box; }
+    /* Keep modal actions below and full width (already handled elsewhere) */
+    .modal-actions { width: 100%; }
+}
 
 /* Paste tasks area (inline paste list) */
 .paste-tasks-area { display: none; margin-top: 8px; width: 100%; order: 99; }
@@ -1459,7 +1472,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выронять элементы задачи в сетку: текст слева, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: т��кст слева, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
