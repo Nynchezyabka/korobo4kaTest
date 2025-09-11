@@ -451,19 +451,9 @@ function displayTasks() {
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
                 menuBtn.setAttribute('aria-label','Меню подкатегории');
-                menuBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
                 titleEl.appendChild(menuBtn);
-
-                const hasActive = list.some(t => t.subcategory === name && t.active);
-                const toggle = document.createElement('button');
-                toggle.className = 'task-control-btn subcategory-toggle-all';
-                toggle.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleSubcategoryActiveByName(cat, name);
-                });
-                titleEl.appendChild(toggle);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(name) || [];
                 arr.forEach(el => frag.appendChild(el));
