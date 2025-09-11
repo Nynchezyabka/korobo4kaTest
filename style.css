@@ -910,7 +910,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность д��я мобильных устр��йств */
+/* Адаптивность для мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1077,7 +1077,7 @@ textarea {
     cursor: pointer;
 }
 
-/* С��тка стикеров внутр�� группы */
+/* Сетка стикеров внутр�� группы */
 .group-grid {
     display: grid;
     gap: 6px;
@@ -1133,7 +1133,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* С��рыти задач при свёрнутой группе */
+/* Скрыти задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1187,7 +1187,7 @@ textarea {
 .joys .section-add-subcat-btn { background: rgba(129,199,132,0.18); }
 .section-add-subcat-btn:active { transform: scale(0.97); }
 
-/* Верхняя панель ��ействий задачи (категория + галочка) */
+/* Верхняя панель действий задачи (категория + галочка) */
 .task-top-actions { display: inline-flex; align-items: center; gap: 6px; }
 .task-top-actions .task-control-btn { padding: 4px; }
 
@@ -1307,8 +1307,27 @@ textarea {
 .modal-category-btn.cat-4 { background-color: #ffcdd2; border-left: 4px solid #E57373; }
 .modal-category-btn.cat-5 { background-color: #d1c4e9; border-left: 4px solid #9575CD; }
 
-#modalAddTaskBtn, #modalCancelBtn { padding: 10px 14px; border-radius: 8px; border: none; background-color: #5d4037; color: #fff; cursor: pointer; }
-#modalCancelBtn { background-color: #9E9E9E; }
+#modalAddTaskBtn, #modalCancelBtn { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+#modalCancelBtn { background-color: #9E9E9E; color: #fff; }
+
+/* Base modal button class - will receive category classes */
+.modal-btn { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+
+/* Category color variants for modal buttons */
+.modal-btn.cat-0 { background-color: #9E9E9E; color: #fff; }
+.modal-btn.cat-1 { background-color: #FFD54F; color: #5d4037; }
+.modal-btn.cat-2 { background-color: #64B5F6; color: #ffffff; }
+.modal-btn.cat-3 { background-color: #81C784; color: #ffffff; }
+.modal-btn.cat-4 { background-color: #E57373; color: #ffffff; }
+.modal-btn.cat-5 { background-color: #9575CD; color: #ffffff; }
+
+/* Slight hover/active styles */
+.modal-btn:hover { filter: brightness(0.95); transform: translateY(-1px); }
+.modal-btn:active { transform: translateY(0); filter: brightness(0.9); }
+
+/* Cancel button should be slightly muted - use opacity overlay */
+#modalCancelBtn.modal-btn { opacity: 0.95; box-shadow: none; }
+#modalCancelBtn.modal-btn:hover { opacity: 1; }
 
 /* Responsive subcategory controls */
 .add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
@@ -1331,7 +1350,7 @@ textarea {
     .add-subcategory-controls .add-subcategory-btn { min-width: 70px; padding: 6px 8px; font-size: 0.95rem; }
 }
 
-/* Адаптивность ��ля мобильных устройств */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -1436,7 +1455,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос для де��ктопов */
+/* Медиа-зпрос для десктопов */
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
@@ -1543,7 +1562,7 @@ textarea {
     }
 }
 
-/* Стили для toast-уведом��ений */
+/* Стили для toast-уведомлений */
 .toast-notification {
     position: fixed;
     bottom: 20px;
