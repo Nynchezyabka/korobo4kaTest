@@ -103,7 +103,7 @@ h1 {
 }
 
 .joys {
-    background-color: #c8e6c9; /* зеле��ый */
+    background-color: #c8e6c9; /* зеленый */
 }
 
 .controls {
@@ -571,7 +571,7 @@ textarea {
 }
 
 #returnTaskBtn {
-    background-color: #795548; /* коричневы�� */
+    background-color: #795548; /* коричневый */
 }
 
 #returnTaskBtn:active {
@@ -927,7 +927,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголовки категорий для мобильной группировки */
+/* ��озаголовки категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1006,7 +1006,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для планшетов и дескт��пов */
+/* Сикерная сетка для планшетов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1254,11 +1254,15 @@ textarea {
 .subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
 .subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
 .subcat-action-btn.destructive { background: #ffcdd2; color: #8B0000; }
-#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; }
+#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; max-height: none; overflow: visible; }
 #subcatActionsModal .modal-actions { justify-content: center; }
 @media (min-width:481px) {
     #subcatActionsModal .subcat-actions { flex-direction: row; gap: 12px; }
     #subcatActionsModal .subcat-action-btn { flex: 1; }
+}
+@media (max-width:480px) {
+    #subcatActionsModal .modal-content { padding: 16px 12px; }
+    #subcatActionsModal .subcat-action-btn { padding: 10px 10px; }
 }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
