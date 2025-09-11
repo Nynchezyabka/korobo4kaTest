@@ -781,12 +781,14 @@ textarea {
     
     .section {
         max-width: none;
+        min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
     }
 
     .sections {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
+        align-items: start; /* ensure section tops align so actions (+) sit consistently */
     }
 
     /* Кноки действий выравниваем п етке (3 колонки) */
@@ -1509,12 +1511,14 @@ textarea {
     
     .section {
         max-width: none;
+        min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
     }
 
     .sections {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
+        align-items: start; /* ensure section tops align so actions (+) sit consistently */
     }
 
     /* Кнопки действий выравниваем п сетке (3 колонки) */
