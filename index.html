@@ -153,6 +153,69 @@
         </div>
     </div>
 
+    <!-- Confirm / Info Modal -->
+    <div class="modal" id="confirmModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="confirmBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="confirmCloseBtn" aria-label="Закрыть">&times;</button>
+            <h3 id="confirmTitle">Подтверждение</h3>
+            <div class="modal-message" id="confirmMessage"></div>
+            <label class="modal-check" id="confirmCheckWrap" style="display:none;"><input type="checkbox" id="confirmCheckbox"> <span id="confirmCheckboxLabel">Подтверждаю действие</span></label>
+            <div class="modal-actions">
+                <button id="confirmOkBtn">Подтвердить</button>
+                <button id="confirmCancelBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subcategory Actions Modal -->
+    <div class="modal" id="subcatActionsModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="subcatActionsBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="subcatActionsClose" aria-label="Закрыть">&times;</button>
+            <h3>Действия с подкатегорией</h3>
+            <div class="subcat-actions">
+                <button type="button" class="subcat-action-btn" data-action="rename">Переименовать</button>
+                <button type="button" class="subcat-action-btn" data-action="move">Перенести задачи</button>
+                <button type="button" class="subcat-action-btn destructive" data-action="delete">Удалить подкатегорию</button>
+            </div>
+            <div class="modal-actions">
+                <button id="subcatActionsCancel">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Subcategory Modal -->
+    <div class="modal" id="renameSubcatModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="renameSubcatBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="renameSubcatClose" aria-label="Закрыть">&times;</button>
+            <h3>Переименовать подкатегорию</h3>
+            <label for="renameSubcatInput" class="modal-label">Новое название</label>
+            <input type="text" id="renameSubcatInput">
+            <div class="modal-actions">
+                <button id="renameSubcatOk">Сохранить</button>
+                <button id="renameSubcatCancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Move Tasks Modal -->
+    <div class="modal" id="moveTasksModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="moveTasksBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="moveTasksClose" aria-label="Закрыть">&times;</button>
+            <h3>Перенос задач</h3>
+            <div class="modal-category-options" id="moveCategoryOptions"></div>
+            <div class="add-subcategory-controls" id="moveSubcategories" style="display:none;"></div>
+            <label class="modal-check"><input type="checkbox" id="moveConfirmCheck"> Подтверждаю перенос</label>
+            <div class="modal-actions">
+                <button id="moveTasksOk">Перенести</button>
+                <button id="moveTasksCancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

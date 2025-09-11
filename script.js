@@ -48,6 +48,32 @@ function getNextId() {
     return maxId + 1;
 }
 
+// Add multiple lines as tasks helper
+function addLinesAsTasks(lines, category = 0, selectedSub = null) {
+    if (!Array.isArray(lines) || lines.length === 0) return;
+    lines.forEach(raw => {
+        const text = (typeof raw === 'string') ? raw.trim() : String(raw);
+        if (!text) return;
+        const newTask = {
+            id: getNextId(),
+            text,
+            category: typeof category === 'number' ? category : parseInt(category) || 0,
+            completed: false,
+            active: true,
+            statusChangedAt: Date.now()
+        };
+        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) newTask.subcategory = selectedSub.trim();
+        tasks.push(newTask);
+    });
+    saveTasks();
+    // clear modal textarea if present
+    if (modalTaskText) modalTaskText.value = '';
+    // hide add modal if open
+    closeAddModal();
+    // refresh UI
+    displayTasks();
+}
+
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
@@ -55,7 +81,7 @@ let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
+let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
 
 // Новые переменные для точного аймера
 let timerStartTime = 0;
@@ -71,7 +97,7 @@ let showArchive = false;
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрытия откытого выпадащего меню категорий
+// Глобальный обработчик для за��рыт��я откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -169,7 +195,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категории по номеру
+// Функция дя плучения названия категори�� по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -177,7 +203,7 @@ function getCategoryName(category) {
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
-        5: "Доступность радостей"
+        5: "Доступность простых радостей"
     };
     return categories[category] || "Неизвестно";
 }
@@ -229,7 +255,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользовательске подкатегории
+    // Загружаем сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -338,7 +364,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -348,7 +374,7 @@ function displayTasks() {
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
-                            <button class=\"category-option\" data-category=\"5\">Доступность радостей</button>
+                            <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
@@ -388,7 +414,7 @@ function displayTasks() {
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
                     ret.dataset.id = String(task.id);
-                    ret.title = 'Вернуть в активные';
+                    ret.title = 'Вернуть в актив��ые';
                     ret.innerHTML = '<i class="fas fa-undo"></i>';
                     controls.appendChild(ret);
                 }
@@ -397,7 +423,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и урна
+            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -447,61 +473,13 @@ function displayTasks() {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
                 titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
-                // make heading clickable to allow renaming of the subcategory
-                const headingSpan = titleEl.querySelector('.category-heading');
-                if (headingSpan) {
-                    headingSpan.style.cursor = 'pointer';
-                    headingSpan.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        try {
-                            const newNameRaw = prompt('Переименовать подкатегорию', name);
-                            if (newNameRaw === null) return; // cancelled
-                            const newName = (newNameRaw || '').trim();
-                            if (!newName || newName === name) return;
-
-                            // load saved custom subcategories
-                            const customSubsRawLocal = localStorage.getItem('customSubcategories');
-                            const customSubsLocal = customSubsRawLocal ? JSON.parse(customSubsRawLocal) : {};
-                            const arrSavedLocal = Array.isArray(customSubsLocal[cat]) ? customSubsLocal[cat].slice() : [];
-
-                            const idx = arrSavedLocal.indexOf(name);
-                            if (idx !== -1) {
-                                // replace existing saved name if newName not present
-                                if (!arrSavedLocal.includes(newName)) {
-                                    arrSavedLocal[idx] = newName;
-                                } else {
-                                    // newName already exists, remove the old duplicate
-                                    arrSavedLocal.splice(idx, 1);
-                                }
-                            } else {
-                                // name wasn't a saved custom subcategory (could be a builtin); add newName if missing
-                                if (!arrSavedLocal.includes(newName)) arrSavedLocal.push(newName);
-                            }
-
-                            // ensure uniqueness
-                            customSubsLocal[cat] = Array.from(new Set(arrSavedLocal));
-
-                            // update tasks that reference this subcategory
-                            tasks = tasks.map(t => (t.category === cat && t.subcategory === name) ? { ...t, subcategory: newName } : t);
-
-                            localStorage.setItem('customSubcategories', JSON.stringify(customSubsLocal));
-                            saveTasks();
-                            displayTasks();
-                        } catch (err) {
-                            console.error('Ошибка при переименовании подкатегории', err);
-                        }
-                    });
-                }
-
-                const hasActive = list.some(t => t.subcategory === name && t.active);
-                const toggle = document.createElement('button');
-                toggle.className = 'task-control-btn subcategory-toggle-all';
-                toggle.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
-                toggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleSubcategoryActiveByName(cat, name);
-                });
-                titleEl.appendChild(toggle);
+                const menuBtn = document.createElement('button');
+                menuBtn.className = 'subcategory-menu-btn';
+                menuBtn.type = 'button';
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
+                titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(name) || [];
                 arr.forEach(el => frag.appendChild(el));
@@ -521,7 +499,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноых элементов
+    // Добавяем обработчики событий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -574,6 +552,11 @@ function displayTasks() {
 
     // attach handlers for category-add buttons (open modal restricted to this category)
     document.querySelectorAll('.category-add-btn').forEach(btn => {
+        if (showArchive) {
+            // hide add buttons when viewing completed tasks
+            btn.style.display = 'none';
+            return;
+        }
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const cat = btn.dataset.cat ? parseInt(btn.dataset.cat) : null;
@@ -734,7 +717,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееключение активности всех задач внтри категории
+// Пееклю��ение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -743,7 +726,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по имени для указанной категрии
+// Переклюение активности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -757,14 +740,22 @@ function toggleSubcategoryActiveByName(category, subName) {
 
 // Функця для удаления задачи
 function deleteTask(taskId) {
-    if (confirm('Удалить эту задачу?')) {
-        tasks = tasks.filter(t => t.id !== taskId);
-        saveTasks();
-        displayTasks();
-    }
+    openConfirmModal({
+        title: 'Удаление задачи',
+        message: 'Удалить эту задачу?',
+        confirmText: 'Удалить',
+        cancelText: 'Отмена',
+        requireCheck: true,
+        checkboxLabel: 'Подтверждаю удаление',
+        onConfirm: () => {
+            tasks = tasks.filter(t => t.id !== taskId);
+            saveTasks();
+            displayTasks();
+        }
+    });
 }
 
-// Функия для экспорта задач в фйл
+// Ф��нкия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -786,14 +777,14 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                alert('Ошибка: файл должен содержать ма��сив задач');
+                openInfoModal('Ошибка: файл должен содержать массив задач');
                 return;
             }
             
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправльный формат файла');
+                    openInfoModal('Ошибка: не��равильный формат ��айла');
                     return;
                 }
             }
@@ -801,11 +792,11 @@ function importTasks(file) {
             // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            alert(`Успешно импортировано ${importedTasks.length} задач`);
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
-            alert('Ошибка при чтении файла: ' + error.message);
+            openInfoModal('Ошибка при чтении файла: ' + error.message);
         }
     };
     
@@ -823,7 +814,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        alert('Нет активных задач в этой категории!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
     
@@ -835,8 +826,9 @@ function getRandomTask(categories) {
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
+    try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // Полный сбос состояния таймера перед новым запуском
+    // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -859,7 +851,7 @@ function showTimer(task) {
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
-    stopTimer(); // Останавливем таймр при закрыти
+    stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
 
@@ -872,7 +864,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -966,14 +958,14 @@ function populateTaskSubcategoryDropdown(task) {
     });
 
     // for security category (2) provide add-button
-    if (task.category === 2 || task.category === 4) {
+    if ([2,3,4,5].includes(task.category)) {
         const wrapper = document.createElement('div');
         wrapper.className = 'category-option add-sub-btn-wrapper';
         const inline = document.createElement('div');
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'Новая сложная радость' : 'Новый эго-проект';
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -981,7 +973,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'Отмена';
+        cancel.textContent = 'Отм��на';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -1017,8 +1009,8 @@ function setupAddCategorySelector() {
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
-            <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность радостей</button>
+            <button class="add-category-option" data-category="2">Безопасн��сть</button>
+            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1073,7 +1065,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     // option for none
     const noneBtn = document.createElement('button');
-    noneBtn.className = 'add-subcategory-btn';
+    noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
     noneBtn.textContent = 'Без подкатегории';
@@ -1086,7 +1078,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     list.forEach(item => {
         const b = document.createElement('button');
-        b.className = 'add-subcategory-btn';
+        b.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
         b.type = 'button';
         b.dataset.sub = item.key;
         b.textContent = item.label;
@@ -1105,18 +1097,22 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'Новая сложная радость' : 'Новая подкатегория';
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = 'inline-save-btn';
+    saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
     saveBtn.textContent = 'Добавить';
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
-    cancelBtn.className = 'inline-cancel-btn';
+    cancelBtn.className = 'inline-cancel-btn modal-btn modal-subcat-btn cat-' + String(cat);
     cancelBtn.textContent = 'Отмена';
+    // wrap buttons into action row so we can align left/right
+    const actionsRow = document.createElement('div');
+    actionsRow.className = 'inline-add-actions';
+    actionsRow.appendChild(saveBtn);
+    actionsRow.appendChild(cancelBtn);
     inline.appendChild(inp);
-    inline.appendChild(saveBtn);
-    inline.appendChild(cancelBtn);
+    inline.appendChild(actionsRow);
     addWrapper.appendChild(inline);
     controls.appendChild(addWrapper);
 
@@ -1348,7 +1344,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сброса таймера
+// Ф��нкци для сброса тайме��а
 function resetTimer() {
     // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
     stopTimer();
@@ -1468,6 +1464,24 @@ function applyModalBackground(cat) {
     modalContent.style.backgroundColor = color;
     // ensure readable text color
     modalContent.style.color = '#333';
+    // style modal buttons according to category
+    applyModalButtonStyles(cat);
+}
+
+function applyModalButtonStyles(cat) {
+    const addBtn = document.getElementById('modalAddTaskBtn');
+    const cancelBtn = document.getElementById('modalCancelBtn');
+    if (!addBtn || !cancelBtn) return;
+    // remove existing category classes
+    addBtn.className = addBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    cancelBtn.className = cancelBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // ensure base class
+    if (!addBtn.classList.contains('modal-btn')) addBtn.classList.add('modal-btn');
+    if (!cancelBtn.classList.contains('modal-btn')) cancelBtn.classList.add('modal-btn');
+    // apply category class
+    addBtn.classList.add(`cat-${cat}`);
+    // cancel is a secondary variant: use cat-{cat}-alt if desired, but for simplicity use same with muted style
+    cancelBtn.classList.add(`cat-${cat}`);
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
@@ -1475,7 +1489,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1495,9 +1509,129 @@ function renderModalCategoryOptions(allowedCategories = null) {
     });
 }
 
-let modalPrimaryCategory = null;
+// Modal helper functions
+function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, onConfirm=null }) {
+    const m = document.getElementById('confirmModal'); if (!m) return;
+    const backdrop = document.getElementById('confirmBackdrop');
+    m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
+    const titleEl = m.querySelector('#confirmTitle'); const msgEl = m.querySelector('#confirmMessage');
+    const wrap = m.querySelector('#confirmCheckWrap'); const chk = m.querySelector('#confirmCheckbox'); const chkLabel = m.querySelector('#confirmCheckboxLabel');
+    const okBtn = m.querySelector('#confirmOkBtn'); const cancelBtn = m.querySelector('#confirmCancelBtn'); const closeBtn = m.querySelector('#confirmCloseBtn');
+    if (titleEl) titleEl.textContent = title || '';
+    if (msgEl) msgEl.textContent = message || '';
+    if (chkLabel) chkLabel.textContent = checkboxLabel || '';
+    if (wrap) wrap.style.display = requireCheck ? 'flex' : 'none';
+    if (chk) chk.checked = false;
+    okBtn.disabled = !!requireCheck;
+    const onChange = () => { okBtn.disabled = requireCheck && !chk.checked; };
+    if (chk) chk.addEventListener('change', onChange);
+    const cleanup = () => {
+        if (chk) chk.removeEventListener('change', onChange);
+        okBtn.removeEventListener('click', onOk);
+        cancelBtn.removeEventListener('click', onClose);
+        closeBtn.removeEventListener('click', onClose);
+        backdrop.removeEventListener('click', onClose);
+        m.setAttribute('aria-hidden','true'); m.style.display = 'none';
+    };
+    const onClose = () => { cleanup(); };
+    const onOk = () => { if (typeof onConfirm === 'function') onConfirm(); cleanup(); };
+    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отмена';
+    cancelBtn.style.display = hideCancel ? 'none' : 'inline-flex';
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onClose);
+    closeBtn.addEventListener('click', onClose);
+    backdrop.addEventListener('click', onClose);
+}
+function openInfoModal(message, title='Сообщение') { openConfirmModal({ title, message, confirmText: 'Ок', hideCancel: true }); }
+
+function renderCategoryButtons(container, allowed=null) {
+    if (!container) return;
+    container.innerHTML = '';
+    const cats = [0,1,2,5,3,4];
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    cats.forEach(c => {
+        if (allowed && !allowed.map(String).includes(String(c))) return;
+        const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.modal-category-btn').forEach(x=>x.classList.remove('selected'));
+            btn.classList.add('selected');
+            // when used in move modal, show relevant subcategories
+            const subCont = document.getElementById('moveSubcategories'); if (subCont) showAddSubcategoriesFor(parseInt(btn.dataset.category), subCont);
+        });
+        container.appendChild(btn);
+    });
+}
+
+let currentSubcatContext = null;
+function openSubcategoryActions(category, subName) {
+    currentSubcatContext = { category: parseInt(category), subName };
+    const m = document.getElementById('subcatActionsModal'); if (!m) return;
+    m.setAttribute('aria-hidden','false'); m.style.display='flex';
+}
+
+// Setup subcategory actions modal behavior: rename, move, delete
+(function setupSubcatActions(){
+    const m = document.getElementById('subcatActionsModal'); if (!m) return;
+    const close = () => { m.setAttribute('aria-hidden','true'); m.style.display='none'; };
+    const closeBtn = document.getElementById('subcatActionsClose'); const cancelBtn = document.getElementById('subcatActionsCancel'); const backdrop = document.getElementById('subcatActionsBackdrop');
+    [closeBtn,cancelBtn,backdrop].forEach(el => el && el.addEventListener('click', close));
+
+    const renameOk = document.getElementById('renameSubcatOk'); const renameCancel = document.getElementById('renameSubcatCancel'); const renameClose = document.getElementById('renameSubcatClose');
+    const renameModal = document.getElementById('renameSubcatModal'); const renameInput = document.getElementById('renameSubcatInput');
+    if (renameOk) {
+        renameOk.addEventListener('click', () => {
+            const ctx = currentSubcatContext; if (!ctx) return; const newName = (renameInput.value||'').trim(); if (!newName) return;
+            // update customSubcategories and tasks
+            const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category].slice():[];
+            const idx = arr.indexOf(ctx.subName);
+            if (idx !== -1) arr[idx] = newName; else if (!arr.includes(newName)) arr.push(newName);
+            cs[ctx.category] = Array.from(new Set(arr)); localStorage.setItem('customSubcategories', JSON.stringify(cs));
+            tasks = tasks.map(t => (t.category === ctx.category && t.subcategory === ctx.subName) ? ({...t, subcategory: newName}) : t);
+            saveTasks(); displayTasks();
+            // close rename modal
+            if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; }
+        });
+    }
+    if (renameCancel) renameCancel.addEventListener('click', () => { if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; } });
+    if (renameClose) renameClose.addEventListener('click', () => { if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; } });
+
+    // wire subcat action buttons
+    m.querySelectorAll('.subcat-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action; const ctx = currentSubcatContext; if (!ctx) return; close();
+            if (action === 'rename') {
+                const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
+            } else if (action === 'delete') {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                    const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
+            } else if (action === 'move') {
+                const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
+                // render category options
+                const catCont = document.getElementById('moveCategoryOptions'); const subCont = document.getElementById('moveSubcategories'); renderCategoryButtons(catCont);
+                // clear subCont until a category selected
+                if (subCont) { subCont.innerHTML=''; subCont.style.display='none'; }
+                // wire ok/cancel
+                const okBtn = document.getElementById('moveTasksOk'); const cancel = document.getElementById('moveTasksCancel'); const closeBtn = document.getElementById('moveTasksClose'); const backdrop2 = document.getElementById('moveTasksBackdrop');
+                const chk = document.getElementById('moveConfirmCheck'); if (chk) chk.checked = false; if (okBtn) okBtn.disabled = true;
+                const enableOk = () => { if (okBtn) okBtn.disabled = !chk.checked; };
+                chk.addEventListener('change', enableOk);
+                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; chk.removeEventListener('change', enableOk); };
+                if (cancel) cancel.onclick = closeMove; if (closeBtn) closeBtn.addEventListener('click', closeMove); if (backdrop2) backdrop2.addEventListener('click', closeMove);
+                okBtn.onclick = () => {
+                    const sel = catCont.querySelector('.modal-category-btn.selected'); if (!sel) return; const targetCat = parseInt(sel.dataset.category);
+                    const selSub = subCont ? subCont.querySelector('.add-subcategory-btn.selected') : null; const targetSub = selSub ? selSub.dataset.sub || null : null;
+                    // perform move
+                    tasks = tasks.map(t => (t.category === ctx.category && t.subcategory === ctx.subName) ? ({...t, category: targetCat, subcategory: targetSub || undefined, statusChangedAt: Date.now()}) : t);
+                    saveTasks(); displayTasks(); closeMove();
+                };
+            }
+        });
+    });
+})();
+
 
 function openAddModal(initialCategory, options = {}) {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -1569,18 +1703,22 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     const selBtn = modalSubcategories ? modalSubcategories.querySelector('.add-subcategory-btn.selected') : null;
     let selectedSub = null;
     if (selBtn && typeof selBtn.dataset.sub !== 'undefined') selectedSub = selBtn.dataset.sub || null;
-    // if a subcategory chosen and modalPrimaryCategory is set, ensure category is that primary
     if (selectedSub && typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
         category = modalPrimaryCategory;
     }
-    if (lines.length > 1) { if (!confirm(`Добавть ${lines.length} задач?`)) return; }
-    const active = true;
-    lines.forEach(text => {
-        const newTask = { id: getNextId(), text, category, completed: false, active, statusChangedAt: Date.now() };
-        if (selectedSub) newTask.subcategory = selectedSub;
-        tasks.push(newTask);
-    });
-    saveTasks(); closeAddModal(); displayTasks();
+    if (lines.length > 1) {
+        openConfirmModal({
+            title: 'Подтверждение',
+            message: `Добавить ${lines.length} задач?`,
+            confirmText: 'Добавить',
+            cancelText: 'Отмена',
+            requireCheck: true,
+            checkboxLabel: 'Подтверждаю добавление',
+            onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
+        });
+        return;
+    }
+    addLinesAsTasks(lines, category, selectedSub);
 });
 
 if (typeof addMultipleBtn !== 'undefined' && addMultipleBtn) {
@@ -1592,7 +1730,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбрасываем значение input
+        e.target.value = ''; // Сбра��ываем значение input
     }
 });
 
@@ -1611,11 +1749,32 @@ if (pasteTasksBtn) {
 }
 if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
+    if (showArchive) { openInfoModal('Нельзя ��обавлять задачи в списке выполненных'); return; }
     if (!pasteTasksTextarea) return;
     const raw = pasteTasksTextarea.value || '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
-    if (lines.length > 1) { if (!confirm(`Добавить ${lines.length} задач?`)) return; }
+    if (lines.length > 1) {
+        openConfirmModal({
+            title: 'Подтверждение',
+            message: `Добавить ${lines.length} задач?`,
+            confirmText: 'Добавить',
+            cancelText: 'Отмена',
+            requireCheck: true,
+            checkboxLabel: 'Подтверждаю добавление',
+            onConfirm: () => {
+                lines.forEach(text => {
+                    const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+                    tasks.push(newTask);
+                });
+                saveTasks();
+                if (pasteTasksArea) pasteTasksArea.style.display = 'none';
+                pasteTasksTextarea.value = '';
+                displayTasks();
+            }
+        });
+        return;
+    }
     lines.forEach(text => {
         const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
         tasks.push(newTask);
@@ -1744,7 +1903,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            alert('Уведомления не поддерживаются этим браузером');
+            openInfoModal('Уве��омления не поддерживаются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
@@ -1759,12 +1918,12 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                alert('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                alert('Уведомления заблокирваны в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            alert('Не удалось запросить разрешение на уведомления. Откойте сйт напрямую и попробуйт сова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
