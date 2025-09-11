@@ -744,7 +744,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под н��й кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1139,7 +1139,7 @@ textarea {
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группировк опций в выпадающих списка�� категорий */
+/* Группировк опций в выпадающих списках категорий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1159,7 +1159,7 @@ textarea {
 .add-category-badge[data-category="4"] { background-color: #ffcdd2; border-left: 2px solid #E57373; }
 .add-category-badge[data-category="5"] { background-color: #d1c4e9; border-left: 2px solid #9575CD; }
 
-/* Кнопка активаии/деактивации всей категории в зголовке группы */
+/* К��опка активаии/деактивации всей категории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
 /* Кнопки на секциях главного экрана */
@@ -1233,8 +1233,8 @@ textarea {
 .category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; }
 .category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
 
-/* Make add-category options compact and prevent buttons from expanding with long text */
-.add-category-option, .add-category-badge, .add-category-badge button { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; font-size: 0.95rem; }
+/* Make add-category options readable; allow wrapping of long labels */
+.add-category-option, .add-category-badge, .add-category-badge button { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; font-size: 0.95rem; }
 .add-category-option { padding: 6px 10px; border-radius: 6px; }
 
 /* Category dropdown background lighter than subcategory color (JS sets inline color but fallback here) */
@@ -1581,7 +1581,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устройств */
+/* Адаптивность для мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
