@@ -1255,6 +1255,10 @@ textarea {
 /* Small variant if needed */
 .category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
 
+/* Three dots button for subcategory titles */
+.subcategory-menu-btn { background: rgba(0,0,0,0.04); border: none; border-radius: 8px; padding: 6px; color: #5d4037; cursor: pointer; }
+.subcategory-menu-btn:active { transform: scale(0.97); background: rgba(0,0,0,0.08); }
+
 /* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
 .task-text { font-size: 0.95rem; line-height: 1.25; word-break: normal; overflow-wrap: break-word; hyphens: none; white-space: normal; }
 
