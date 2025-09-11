@@ -103,7 +103,7 @@ h1 {
 }
 
 .joys {
-    background-color: #c8e6c9; /* зеленый */
+    background-color: #c8e6c9; /* зеле��ый */
 }
 
 .controls {
@@ -241,7 +241,7 @@ textarea, select, input {
 .add-category-option:active { transform: scale(0.98); }
 .add-category-option:last-child { margin-bottom: 0; }
 
-/* Цвета для опций категорий (как в списке ��адач) */
+/* Цвета для опций категорий (как в списке задач) */
 .add-category-option[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-option[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-option[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -571,7 +571,7 @@ textarea {
 }
 
 #returnTaskBtn {
-    background-color: #795548; /* коричневый */
+    background-color: #795548; /* коричневы�� */
 }
 
 #returnTaskBtn:active {
@@ -741,7 +741,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос дл�� десктопов */
+/* Медиа-зпрос для десктопов */
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
@@ -913,7 +913,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптив��ость для мобильных устр��йств */
+/* Адаптивность для мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1006,7 +1006,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для планшетов и десктопов */
+/* Сикерная сетка для планшетов и дескт��пов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1136,7 +1136,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* С��рыти задач при свёрнутой группе */
+/* Скрыти задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1304,7 +1304,13 @@ textarea {
 /* Three dots button for subcategory titles (use vertical dots icon, minimal visual chrome) */
 .category-title .subcategory-menu-btn { margin-left: 12px; background: transparent; border: none; border-radius: 6px; padding: 6px; color: #5d4037; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; line-height: 1; }
 .category-title .subcategory-menu-btn i { display: block; width: 1em; text-align: center; }
-.category-title .subcategory-menu-btn:active { transform: scale(0.97); background: rgba(0,0,0,0.04); }
+.category-title .subcategory-menu-btn:active { transform: scale(0.97); background: transparent; }
+/* Make three-dots button appear as icon only, with no visible border/background in any state */
+.category-title .subcategory-menu-btn,
+.category-title .subcategory-menu-btn:hover,
+.category-title .subcategory-menu-btn:active,
+.category-title .subcategory-menu-btn:focus,
+.category-title .subcategory-menu-btn:focus-visible { background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; }
 @media (max-width:480px) { .category-title .subcategory-menu-btn { margin-left: 8px; padding: 4px; } }
 
 /* Compact wrapper for subcategory title and eye button to avoid overflow */
