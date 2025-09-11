@@ -694,7 +694,7 @@ textarea {
     }
 }
 
-/* Медиа-запрос ля планшетов и больших телефонов */
+/* Медиа-запр��с ля планшетов и больших телефонов */
 @media (min-width: 481px) {
     body {
         padding: 15px;
@@ -1345,7 +1345,26 @@ textarea {
 #modalCancelBtn.modal-btn:hover { opacity: 1; }
 
 /* Responsive subcategory controls */
-.add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+.add-subcategory-controls.show { max-height: 220px; overflow: auto; padding-right: 6px; }
+
+/* Compact subcategory buttons */
+.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: transparent; border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.95rem; }
+.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+
+/* Modal variant for subcategory buttons to adopt category color */
+.modal-subcat-btn.modal-btn { padding: 6px 10px; font-weight: 700; border-radius: 8px; }
+.modal-subcat-btn { min-width: 80px; }
+
+/* Ensure readable selected state: make selected solid and readable */
+.add-subcategory-controls .add-subcategory-btn.selected.modal-btn { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+
+/* Make controls compact on small screens */
+@media (max-width: 480px) {
+    .add-subcategory-controls { gap: 6px; }
+    .add-subcategory-controls .add-subcategory-btn { padding: 8px; font-size: 0.95rem; min-width: 0; flex: 1 1 auto; }
+    .add-subcategory-controls .add-subcategory-add { width: 100%; }
+}
 
 /* Strong overrides to prevent breaking single letters in task text */
 .tasks .task-text, .tasks.mobile-compact .task-text, .tasks.sticker-grid .task-text, .group-grid .task-text {
