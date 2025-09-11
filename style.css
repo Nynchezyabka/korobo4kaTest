@@ -694,7 +694,7 @@ textarea {
     }
 }
 
-/* Медиа-запр��с ля планшетов и больших телефонов */
+/* Медиа-запрос ля планшетов и больших телефонов */
 @media (min-width: 481px) {
     body {
         padding: 15px;
@@ -939,7 +939,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на всех экран��х */
+/* Показываем подзаго��овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1180,7 +1180,7 @@ textarea {
 .joys .section-action-btn { background-color: rgba(129,199,132,0.18); }
 .joys .section-action-btn:hover { background-color: rgba(129,199,132,0.28); }
 
-/* Специальный стиль для круглой кнопки "+" */
+/* Специальный стиль для к��углой кнопки "+" */
 .section-action-btn.section-add-btn { padding: 8px; width: 40px; height: 40px; border-radius: 10px; }
 
 .section-add-subcat-btn { padding: 6px 8px; border-radius: 8px; border: none; cursor: pointer; background: rgba(0,0,0,0.06); color: #5d4037; font-weight: 700; min-width: 36px; }
@@ -1345,25 +1345,33 @@ textarea {
 #modalCancelBtn.modal-btn:hover { opacity: 1; }
 
 /* Responsive subcategory controls */
-.add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
-.add-subcategory-controls.show { max-height: 220px; overflow: auto; padding-right: 6px; }
+.add-subcategory-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
+/* remove scroll — keep all buttons visible and grouped */
+.add-subcategory-controls.show { max-height: none; overflow: visible; padding-right: 0; }
 
-/* Compact subcategory buttons */
-.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: transparent; border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.95rem; }
+/* Compact subcategory buttons: use tighter padding and allow fluid wrapping */
+.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: transparent; border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.95rem; min-width: 96px; }
 .add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
 
 /* Modal variant for subcategory buttons to adopt category color */
 .modal-subcat-btn.modal-btn { padding: 6px 10px; font-weight: 700; border-radius: 8px; }
 .modal-subcat-btn { min-width: 80px; }
 
-/* Ensure readable selected state: make selected solid and readable */
-.add-subcategory-controls .add-subcategory-btn.selected.modal-btn { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+/* Ensure readable selected state: selected becomes solid for readability */
+.add-subcategory-controls .add-subcategory-btn.selected.modal-btn { box-shadow: 0 4px 10px rgba(0,0,0,0.12); opacity: 1; }
+
+/* Inline add form: input keeps placeholder and buttons sit below input left/right */
+.inline-add-form { display: flex; flex-direction: column; gap: 8px; align-items: stretch; width: 100%; }
+.inline-add-form input { width: 100%; min-width: 220px; padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.12); }
+.inline-add-actions { display: flex; gap: 8px; justify-content: space-between; }
+.inline-add-actions button { width: 48%; }
 
 /* Make controls compact on small screens */
 @media (max-width: 480px) {
     .add-subcategory-controls { gap: 6px; }
     .add-subcategory-controls .add-subcategory-btn { padding: 8px; font-size: 0.95rem; min-width: 0; flex: 1 1 auto; }
     .add-subcategory-controls .add-subcategory-add { width: 100%; }
+    .inline-add-form input { min-width: 0; }
 }
 
 /* Strong overrides to prevent breaking single letters in task text */
