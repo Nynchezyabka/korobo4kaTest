@@ -732,7 +732,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компактный мак��т с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -789,7 +789,7 @@ textarea {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        align-items: start; /* ensure section tops align so actions (+) sit consistently */
+        align-items: stretch; /* make all section tiles equal height */
     }
 
     /* Кноки действий выравниваем п етке (3 колонки) */
@@ -927,7 +927,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* ��озаголовки категорий для мобильной группировки */
+/* Позаголовки категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1142,7 +1142,7 @@ textarea {
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группировк опций в выпадающих списках категорий */
+/* Группировк опций в выпадающих списках ка��егорий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1574,7 +1574,7 @@ textarea {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        align-items: start; /* ensure section tops align so actions (+) sit consistently */
+        align-items: stretch; /* make all section tiles equal height */
     }
 
     /* Кнопки действий выравниваем п сетке (3 колонки) */
@@ -1713,7 +1713,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголовки категорий для мобильной группировки */
+/* Позаго��овки категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
