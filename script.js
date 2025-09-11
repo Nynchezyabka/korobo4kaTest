@@ -71,7 +71,7 @@ let showArchive = false;
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для закрыт��я откытого выпадащего меню категорий
+// Глобальный обработчик для за��рыт��я откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -526,6 +526,11 @@ function displayTasks() {
 
     // attach handlers for category-add buttons (open modal restricted to this category)
     document.querySelectorAll('.category-add-btn').forEach(btn => {
+        if (showArchive) {
+            // hide add buttons when viewing completed tasks
+            btn.style.display = 'none';
+            return;
+        }
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const cat = btn.dataset.cat ? parseInt(btn.dataset.cat) : null;
@@ -942,7 +947,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'Отмена';
+        cancel.textContent = 'Отм��на';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -1696,7 +1701,7 @@ if (pasteTasksBtn) {
 }
 if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя ��обавлять задачи в списке выполненных'); return; }
     if (!pasteTasksTextarea) return;
     const raw = pasteTasksTextarea.value || '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
