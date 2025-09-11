@@ -473,6 +473,11 @@ function displayTasks() {
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
                 titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                const leftWrap = document.createElement('div');
+                leftWrap.className = 'subcategory-title-left';
+                const headingSpan = titleEl.querySelector('.category-heading');
+                if (headingSpan) leftWrap.appendChild(headingSpan);
+                titleEl.appendChild(leftWrap);
                 // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
@@ -1168,7 +1173,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци не поддерживается на этом устройстве");
+        console.log("Вибраци не поддерживается на этом устройств��");
     }
 });
 
@@ -1249,7 +1254,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локальный fallback
+    // ланир��ем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1500,7 +1505,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Прост��е радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1613,7 +1618,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'У��алить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
