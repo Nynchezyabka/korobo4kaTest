@@ -16,6 +16,7 @@ body {
     padding: 10px;
     line-height: 1.4;
     font-size: 16px;
+    overflow-x: hidden;
 }
 
 .container {
@@ -240,7 +241,7 @@ textarea, select, input {
 .add-category-option:active { transform: scale(0.98); }
 .add-category-option:last-child { margin-bottom: 0; }
 
-/* Цвета для опций категорий (как в списке задач) */
+/* Цвета для опций категорий (как в списке ��адач) */
 .add-category-option[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-option[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-option[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -740,7 +741,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос для десктопов */
+/* Медиа-зпрос дл�� десктопов */
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
@@ -912,7 +913,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устр��йств */
+/* Адаптив��ость для мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1135,7 +1136,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыти задач при свёрнутой группе */
+/* С��рыти задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1283,7 +1284,7 @@ textarea {
 .add-category-option { padding: 6px 10px; border-radius: 6px; }
 
 /* Category dropdown background lighter than subcategory color (JS sets inline color but fallback here) */
-.category-dropdown { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 6px; border-radius: 8px; min-width: 160px; }
+.category-dropdown { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 6px; border-radius: 8px; min-width: 160px; max-width: calc(100vw - 24px); word-break: break-word; overflow-wrap: anywhere; }
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
 /* category + button near category title: match section + style but colored per category */
@@ -1305,6 +1306,25 @@ textarea {
 .category-title .subcategory-menu-btn i { display: block; width: 1em; text-align: center; }
 .category-title .subcategory-menu-btn:active { transform: scale(0.97); background: rgba(0,0,0,0.04); }
 @media (max-width:480px) { .category-title .subcategory-menu-btn { margin-left: 8px; padding: 4px; } }
+
+/* Compact wrapper for subcategory title and eye button to avoid overflow */
+.subcategory-title-left { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; }
+
+/* Prevent horizontal scroll inside main grids */
+.tasks, .group-grid { overflow-x: hidden; }
+
+/* Make sections and controls slightly more compact on small screens */
+@media (max-width:480px) {
+  .section { padding: 16px 10px 12px; }
+  .section h2 { font-size: 1.3rem; }
+  .section-action-btn { gap: 6px; padding: 6px 10px; }
+  .section-action-btn .action-text { font-size: 0.85rem; }
+  .category-title { gap: 6px; }
+  .category-title .category-add-btn { width: 36px; height: 36px; }
+  .category-title .subcategory-toggle-all { padding: 4px; font-size: 0.95rem; }
+  .task-control-btn { padding: 3px; font-size: 0.9rem; }
+  .category-dropdown { max-height: 60vh; }
+}
 
 /* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
 .task-text { font-size: 0.95rem; line-height: 1.25; word-break: normal; overflow-wrap: break-word; hyphens: none; white-space: normal; }
