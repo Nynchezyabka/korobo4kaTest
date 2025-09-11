@@ -175,7 +175,7 @@ function getCategoryName(category) {
         0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
-        3: "Простые радости",
+        3: "Простые рад��сти",
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
@@ -473,7 +473,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноы�� элементов
+    // Добавяем обработчики ��обытий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -770,7 +770,7 @@ function importTasks(file) {
             displayTasks();
             
         } catch (error) {
-            openInfoModal('Ошибка при чтении файла: ' + error.message);
+            openInfoModal('Ошибка ��ри чтении файла: ' + error.message);
         }
     };
     
@@ -986,7 +986,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасн��сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-радости</button>
+            <button class="add-category-option" data-category="4">Эго-рад��сти</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1039,7 +1039,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     // option for none
     const noneBtn = document.createElement('button');
-    noneBtn.className = 'add-subcategory-btn';
+    noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
     noneBtn.textContent = 'Без подкатегории';
@@ -1052,7 +1052,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     list.forEach(item => {
         const b = document.createElement('button');
-        b.className = 'add-subcategory-btn';
+        b.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
         b.type = 'button';
         b.dataset.sub = item.key;
         b.textContent = item.label;
@@ -1074,11 +1074,11 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = 'inline-save-btn';
+    saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
     saveBtn.textContent = 'Добавить';
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
-    cancelBtn.className = 'inline-cancel-btn';
+    cancelBtn.className = 'inline-cancel-btn modal-btn modal-subcat-btn cat-' + String(cat);
     cancelBtn.textContent = 'Отмена';
     inline.appendChild(inp);
     inline.appendChild(saveBtn);
