@@ -169,7 +169,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категории по номеру
+// Функция дя плучения названия категори�� по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -695,7 +695,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по имени для указанной категрии
+// Переклюение активности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -797,7 +797,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // Полный сбос состояния таймера перед новым запуском
+    // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1436,7 +1436,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1578,6 +1578,7 @@ function openSubcategoryActions(category, subName) {
 
 
 function openAddModal(initialCategory, options = {}) {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
