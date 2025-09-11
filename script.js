@@ -279,7 +279,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачивание гру��пы
+        // Клик по названию категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -1084,7 +1084,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкатего��ии';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1173,7 +1173,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци не поддерживается на этом устройстве");
+        console.log("Вибраци не поддерживается на это�� устройстве");
     }
 });
 
@@ -1362,7 +1362,7 @@ async function cancelServerSchedule() {
 
 // Ф��нкци для сброса тайме��а
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс ��ы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1618,7 +1618,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
