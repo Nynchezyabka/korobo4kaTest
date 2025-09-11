@@ -661,7 +661,7 @@ function displayTasks() {
     });
 }
 
-// Функция для изеения категории задачи
+// Функция для ��зеения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -739,7 +739,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'кор��бочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -763,7 +763,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    alert('Ошибка: неправльный формат файла');
+                    openInfoModal('Ошибка: неправильный формат файл��');
                     return;
                 }
             }
@@ -771,7 +771,7 @@ function importTasks(file) {
             // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт заверш��н');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -841,7 +841,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведо��ления
+// Функция для показа уведомления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -1184,7 +1184,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// ��ункция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1218,7 +1218,7 @@ function startTimer() {
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `Зад��ча: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -1333,7 +1333,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обраотчки обытий
+// О��раотчки обытий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -1446,7 +1446,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые ��адости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1759,7 +1759,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('��е удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
