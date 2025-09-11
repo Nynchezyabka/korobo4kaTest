@@ -758,7 +758,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке род��теля */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1283,8 +1283,9 @@ textarea {
 .modal-category-btn.cat-5.selected { background-color: #9575CD; color: #fff; border-color: rgba(0,0,0,0.06); }
 
 /* Ensure category titles/buttons remain readable; allow wrapping */
-.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
-.category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; }
+.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: nowrap; }
+.category-title-left { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; }
+.category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; overflow-wrap: anywhere; }
 .category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
 
 /* Make add-category options readable; allow wrapping of long labels */
