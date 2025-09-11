@@ -179,7 +179,7 @@ function getCategoryName(category) {
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[category] || "Неизв��стно";
+    return categories[category] || "Неизвестно";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -206,7 +206,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все ��адачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -801,7 +801,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функц��я для отобажения таймера
+// Функция для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1184,7 +1184,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска та��мера
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1446,7 +1446,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система ��езопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1586,7 +1586,6 @@ function openSubcategoryActions(category, subName) {
     });
 })();
 
-let modalPrimaryCategory = null;
 
 function openAddModal(initialCategory, options = {}) {
     if (!addTaskModal) return;
@@ -1876,7 +1875,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Увед��мления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
