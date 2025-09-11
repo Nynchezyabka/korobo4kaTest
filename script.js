@@ -48,6 +48,32 @@ function getNextId() {
     return maxId + 1;
 }
 
+// Add multiple lines as tasks helper
+function addLinesAsTasks(lines, category = 0, selectedSub = null) {
+    if (!Array.isArray(lines) || lines.length === 0) return;
+    lines.forEach(raw => {
+        const text = (typeof raw === 'string') ? raw.trim() : String(raw);
+        if (!text) return;
+        const newTask = {
+            id: getNextId(),
+            text,
+            category: typeof category === 'number' ? category : parseInt(category) || 0,
+            completed: false,
+            active: true,
+            statusChangedAt: Date.now()
+        };
+        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) newTask.subcategory = selectedSub.trim();
+        tasks.push(newTask);
+    });
+    saveTasks();
+    // clear modal textarea if present
+    if (modalTaskText) modalTaskText.value = '';
+    // hide add modal if open
+    closeAddModal();
+    // refresh UI
+    displayTasks();
+}
+
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
@@ -758,7 +784,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат ��айла');
+                    openInfoModal('Ошибка: не��равильный формат ��айла');
                     return;
                 }
             }
@@ -825,7 +851,7 @@ function showTimer(task) {
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
-    stopTimer(); // Останавливем таймр при закрыти
+    stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
 
@@ -1318,7 +1344,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сброса таймера
+// Ф��нкци для сброса тайме��а
 function resetTimer() {
     // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
     stopTimer();
@@ -1576,7 +1602,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
