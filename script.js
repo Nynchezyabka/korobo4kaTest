@@ -175,7 +175,7 @@ function getCategoryName(category) {
         0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
-        3: "Простые рад��сти",
+        3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
@@ -473,7 +473,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики ��обытий для ноы�� элементов
+    // Добавяем обработчики событий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -770,7 +770,7 @@ function importTasks(file) {
             displayTasks();
             
         } catch (error) {
-            openInfoModal('Ошибка ��ри чтении файла: ' + error.message);
+            openInfoModal('Ошибка при чтении файла: ' + error.message);
         }
     };
     
@@ -838,7 +838,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -986,7 +986,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасн��сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-рад��сти</button>
+            <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1080,9 +1080,13 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     cancelBtn.type = 'button';
     cancelBtn.className = 'inline-cancel-btn modal-btn modal-subcat-btn cat-' + String(cat);
     cancelBtn.textContent = 'Отмена';
+    // wrap buttons into action row so we can align left/right
+    const actionsRow = document.createElement('div');
+    actionsRow.className = 'inline-add-actions';
+    actionsRow.appendChild(saveBtn);
+    actionsRow.appendChild(cancelBtn);
     inline.appendChild(inp);
-    inline.appendChild(saveBtn);
-    inline.appendChild(cancelBtn);
+    inline.appendChild(actionsRow);
     addWrapper.appendChild(inline);
     controls.appendChild(addWrapper);
 
