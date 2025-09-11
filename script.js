@@ -198,7 +198,7 @@ function updateNotifyToggle() {
 // Функция дя плучения названия категори�� по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Категория не определена",
+        0: "Категория не определен��",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
@@ -266,7 +266,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\">+</button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\">+</button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -342,7 +342,7 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
+            // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
             raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
@@ -808,7 +808,7 @@ function importTasks(file) {
             // Добавлям задачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно имп��ртировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
