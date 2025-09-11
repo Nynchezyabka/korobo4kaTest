@@ -338,7 +338,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -473,7 +473,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноых элементов
+    // Добавяем обработчики событий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -838,7 +838,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -1434,6 +1434,24 @@ function applyModalBackground(cat) {
     modalContent.style.backgroundColor = color;
     // ensure readable text color
     modalContent.style.color = '#333';
+    // style modal buttons according to category
+    applyModalButtonStyles(cat);
+}
+
+function applyModalButtonStyles(cat) {
+    const addBtn = document.getElementById('modalAddTaskBtn');
+    const cancelBtn = document.getElementById('modalCancelBtn');
+    if (!addBtn || !cancelBtn) return;
+    // remove existing category classes
+    addBtn.className = addBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    cancelBtn.className = cancelBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // ensure base class
+    if (!addBtn.classList.contains('modal-btn')) addBtn.classList.add('modal-btn');
+    if (!cancelBtn.classList.contains('modal-btn')) cancelBtn.classList.add('modal-btn');
+    // apply category class
+    addBtn.classList.add(`cat-${cat}`);
+    // cancel is a secondary variant: use cat-{cat}-alt if desired, but for simplicity use same with muted style
+    cancelBtn.classList.add(`cat-${cat}`);
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
