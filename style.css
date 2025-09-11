@@ -541,7 +541,7 @@ textarea {
     transition: all 0.3s;
 }
 
-/* овые цвета для кнопок таймера */
+/* овые цвета для кнопок та��мера */
 #startTimerBtn {
     background-color: #9CCC65; /* желто-зеленый */
 }
@@ -1302,8 +1302,8 @@ textarea {
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.4rem; font-weight: 700; }
-.category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.4rem; line-height:1; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.2rem; font-weight: 700; transition: background-color 0.18s, transform 0.06s; }
+.category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.2rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
@@ -1311,6 +1311,13 @@ textarea {
 .category-group.category-3 .category-add-btn { background-color: rgba(129,199,132,0.18); }
 .category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
 .category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
+/* Hover highlights to match section buttons */
+.category-group.category-1 .category-add-btn:hover { background-color: rgba(255,213,79,0.30); }
+.category-group.category-2 .category-add-btn:hover { background-color: rgba(100,181,246,0.28); }
+.category-group.category-5 .category-add-btn:hover { background-color: rgba(149,117,205,0.30); }
+.category-group.category-3 .category-add-btn:hover { background-color: rgba(129,199,132,0.28); }
+.category-group.category-4 .category-add-btn:hover { background-color: rgba(255,205,210,0.28); }
+.category-group.category-0 .category-add-btn:hover { background-color: rgba(158,158,158,0.10); }
 
 /* Small variant if needed */
 .category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
