@@ -190,7 +190,7 @@
         <div class="modal-backdrop" id="renameSubcatBackdrop"></div>
         <div class="modal-content">
             <button class="modal-close" id="renameSubcatClose" aria-label="Закрыть">&times;</button>
-            <h3>Переименовать подкатегорию</h3>
+            <h3>Переименовать подк��тегорию</h3>
             <label for="renameSubcatInput" class="modal-label">Новое название</label>
             <input type="text" id="renameSubcatInput">
             <div class="modal-actions">
@@ -212,6 +212,24 @@
             <div class="modal-actions">
                 <button id="moveTasksOk">Перенести</button>
                 <button id="moveTasksCancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paste Tasks Modal -->
+    <div class="modal" id="pasteTasksModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="pasteTasksBackdrop"></div>
+        <div class="modal-content paste-modal-content">
+            <button class="modal-close" id="pasteTasksCloseBtn" aria-label="Закрыть">&times;</button>
+            <h3>Вставить список задач</h3>
+            <div class="paste-modal-body">
+                <label for="pasteTasksInput" class="modal-label">Каждая задача с новой строки</label>
+                <textarea id="pasteTasksInput" class="paste-modal-textarea" placeholder="Вставьте задачи..." aria-label="Список задач построчно"></textarea>
+                <div class="modal-note">Задачи будут добавлены в категорию «Категория не определена». Позже их можно распределить.</div>
+            </div>
+            <div class="modal-actions">
+                <button id="pasteTasksAddBtn">Добавить</button>
+                <button id="pasteTasksCancelBtn" type="button">Отмена</button>
             </div>
         </div>
     </div>
