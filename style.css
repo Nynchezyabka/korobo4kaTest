@@ -16,6 +16,7 @@ body {
     padding: 10px;
     line-height: 1.4;
     font-size: 16px;
+    overflow-x: hidden;
 }
 
 .container {
@@ -86,6 +87,10 @@ h1 {
     font-size: 1.5rem;
     text-align: center;
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(1.2em * 2);
 }
 
 .section p {
@@ -578,7 +583,7 @@ textarea {
 }
 
 #closeTimerBtn {
-    background-color: #9E9E9E; /* серый */
+    background-color: #9E9E9E; /* ��ерый */
 }
 
 #closeTimerBtn:active {
@@ -603,15 +608,20 @@ textarea {
 }
 
 .file-label {
-    display: block;
-    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
     background-color: #5d4037;
     color: white;
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
     font-size: 1rem;
+    min-height: 44px;
 }
+.file-label:hover { background-color: #7b5e57; }
 
 .notification {
     position: fixed;
@@ -788,7 +798,7 @@ textarea {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        align-items: start; /* ensure section tops align so actions (+) sit consistently */
+        align-items: stretch; /* make all section tiles equal height */
     }
 
     /* Кноки действий выравниваем п етке (3 колонки) */
@@ -848,7 +858,7 @@ textarea {
         background-color: #757575;
     }
 }
-/* Стили для toast-уведомлений */
+/* Стили для toast-уведомле��ий */
 .toast-notification {
     position: fixed;
     bottom: 20px;
@@ -1253,11 +1263,15 @@ textarea {
 .subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
 .subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
 .subcat-action-btn.destructive { background: #ffcdd2; color: #8B0000; }
-#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; }
+#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; max-height: none; overflow: visible; }
 #subcatActionsModal .modal-actions { justify-content: center; }
 @media (min-width:481px) {
     #subcatActionsModal .subcat-actions { flex-direction: row; gap: 12px; }
     #subcatActionsModal .subcat-action-btn { flex: 1; }
+}
+@media (max-width:480px) {
+    #subcatActionsModal .modal-content { padding: 16px 12px; }
+    #subcatActionsModal .subcat-action-btn { padding: 10px 10px; }
 }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
@@ -1274,8 +1288,9 @@ textarea {
 .modal-category-btn.cat-5.selected { background-color: #9575CD; color: #fff; border-color: rgba(0,0,0,0.06); }
 
 /* Ensure category titles/buttons remain readable; allow wrapping */
-.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
-.category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; }
+.category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: nowrap; }
+.category-title-left { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; }
+.category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; overflow-wrap: anywhere; }
 .category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
 
 /* Make add-category options readable; allow wrapping of long labels */
@@ -1283,19 +1298,26 @@ textarea {
 .add-category-option { padding: 6px 10px; border-radius: 6px; }
 
 /* Category dropdown background lighter than subcategory color (JS sets inline color but fallback here) */
-.category-dropdown { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 6px; border-radius: 8px; min-width: 160px; }
+.category-dropdown { background: rgba(255,255,255,0.95); box-shadow: 0 6px 18px rgba(0,0,0,0.08); padding: 6px; border-radius: 8px; min-width: 160px; max-width: calc(100vw - 24px); word-break: break-word; overflow-wrap: anywhere; }
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.4rem; font-weight: 700; }
-.category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.4rem; line-height:1; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.2rem; font-weight: 700; transition: background-color 0.18s, transform 0.06s; }
+.category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.2rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
 .category-group.category-2 .category-add-btn { background-color: rgba(100,181,246,0.18); }
 .category-group.category-5 .category-add-btn { background-color: rgba(149,117,205,0.22); }
 .category-group.category-3 .category-add-btn { background-color: rgba(129,199,132,0.18); }
 .category-group.category-4 .category-add-btn { background-color: rgba(255,205,210,0.18); }
-.category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.06); }
+.category-group.category-0 .category-add-btn { background-color: rgba(158,158,158,0.35); }
+/* Hover highlights to match section buttons */
+.category-group.category-1 .category-add-btn:hover { background-color: rgba(255,213,79,0.30); }
+.category-group.category-2 .category-add-btn:hover { background-color: rgba(100,181,246,0.28); }
+.category-group.category-5 .category-add-btn:hover { background-color: rgba(149,117,205,0.30); }
+.category-group.category-3 .category-add-btn:hover { background-color: rgba(129,199,132,0.28); }
+.category-group.category-4 .category-add-btn:hover { background-color: rgba(255,205,210,0.28); }
+.category-group.category-0 .category-add-btn:hover { background-color: rgba(158,158,158,0.50); }
 
 /* Small variant if needed */
 .category-add-btn.small { width: 36px; height: 36px; font-size: 1.1rem; }
@@ -1303,8 +1325,33 @@ textarea {
 /* Three dots button for subcategory titles (use vertical dots icon, minimal visual chrome) */
 .category-title .subcategory-menu-btn { margin-left: 12px; background: transparent; border: none; border-radius: 6px; padding: 6px; color: #5d4037; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; line-height: 1; }
 .category-title .subcategory-menu-btn i { display: block; width: 1em; text-align: center; }
-.category-title .subcategory-menu-btn:active { transform: scale(0.97); background: rgba(0,0,0,0.04); }
+.category-title .subcategory-menu-btn:active { transform: scale(0.97); background: transparent; }
+/* Make three-dots button appear as icon only, with no visible border/background in any state */
+.category-title .subcategory-menu-btn,
+.category-title .subcategory-menu-btn:hover,
+.category-title .subcategory-menu-btn:active,
+.category-title .subcategory-menu-btn:focus,
+.category-title .subcategory-menu-btn:focus-visible { background: transparent !important; border: none !important; box-shadow: none !important; outline: none !important; }
 @media (max-width:480px) { .category-title .subcategory-menu-btn { margin-left: 8px; padding: 4px; } }
+
+/* Compact wrapper for subcategory title and eye button to avoid overflow */
+.subcategory-title-left { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; }
+
+/* Prevent horizontal scroll inside main grids */
+.tasks, .group-grid { overflow-x: hidden; }
+
+/* Make sections and controls slightly more compact on small screens */
+@media (max-width:480px) {
+  .section { padding: 16px 10px 12px; }
+  .section h2 { font-size: 1.3rem; }
+  .section-action-btn { gap: 6px; padding: 6px 10px; }
+  .section-action-btn .action-text { font-size: 0.85rem; }
+  .category-title { gap: 6px; }
+  .category-title .category-add-btn { width: 36px; height: 36px; }
+  .category-title .subcategory-toggle-all { padding: 4px; font-size: 0.95rem; }
+  .task-control-btn { padding: 3px; font-size: 0.9rem; }
+  .category-dropdown { max-height: 60vh; }
+}
 
 /* Task text slightly smaller and avoid single-letter wraps with JS (see script) */
 .task-text { font-size: 0.95rem; line-height: 1.25; word-break: normal; overflow-wrap: break-word; hyphens: none; white-space: normal; }
@@ -1544,7 +1591,7 @@ textarea {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 12px;
-        align-items: start; /* ensure section tops align so actions (+) sit consistently */
+        align-items: stretch; /* make all section tiles equal height */
     }
 
     /* Кнопки действий выравниваем п сетке (3 колонки) */
