@@ -1246,7 +1246,7 @@ textarea {
 .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
 .modal-content { position: relative; background: white; border-radius: 10px; padding: 28px 16px 16px; width: 92%; max-width: 520px; max-height: 88vh; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 .modal-content h3 { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #5d4037; margin-bottom: 8px; }
-.modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 
