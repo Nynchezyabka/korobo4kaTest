@@ -509,7 +509,7 @@ textarea {
     border-radius: 8px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
 }
-.timer-content h2 { font-family: 'Caveat', cursive; color: #5d4037; }
+.timer-content h2 { font-family: 'Caveat', cursive; color: #5d4037; font-size: 2rem; }
 
 .timer-display {
     font-size: 2.5rem;
@@ -950,7 +950,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаго��овки на всех экран��х */
+/* Показываем подзаго��овки на ��сех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1755,7 +1755,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаголовки на ве�� экранах */
+/* Показываем подзаголовки на вех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
