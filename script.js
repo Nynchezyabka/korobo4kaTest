@@ -941,7 +941,7 @@ function populateTaskSubcategoryDropdown(task) {
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
     noneBtn.className = 'category-option';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкатег��рии';
     noneBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         changeTaskCategory(task.id, task.category, null);
@@ -1750,26 +1750,47 @@ importFile.addEventListener('change', (e) => {
     }
 });
 
-// Paste tasks area handling
+// Paste tasks modal handling
 const pasteTasksBtn = document.getElementById('pasteTasksBtn');
-const pasteTasksArea = document.getElementById('pasteTasksArea');
-const pasteTasksTextarea = document.getElementById('pasteTasksTextarea');
-const pasteTasksSaveBtn = document.getElementById('pasteTasksSaveBtn');
+const pasteTasksModal = document.getElementById('pasteTasksModal');
+const pasteTasksBackdrop = document.getElementById('pasteTasksBackdrop');
+const pasteTasksCloseBtn = document.getElementById('pasteTasksCloseBtn');
+const pasteTasksInput = document.getElementById('pasteTasksInput');
+const pasteTasksAddBtn = document.getElementById('pasteTasksAddBtn');
 const pasteTasksCancelBtn = document.getElementById('pasteTasksCancelBtn');
 
-if (pasteTasksBtn) {
-    pasteTasksBtn.addEventListener('click', () => {
-        if (pasteTasksArea) pasteTasksArea.style.display = pasteTasksArea.style.display === 'none' ? 'block' : 'none';
-        if (pasteTasksArea && pasteTasksArea.style.display === 'block' && pasteTasksTextarea) pasteTasksTextarea.focus();
-    });
+function openPasteModal() {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (!pasteTasksModal) return;
+    pasteTasksModal.setAttribute('aria-hidden','false');
+    pasteTasksModal.style.display = 'flex';
+    if (pasteTasksInput) { pasteTasksInput.value = ''; setTimeout(()=>pasteTasksInput.focus(), 50); }
 }
-if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
-if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя ��обавлять задачи в списке выполненных'); return; }
-    if (!pasteTasksTextarea) return;
-    const raw = pasteTasksTextarea.value || '';
+function closePasteModal() {
+    if (!pasteTasksModal) return;
+    pasteTasksModal.setAttribute('aria-hidden','true');
+    pasteTasksModal.style.display = 'none';
+}
+
+if (pasteTasksBtn) {
+    pasteTasksBtn.addEventListener('click', openPasteModal);
+}
+[pasteTasksBackdrop, pasteTasksCloseBtn, pasteTasksCancelBtn].forEach(el => { if (el) el.addEventListener('click', closePasteModal); });
+
+if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
+    const addAll = () => {
+        lines.forEach(text => {
+            const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+            tasks.push(newTask);
+        });
+        saveTasks();
+        closePasteModal();
+        displayTasks();
+    };
     if (lines.length > 1) {
         openConfirmModal({
             title: 'Подтверждение',
@@ -1778,27 +1799,11 @@ if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
             cancelText: 'Отмена',
             requireCheck: true,
             checkboxLabel: 'Подтверждаю добавление',
-            onConfirm: () => {
-                lines.forEach(text => {
-                    const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-                    tasks.push(newTask);
-                });
-                saveTasks();
-                if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-                pasteTasksTextarea.value = '';
-                displayTasks();
-            }
+            onConfirm: addAll
         });
-        return;
+    } else {
+        addAll();
     }
-    lines.forEach(text => {
-        const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-        tasks.push(newTask);
-    });
-    saveTasks();
-    if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-    pasteTasksTextarea.value = '';
-    displayTasks();
 });
 
 startTimerBtn.addEventListener('click', startTimer);
