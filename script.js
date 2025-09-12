@@ -90,6 +90,7 @@ let timerAnimationFrame = null;
 let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
+let timerSoundEnabled = true;
 
 // ежим отображеия архива ыолненных задач
 let showArchive = false;
@@ -126,6 +127,7 @@ const resetTimerBtn = document.getElementById('resetTimerBtn');
 const completeTaskBtn = document.getElementById('completeTaskBtn');
 const returnTaskBtn = document.getElementById('returnTaskBtn');
 const closeTimerBtn = document.getElementById('closeTimerBtn');
+const soundToggleBtn = document.getElementById('soundToggleBtn');
 const importFile = document.getElementById('importFile');
 const notification = document.getElementById('notification');
 const timerCompleteOptions = document.getElementById('timerCompleteOptions');
@@ -297,7 +299,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк папки — ворачивание/разворачивание
+        // ��лик по иконк па��ки — ворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -844,6 +846,10 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
+    // по умолчанию при новом таймере звук включён
+    timerSoundEnabled = true;
+    updateSoundToggleUI();
+
     // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -861,6 +867,19 @@ function showTimer(task) {
     // Скрываем опции завершения и показываем управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
+}
+
+function updateSoundToggleUI() {
+    if (!soundToggleBtn) return;
+    soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
+    soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i> Звук: вкл' : '<i class="fas fa-volume-xmark"></i> Звук: выкл';
+}
+
+if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+        timerSoundEnabled = !timerSoundEnabled;
+        updateSoundToggleUI();
+    });
 }
 
 // Функция для скрытия таймера
@@ -1084,7 +1103,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатего��ии';
+    noneBtn.textContent = '��ез подкатего��ии';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1210,6 +1229,7 @@ document.addEventListener('visibilitychange', () => {
 
 // З��уковой сигнал по завершении
 function playBeep() {
+    if (!timerSoundEnabled) return;
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const o = ctx.createOscillator();
@@ -1618,7 +1638,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить ��одкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
