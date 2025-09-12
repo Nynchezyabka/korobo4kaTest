@@ -567,6 +567,9 @@ textarea {
     background-color: #d32f2f;
 }
 
+#soundToggleBtn { display: inline-flex; align-items: center; justify-content: center; padding: 10px; }
+#soundToggleBtn.is-muted { opacity: 0.45; }
+
 #completeTaskBtn {
     background-color: #388E3C; /* темно-зеленый */
 }
@@ -950,7 +953,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаго��овки на ��сех экран��х */
+/* Показываем подзаго��овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1146,7 +1149,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыти задач при свёрнутой группе */
+/* Скрыти задач при ��вёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
