@@ -128,6 +128,7 @@ const completeTaskBtn = document.getElementById('completeTaskBtn');
 const returnTaskBtn = document.getElementById('returnTaskBtn');
 const closeTimerBtn = document.getElementById('closeTimerBtn');
 const soundToggleBtn = document.getElementById('soundToggleBtn');
+const completeNowBtn = document.getElementById('completeNowBtn');
 const importFile = document.getElementById('importFile');
 const notification = document.getElementById('notification');
 const timerCompleteOptions = document.getElementById('timerCompleteOptions');
@@ -849,6 +850,7 @@ function showTimer(task) {
     // по умолчанию при новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
+    updateTimerControlsForViewport();
 
     // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
@@ -888,6 +890,34 @@ if (soundToggleBtn) {
         updateSoundToggleUI();
     });
 }
+
+function updateTimerControlsForViewport() {
+    const isMobile = window.matchMedia('(max-width: 480px)').matches;
+    if (!startTimerBtn || !pauseTimerBtn || !resetTimerBtn) return;
+    if (isMobile) {
+        startTimerBtn.classList.add('icon-only');
+        pauseTimerBtn.classList.add('icon-only');
+        resetTimerBtn.classList.add('icon-only');
+        startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
+        startTimerBtn.setAttribute('aria-label','Старт');
+        startTimerBtn.title = 'Старт';
+        pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseTimerBtn.setAttribute('aria-label','Пауза');
+        pauseTimerBtn.title = 'Пауза';
+        resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
+        resetTimerBtn.setAttribute('aria-label','Сброс');
+        resetTimerBtn.title = 'Сброс';
+    } else {
+        startTimerBtn.classList.remove('icon-only');
+        pauseTimerBtn.classList.remove('icon-only');
+        resetTimerBtn.classList.remove('icon-only');
+        startTimerBtn.textContent = 'Старт';
+        pauseTimerBtn.textContent = 'Пауза';
+        resetTimerBtn.textContent = 'Сброс';
+    }
+}
+
+window.addEventListener('resize', updateTimerControlsForViewport);
 
 // Функция для скрытия таймера
 function hideTimer() {
@@ -1837,21 +1867,31 @@ startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
 resetTimerBtn.addEventListener('click', resetTimer);
 
-completeTaskBtn.addEventListener('click', async () => {
-    if (currentTask) {
-        const taskIndex = tasks.findIndex(t => t.id === currentTask.id);
-        if (taskIndex !== -1) {
-            tasks[taskIndex].completed = true;
-            tasks[taskIndex].active = false;
-            saveTasks();
-        }
-        await cancelServerSchedule();
+function completeCurrentTaskAndClose() {
+    if (!currentTask) return Promise.resolve();
+    const taskIndex = tasks.findIndex(t => t.id === currentTask.id);
+    if (taskIndex !== -1) {
+        tasks[taskIndex].completed = true;
+        tasks[taskIndex].active = false;
+        saveTasks();
+    }
+    return cancelServerSchedule().then(() => {
         stopTimer();
         timerEndAt = 0;
         hideTimer();
         displayTasks();
-    }
+    });
+}
+
+completeTaskBtn.addEventListener('click', async () => {
+    await completeCurrentTaskAndClose();
 });
+
+if (completeNowBtn) {
+    completeNowBtn.addEventListener('click', async () => {
+        await completeCurrentTaskAndClose();
+    });
+}
 
 returnTaskBtn.addEventListener('click', async () => {
     await cancelServerSchedule();

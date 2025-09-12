@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🎁 КОРОБОЧКА 3.7</title>
+    <title>🎁 КОРОБОЧКА 3.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎁 КОРОБОЧКА 3.7</h1>
+            <h1>🎁 КОРОБОЧКА 3.8</h1>
             <button class="notify-toggle" id="notifyToggleBtn" aria-label="Уведомления">
                 <i class="fas fa-bell-slash"></i>
             </button>
@@ -125,6 +125,10 @@
                 <button class="timer-btn" id="resetTimerBtn">Сброс</button>
             </div>
 
+            <div class="timer-primary-actions">
+                <button class="timer-btn" id="completeNowBtn"><i class="fas fa-check"></i> Готово</button>
+            </div>
+
             <div class="timer-complete-options" id="timerCompleteOptions">
                 <button class="timer-btn" id="completeTaskBtn">Завершить задачу</button>
                 <button class="timer-btn" id="returnTaskBtn">Вернуть в коробочку</button>
@@ -191,7 +195,7 @@
         <div class="modal-backdrop" id="renameSubcatBackdrop"></div>
         <div class="modal-content">
             <button class="modal-close" id="renameSubcatClose" aria-label="Закрыть">&times;</button>
-            <h3>Переименовать по��категорию</h3>
+            <h3>Переименовать подкатегорию</h3>
             <label for="renameSubcatInput" class="modal-label">Новое название</label>
             <input type="text" id="renameSubcatInput">
             <div class="modal-actions">

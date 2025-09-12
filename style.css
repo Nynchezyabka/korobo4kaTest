@@ -203,7 +203,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Срываем наивный select и используем кастомный цветной дропдаун */
+/* Сры��аем наивный select и используем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -534,6 +534,7 @@ textarea {
     gap: 10px;
     margin-bottom: 15px;
 }
+.timer-primary-actions { display: flex; justify-content: center; margin-bottom: 10px; }
 
 .timer-btn {
     padding: 10px 15px;
@@ -573,6 +574,8 @@ textarea {
 #completeTaskBtn {
     background-color: #388E3C; /* темно-зеленый */
 }
+#completeNowBtn { background-color: #388E3C; }
+#completeNowBtn:active { background-color: #2E7D32; }
 
 #completeTaskBtn:active {
     background-color: #2E7D32;
@@ -771,7 +774,7 @@ textarea {
     }
     .task-text {
         grid-column: 1 / 2;
-        grid-row: 1 / 3; /* занимает обе строки слева */
+        grid-row: 1 / 3; /* занимает ��бе строки слева */
         padding-right: 0;
         margin: 0;
     }
@@ -1149,7 +1152,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыти задач при ��вёрнутой группе */
+/* Скрыти задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1178,7 +1181,7 @@ textarea {
 /* Кнопка активаии/деактивации всей категории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* Кнопки на секциях главного экрана */
+/* ��нопки на секциях главного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
@@ -1263,6 +1266,11 @@ textarea {
 @media (max-width:480px) {
   #pasteTasksModal .modal-actions { flex-direction: column-reverse; }
   #pasteTasksModal .modal-actions button { width: 100%; }
+
+  .timer-controls { flex-direction: row; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  #timerMinutes { width: 72px; padding: 6px 8px; font-size: 0.95rem; }
+  .timer-btn { min-height: 36px; padding: 8px 10px; font-size: 0.95rem; }
+  #soundToggleBtn, .timer-btn.icon-only { width: 40px; height: 40px; padding: 0; }
 }
 
 /* Make add-task modal actions responsive so they don't overlap the input and are fully visible */
