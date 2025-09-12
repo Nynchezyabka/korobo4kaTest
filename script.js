@@ -299,7 +299,7 @@ function displayTasks() {
             });
         }
 
-        // ��лик по иконк па��ки — ворачивание/разворачивание
+        // Клик по иконк папки — ворачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -700,7 +700,7 @@ function displayTasks() {
     });
 }
 
-// Функция для изеения категории задачи
+// Функция для изеения кат��гории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -872,7 +872,14 @@ function showTimer(task) {
 function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
-    soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i> Звук: вкл' : '<i class="fas fa-volume-xmark"></i> Звук: выкл';
+    soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
+    soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
+    if (timerSoundEnabled) {
+        soundToggleBtn.classList.remove('is-muted');
+    } else {
+        soundToggleBtn.classList.add('is-muted');
+    }
 }
 
 if (soundToggleBtn) {
@@ -897,7 +904,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведомления
+// Функция для показа уведо��ления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -1046,7 +1053,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасн��сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="3">Прос��ые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -1103,7 +1110,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = '��ез подкатего��ии';
+    noneBtn.textContent = 'Без подкатего��ии';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1198,7 +1205,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
+// Поддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1638,7 +1645,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить ��одкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
@@ -1749,7 +1756,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: true,
-            checkboxLabel: 'Подтв��рждаю добавление',
+            checkboxLabel: 'Подтв���рждаю добавление',
             onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
         });
         return;
