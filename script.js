@@ -90,6 +90,7 @@ let timerAnimationFrame = null;
 let timerWorker = null;
 let timerEndAt = 0;
 let timerEndTimeoutId = null;
+let timerSoundEnabled = true;
 
 // ежим отображеия архива ыолненных задач
 let showArchive = false;
@@ -126,6 +127,8 @@ const resetTimerBtn = document.getElementById('resetTimerBtn');
 const completeTaskBtn = document.getElementById('completeTaskBtn');
 const returnTaskBtn = document.getElementById('returnTaskBtn');
 const closeTimerBtn = document.getElementById('closeTimerBtn');
+const soundToggleBtn = document.getElementById('soundToggleBtn');
+const completeNowBtn = document.getElementById('completeNowBtn');
 const importFile = document.getElementById('importFile');
 const notification = document.getElementById('notification');
 const timerCompleteOptions = document.getElementById('timerCompleteOptions');
@@ -266,7 +269,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\">+</button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -279,7 +282,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/разворачивание гру��пы
+        // Клик по названию категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -698,7 +701,7 @@ function displayTasks() {
     });
 }
 
-// Функция для изеения категории задачи
+// Функция для изеения кат��гории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -776,7 +779,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'к��робочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -844,6 +847,11 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
+    // по умолчанию при новом таймере звук включён
+    timerSoundEnabled = true;
+    updateSoundToggleUI();
+    updateTimerControlsForViewport();
+
     // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -863,6 +871,54 @@ function showTimer(task) {
     document.querySelector('.timer-controls').style.display = 'flex';
 }
 
+function updateSoundToggleUI() {
+    if (!soundToggleBtn) return;
+    soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
+    soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
+    soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
+    if (timerSoundEnabled) {
+        soundToggleBtn.classList.remove('is-muted');
+    } else {
+        soundToggleBtn.classList.add('is-muted');
+    }
+}
+
+if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+        timerSoundEnabled = !timerSoundEnabled;
+        updateSoundToggleUI();
+    });
+}
+
+function updateTimerControlsForViewport() {
+    const isMobile = window.matchMedia('(max-width: 480px)').matches;
+    if (!startTimerBtn || !pauseTimerBtn || !resetTimerBtn) return;
+    if (isMobile) {
+        startTimerBtn.classList.add('icon-only');
+        pauseTimerBtn.classList.add('icon-only');
+        resetTimerBtn.classList.add('icon-only');
+        startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
+        startTimerBtn.setAttribute('aria-label','Старт');
+        startTimerBtn.title = 'Старт';
+        pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        pauseTimerBtn.setAttribute('aria-label','Пауза');
+        pauseTimerBtn.title = 'Пауза';
+        resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
+        resetTimerBtn.setAttribute('aria-label','Сброс');
+        resetTimerBtn.title = 'Сброс';
+    } else {
+        startTimerBtn.classList.remove('icon-only');
+        pauseTimerBtn.classList.remove('icon-only');
+        resetTimerBtn.classList.remove('icon-only');
+        startTimerBtn.textContent = 'Старт';
+        pauseTimerBtn.textContent = 'Пауза';
+        resetTimerBtn.textContent = 'Сброс';
+    }
+}
+
+window.addEventListener('resize', updateTimerControlsForViewport);
+
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
@@ -878,7 +934,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведомления
+// Функция для показа уведо��ления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -941,7 +997,7 @@ function populateTaskSubcategoryDropdown(task) {
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
     noneBtn.className = 'category-option';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкатег��рии';
     noneBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         changeTaskCategory(task.id, task.category, null);
@@ -1027,7 +1083,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасн��сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="3">Прос��ые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -1084,7 +1140,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатегории';
+    noneBtn.textContent = 'Без подкатего��ии';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1173,13 +1229,13 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци не поддерживается на этом устройстве");
+        console.log("Вибраци не поддерживается на это�� устройстве");
     }
 });
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
+// Поддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1210,6 +1266,7 @@ document.addEventListener('visibilitychange', () => {
 
 // З��уковой сигнал по завершении
 function playBeep() {
+    if (!timerSoundEnabled) return;
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const o = ctx.createOscillator();
@@ -1362,7 +1419,7 @@ async function cancelServerSchedule() {
 
 // Ф��нкци для сброса тайме��а
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс бы�� явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс ��ы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1618,7 +1675,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: true, checkboxLabel: 'Подтверждаю удаление', onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
@@ -1729,7 +1786,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: true,
-            checkboxLabel: 'Подтверждаю добавление',
+            checkboxLabel: 'Подтв���рждаю добавление',
             onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
         });
         return;
@@ -1750,26 +1807,47 @@ importFile.addEventListener('change', (e) => {
     }
 });
 
-// Paste tasks area handling
+// Paste tasks modal handling
 const pasteTasksBtn = document.getElementById('pasteTasksBtn');
-const pasteTasksArea = document.getElementById('pasteTasksArea');
-const pasteTasksTextarea = document.getElementById('pasteTasksTextarea');
-const pasteTasksSaveBtn = document.getElementById('pasteTasksSaveBtn');
+const pasteTasksModal = document.getElementById('pasteTasksModal');
+const pasteTasksBackdrop = document.getElementById('pasteTasksBackdrop');
+const pasteTasksCloseBtn = document.getElementById('pasteTasksCloseBtn');
+const pasteTasksInput = document.getElementById('pasteTasksInput');
+const pasteTasksAddBtn = document.getElementById('pasteTasksAddBtn');
 const pasteTasksCancelBtn = document.getElementById('pasteTasksCancelBtn');
 
-if (pasteTasksBtn) {
-    pasteTasksBtn.addEventListener('click', () => {
-        if (pasteTasksArea) pasteTasksArea.style.display = pasteTasksArea.style.display === 'none' ? 'block' : 'none';
-        if (pasteTasksArea && pasteTasksArea.style.display === 'block' && pasteTasksTextarea) pasteTasksTextarea.focus();
-    });
+function openPasteModal() {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (!pasteTasksModal) return;
+    pasteTasksModal.setAttribute('aria-hidden','false');
+    pasteTasksModal.style.display = 'flex';
+    if (pasteTasksInput) { pasteTasksInput.value = ''; setTimeout(()=>pasteTasksInput.focus(), 50); }
 }
-if (pasteTasksCancelBtn) pasteTasksCancelBtn.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
-if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя ��обавлять задачи в списке выполненных'); return; }
-    if (!pasteTasksTextarea) return;
-    const raw = pasteTasksTextarea.value || '';
+function closePasteModal() {
+    if (!pasteTasksModal) return;
+    pasteTasksModal.setAttribute('aria-hidden','true');
+    pasteTasksModal.style.display = 'none';
+}
+
+if (pasteTasksBtn) {
+    pasteTasksBtn.addEventListener('click', openPasteModal);
+}
+[pasteTasksBackdrop, pasteTasksCloseBtn, pasteTasksCancelBtn].forEach(el => { if (el) el.addEventListener('click', closePasteModal); });
+
+if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
+    const addAll = () => {
+        lines.forEach(text => {
+            const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+            tasks.push(newTask);
+        });
+        saveTasks();
+        closePasteModal();
+        displayTasks();
+    };
     if (lines.length > 1) {
         openConfirmModal({
             title: 'Подтверждение',
@@ -1778,48 +1856,42 @@ if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
             cancelText: 'Отмена',
             requireCheck: true,
             checkboxLabel: 'Подтверждаю добавление',
-            onConfirm: () => {
-                lines.forEach(text => {
-                    const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-                    tasks.push(newTask);
-                });
-                saveTasks();
-                if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-                pasteTasksTextarea.value = '';
-                displayTasks();
-            }
+            onConfirm: addAll
         });
-        return;
+    } else {
+        addAll();
     }
-    lines.forEach(text => {
-        const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-        tasks.push(newTask);
-    });
-    saveTasks();
-    if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-    pasteTasksTextarea.value = '';
-    displayTasks();
 });
 
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
 resetTimerBtn.addEventListener('click', resetTimer);
 
-completeTaskBtn.addEventListener('click', async () => {
-    if (currentTask) {
-        const taskIndex = tasks.findIndex(t => t.id === currentTask.id);
-        if (taskIndex !== -1) {
-            tasks[taskIndex].completed = true;
-            tasks[taskIndex].active = false;
-            saveTasks();
-        }
-        await cancelServerSchedule();
+function completeCurrentTaskAndClose() {
+    if (!currentTask) return Promise.resolve();
+    const taskIndex = tasks.findIndex(t => t.id === currentTask.id);
+    if (taskIndex !== -1) {
+        tasks[taskIndex].completed = true;
+        tasks[taskIndex].active = false;
+        saveTasks();
+    }
+    return cancelServerSchedule().then(() => {
         stopTimer();
         timerEndAt = 0;
         hideTimer();
         displayTasks();
-    }
+    });
+}
+
+completeTaskBtn.addEventListener('click', async () => {
+    await completeCurrentTaskAndClose();
 });
+
+if (completeNowBtn) {
+    completeNowBtn.addEventListener('click', async () => {
+        await completeCurrentTaskAndClose();
+    });
+}
 
 returnTaskBtn.addEventListener('click', async () => {
     await cancelServerSchedule();
@@ -1869,7 +1941,7 @@ window.addEventListener('focus', () => {
     }
 });
 
-// Функция для показа toast-уведомления
+// Функция для показа toast-уведомле��ия
 function showToastNotification(title, message, duration = 5000) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
