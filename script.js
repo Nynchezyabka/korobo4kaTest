@@ -67,9 +67,8 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     });
     saveTasks();
     // clear modal textarea if present
-    if (modalTaskText) modalTaskText.value = '';
-    // hide add modal if open
-    closeAddModal();
+    if (modalTaskText) { modalTaskText.value = ''; setTimeout(() => modalTaskText.focus(), 30); }
+    // keep add modal open to allow adding more tasks/subcategories
     // refresh UI
     displayTasks();
 }
@@ -1081,7 +1080,7 @@ function setupAddCategorySelector() {
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
-            <button class="add-category-option" data-category="2">Безопасн��сть</button>
+            <button class="add-category-option" data-category="2">Безопасн����сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Прос��ые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
@@ -2025,7 +2024,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уве��омления не поддерживаются этим браузером');
+            openInfoModal('Уве��омления не по��держиваются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
