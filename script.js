@@ -96,7 +96,8 @@ function getSubcategoryLabel(category, key) {
 
 // Add multiple lines as tasks helper
 function addLinesAsTasks(lines, category = 0, selectedSub = null) {
-    if (!Array.isArray(lines) || lines.length === 0) return;
+    if (!Array.isArray(lines) || lines.length === 0) return 0;
+    let added = 0;
     lines.forEach(raw => {
         const text = (typeof raw === 'string') ? raw.trim() : String(raw);
         if (!text) return;
@@ -113,6 +114,7 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
             if (norm) newTask.subcategory = norm;
         }
         tasks.push(newTask);
+        added += 1;
     });
     saveTasks();
     // clear modal textarea if present
@@ -120,6 +122,7 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     // keep add modal open to allow adding more tasks/subcategories
     // refresh UI
     displayTasks();
+    return added;
 }
 
 // Переменные состояния
@@ -474,7 +477,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для мобильного: папка ��е��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -829,7 +832,7 @@ function deleteTask(taskId) {
     });
 }
 
-// Ф��нкия для экспорта задач в фйл
+// Ф��нкия для экспорта зад��ч в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -866,7 +869,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} з����ач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -902,7 +905,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр�� новом таймере звук включён
+    // по ��м��лчанию пр�� новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1295,7 +1298,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
+// Поддержка Wake Lock API, ч��обы экран не засыпа�� во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1671,7 +1674,7 @@ function openConfirmModal({ title='Подтверждение', message='', conf
         m.setAttribute('aria-hidden','true'); m.style.display = 'none';
     };
     const onClose = () => { cleanup(); };
-    const onOk = () => { if (typeof onConfirm === 'function') onConfirm(); cleanup(); };
+    const onOk = () => { cleanup(); if (typeof onConfirm === 'function') onConfirm(); };
     okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отмена';
     cancelBtn.style.display = hideCancel ? 'none' : 'inline-flex';
     okBtn.addEventListener('click', onOk);
@@ -1885,7 +1888,10 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             cancelText: 'Отмена',
             requireCheck: false,
             compact: true,
-            onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
+            onConfirm: () => {
+                const added = addLinesAsTasks(lines, category, selectedSub);
+                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} задач`);
+            }
         });
         return;
     }
@@ -1945,6 +1951,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         saveTasks();
         closePasteModal();
         displayTasks();
+        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
         openConfirmModal({
@@ -2106,7 +2113,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вруч��ую.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
