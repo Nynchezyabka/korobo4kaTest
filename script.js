@@ -80,7 +80,7 @@ function normalizeSubcategoryName(category, name) {
     const n = name.trim().toLowerCase();
     if (String(category) === '1') {
         if (['work','работа','rabota'].includes(n)) return 'work';
-        if (['home','дом','doma','house'].includes(n)) return 'home';
+        if (['home','дом','doma'].includes(n)) return 'home';
     }
     return name.trim();
 }
@@ -779,7 +779,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для переключения активности задачи
+// ункция для переключ��ния активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -813,7 +813,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Функця для удаления задачи
+// Фу��кця для удаления задачи
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
@@ -1103,7 +1103,7 @@ function populateTaskSubcategoryDropdown(task) {
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
-        save.textContent = 'Добавить';
+        save.textContent = 'Доб��вить';
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
@@ -1237,7 +1237,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сл��жная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1630,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��достей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2098,7 +2098,7 @@ if (notifyToggleBtn) {
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомления включены');
+            createBrowserNotification('Уведомлен��я включены');
             updateNotifyToggle();
             return;
         }
