@@ -943,7 +943,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголовки категорий для мобильной группировки */
+/* Позаголовки ��атегорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1256,6 +1256,13 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* Compact confirm modal variant */
+#confirmModal .modal-content.compact { padding: 16px 12px 12px; max-width: 380px; }
+#confirmModal .modal-content.compact h3 { font-size: 1.3rem; margin-bottom: 6px; }
+#confirmModal .modal-content.compact .modal-message { font-size: 0.95rem; margin: 6px 0 8px; }
+#confirmModal .modal-content.compact .modal-actions { gap: 6px; margin-top: 8px; }
+#confirmModal .modal-content.compact .modal-actions button { min-width: 100px; padding: 8px 10px; font-size: 0.95rem; }
 
 /* Paste tasks modal: compact, no internal scrollbars */
 #pasteTasksModal .paste-modal-content { max-height: none; overflow: visible; padding: 20px 14px 14px; }

@@ -816,11 +816,11 @@ function toggleSubcategoryActiveByName(category, subName) {
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
-        message: 'Удалить эту зад��чу?',
+        message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
         cancelText: 'Отмена',
-        requireCheck: true,
-        checkboxLabel: 'Подтверждаю удаление',
+        requireCheck: false,
+        compact: true,
         onConfirm: () => {
             tasks = tasks.filter(t => t.id !== taskId);
             saveTasks();
@@ -863,7 +863,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавлям задачи в бзу данных
+            // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
             openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
@@ -902,7 +902,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по умолчанию при новом таймере звук включён
+    // по умолчанию пр�� новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1324,7 +1324,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// З��уковой сигнал по завершении
+// З��уковой сигна�� по завершении
 function playBeep() {
     if (!timerSoundEnabled) return;
     try {
@@ -1360,7 +1360,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомления
+    // Сообщае серверу о распсании пуш-уведомлен��я
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1643,10 +1643,12 @@ function renderModalCategoryOptions(allowedCategories = null) {
 }
 
 // Modal helper functions
-function openConfirmModal({ title='Подтверждени��', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, onConfirm=null }) {
+function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
     const m = document.getElementById('confirmModal'); if (!m) return;
     const backdrop = document.getElementById('confirmBackdrop');
     m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
+    const contentEl = m.querySelector('.modal-content');
+    if (contentEl) contentEl.classList.toggle('compact', !!compact);
     const titleEl = m.querySelector('#confirmTitle'); const msgEl = m.querySelector('#confirmMessage');
     const wrap = m.querySelector('#confirmCheckWrap'); const chk = m.querySelector('#confirmCheckbox'); const chkLabel = m.querySelector('#confirmCheckboxLabel');
     const okBtn = m.querySelector('#confirmOkBtn'); const cancelBtn = m.querySelector('#confirmCancelBtn'); const closeBtn = m.querySelector('#confirmCloseBtn');
@@ -1664,6 +1666,8 @@ function openConfirmModal({ title='Подтверждени��', message='', 
         cancelBtn.removeEventListener('click', onClose);
         closeBtn.removeEventListener('click', onClose);
         backdrop.removeEventListener('click', onClose);
+        const contentEl2 = m.querySelector('.modal-content');
+        if (contentEl2) contentEl2.classList.remove('compact');
         m.setAttribute('aria-hidden','true'); m.style.display = 'none';
     };
     const onClose = () => { cleanup(); };
