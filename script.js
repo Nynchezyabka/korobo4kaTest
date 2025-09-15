@@ -83,7 +83,10 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
             active: true,
             statusChangedAt: Date.now()
         };
-        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) newTask.subcategory = selectedSub.trim();
+        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) {
+            const norm = normalizeSubcategoryName(newTask.category, selectedSub);
+            if (norm) newTask.subcategory = norm;
+        }
         tasks.push(newTask);
     });
     saveTasks();
@@ -289,7 +292,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -816,7 +819,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать мас��ив задач');
+                openInfoModal('Ошибка: файл должен содержать мас��и�� задач');
                 return;
             }
             
@@ -872,7 +875,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный ��бос состояния таймера перед новым ��апуском
+    // Полный сбос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -886,7 +889,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показыва��м управлени аймером
+    // Скрывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1313,7 +1316,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // п��и перво зауске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1904,7 +1907,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     };
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'Подтв��рждение',
+            title: 'Подтверждение',
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
