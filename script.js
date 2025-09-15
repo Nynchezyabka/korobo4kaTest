@@ -141,7 +141,7 @@ let timerEndAt = 0;
 let timerEndTimeoutId = null;
 let timerSoundEnabled = true;
 
-// ежим отображеия архива ыолненных задач
+// ежим отображеи�� архива ыолненных задач
 let showArchive = false;
 
 // Элемнты DOM
@@ -504,7 +504,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сох��анённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -543,9 +543,9 @@ function displayTasks() {
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
                     eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
-                    const hasActive = tasks.some(t => t.category === cat && t.subcategory === name && t.active && !t.completed);
-                    eyeBtn.innerHTML = `<i class="fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
-                    eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, name); });
+                    const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
+                    eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
+                    eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
                     leftWrap.appendChild(eyeBtn);
                 }
                 const menuBtn = document.createElement('button');
@@ -931,7 +931,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : '��вук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -1011,7 +1011,7 @@ function showNotification(message) {
 
 // Сздани браузерного уведомления
 function createBrowserNotification(message) {
-    const title = "🎁 К��РОБОЧКА";
+    const title = "🎁 КОРОБОЧКА";
     const options = {
         body: message || "Время ышло! адача завершена.",
         icon: "/icon-192.png",
@@ -1368,7 +1368,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомления
+    // Сообщае серверу о р��спсании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1630,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория н�� определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1952,7 +1952,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     };
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'Подтверждение',
+            title: 'По��тверждение',
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
@@ -2098,7 +2098,7 @@ if (notifyToggleBtn) {
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Увед��мления включены');
+            createBrowserNotification('Уведомления включены');
             updateNotifyToggle();
             return;
         }
@@ -2113,7 +2113,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('Не удалось запросить р��зрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
