@@ -556,7 +556,7 @@ function displayTasks() {
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
-                const arr = bySub.get(name) || [];
+                const arr = bySub.get(normMap.get(normKey)) || [];
                 arr.forEach(el => frag.appendChild(el));
             });
             grid.innerHTML = '';
@@ -880,7 +880,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем ст��оку категорий в масив чисел
+    // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -1237,7 +1237,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сл��жная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1451,7 +1451,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для оста��овки таймра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1630,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые рад��сти',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
