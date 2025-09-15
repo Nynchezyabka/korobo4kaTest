@@ -348,7 +348,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк папки — ворачивание/разворачивание
+        // Клик по иконк папки — в��рачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -834,7 +834,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'к��робочка-задачи.json';
+    const exportFileDefaultName = 'к���робочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -866,7 +866,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -902,7 +902,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по умолчанию пр�� новом таймере звук включён
+    // по ум��лчанию пр�� новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1622,7 +1622,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��достей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1883,8 +1883,8 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
-            requireCheck: true,
-            checkboxLabel: 'Подтв���рждаю добавление',
+            requireCheck: false,
+            compact: true,
             onConfirm: () => { addLinesAsTasks(lines, category, selectedSub); }
         });
         return;
@@ -1952,8 +1952,8 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
-            requireCheck: true,
-            checkboxLabel: 'Подтверждаю добавление',
+            requireCheck: false,
+            compact: true,
             onConfirm: addAll
         });
     } else {
