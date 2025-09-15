@@ -331,7 +331,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названи�� категории — сворачивание/развора��ивание гру��пы
+        // Клик по названию категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -416,7 +416,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
+                            <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -475,7 +475,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -882,7 +882,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных з��дач в этой категории!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
     
@@ -948,7 +948,7 @@ function updateTimerControlsForViewport() {
         pauseTimerBtn.classList.add('icon-only');
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
-        startTimerBtn.setAttribute('aria-label','С��арт');
+        startTimerBtn.setAttribute('aria-label','Старт');
         startTimerBtn.title = 'Старт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауза');
@@ -1059,9 +1059,15 @@ function populateTaskSubcategoryDropdown(task) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
-    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
+    const present = new Set();
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }); present.add('work'); list.push({ key: 'home', label: 'Дом' }); present.add('home'); }
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
-    saved.forEach(s => list.push({ key: s, label: s }));
+    saved.forEach(s => {
+        const norm = normalizeSubcategoryName(task.category, s);
+        if (String(task.category) === '1' && (norm === 'home' || norm === 'work')) return;
+        const tag = (norm || s).toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+    });
 
     list.forEach(item => {
         const b = document.createElement('button');
@@ -1426,7 +1432,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы таймеа
+// Функция для аузы тайм��а
 function pauseTimer() {
     if (!timerRunning) return;
 
