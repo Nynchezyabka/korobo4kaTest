@@ -416,7 +416,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
+                            <button class=\"category-option\" data-category=\"0\">Без к��тегори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -567,7 +567,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноы�� элементов
+    // Добавяем обрабо��чики событий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -924,7 +924,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук вклю��ён' : 'Звук выключен');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -954,7 +954,7 @@ function updateTimerControlsForViewport() {
         pauseTimerBtn.setAttribute('aria-label','Пауза');
         pauseTimerBtn.title = 'Пауза';
         resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
-        resetTimerBtn.setAttribute('aria-label','С��рос');
+        resetTimerBtn.setAttribute('aria-label','Сброс');
         resetTimerBtn.title = 'Сброс';
     } else {
         startTimerBtn.classList.remove('icon-only');
@@ -1059,7 +1059,7 @@ function populateTaskSubcategoryDropdown(task) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
-    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работ��' }, { key: 'home', label: 'Дом' }); }
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
     saved.forEach(s => list.push({ key: s, label: s }));
 
@@ -1086,7 +1086,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сф��ра удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1175,12 +1175,18 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
+    const present = new Set();
     if (String(cat) === '1') {
-        list.push({ key: 'work', label: 'Работа' });
-        list.push({ key: 'home', label: 'Дом' });
+        list.push({ key: 'work', label: 'Работа' }); present.add('work');
+        list.push({ key: 'home', label: 'Дом' }); present.add('home');
     }
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-    saved.forEach(s => list.push({ key: s, label: s }));
+    saved.forEach(s => {
+        const norm = normalizeSubcategoryName(cat, s);
+        if (String(cat) === '1' && (norm === 'home' || norm === 'work')) return;
+        const tag = (norm || s).toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+    });
 
     controls.innerHTML = '';
 
@@ -1331,7 +1337,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска тайме��а
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
