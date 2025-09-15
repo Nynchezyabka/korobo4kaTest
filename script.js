@@ -30,8 +30,34 @@ function loadTasks() {
             Object.keys(cs).forEach(k => {
                 cs[k] = cs[k].map(v => sanitizeStoredText(v));
             });
+            // Migration: remove built-in duplicates (Home/Work/Дом/Работа) from custom list for category 1
+            const c1 = cs['1'] || cs[1];
+            if (Array.isArray(c1)) {
+                const filtered = [];
+                const seen = new Set();
+                c1.forEach(v => {
+                    const norm = normalizeSubcategoryName(1, v);
+                    if (norm === 'home' || norm === 'work') return;
+                    const tag = (norm || v).toLowerCase();
+                    if (!seen.has(tag)) { seen.add(tag); filtered.push(v); }
+                });
+                cs[1] = filtered;
+            }
             localStorage.setItem('customSubcategories', JSON.stringify(cs));
         }
+    } catch (e) {}
+
+    // Migration: normalize existing tasks subcategory names for category 1
+    try {
+        tasks = tasks.map(t => {
+            if (t && t.category === 1 && typeof t.subcategory === 'string' && t.subcategory.trim()) {
+                const norm = normalizeSubcategoryName(1, t.subcategory);
+                if (norm) return { ...t, subcategory: norm };
+                const { subcategory, ...rest } = t; return rest;
+            }
+            return t;
+        });
+        saveTasks();
     } catch (e) {}
     return tasks;
 }
@@ -48,6 +74,27 @@ function getNextId() {
     return maxId + 1;
 }
 
+// Helpers for subcategory normalization/localization
+function normalizeSubcategoryName(category, name) {
+    if (!name || typeof name !== 'string') return null;
+    const n = name.trim().toLowerCase();
+    if (String(category) === '1') {
+        if (['work','работа','rabota'].includes(n)) return 'work';
+        if (['home','дом','doma'].includes(n)) return 'home';
+    }
+    return name.trim();
+}
+function getSubcategoryLabel(category, key) {
+    if (!key) return '';
+    if (String(category) === '1') {
+        if (key === 'work') return 'Работа';
+        if (key === 'home') return 'Дом';
+        if (key.toLowerCase() === 'работа') return 'Работа';
+        if (key.toLowerCase() === 'дом') return 'Дом';
+    }
+    return key;
+}
+
 // Add multiple lines as tasks helper
 function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     if (!Array.isArray(lines) || lines.length === 0) return;
@@ -62,14 +109,16 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
             active: true,
             statusChangedAt: Date.now()
         };
-        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) newTask.subcategory = selectedSub.trim();
+        if (selectedSub && typeof selectedSub === 'string' && selectedSub.trim()) {
+            const norm = normalizeSubcategoryName(newTask.category, selectedSub);
+            if (norm) newTask.subcategory = norm;
+        }
         tasks.push(newTask);
     });
     saveTasks();
     // clear modal textarea if present
-    if (modalTaskText) modalTaskText.value = '';
-    // hide add modal if open
-    closeAddModal();
+    if (modalTaskText) { modalTaskText.value = ''; setTimeout(() => modalTaskText.focus(), 30); }
+    // keep add modal open to allow adding more tasks/subcategories
     // refresh UI
     displayTasks();
 }
@@ -269,7 +318,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -367,7 +416,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
+                            <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -426,7 +475,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Переставяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -470,12 +519,19 @@ function displayTasks() {
             const frag = document.createDocumentFragment();
             noneTasks.forEach(el => frag.appendChild(el));
             const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-            const subSet = new Set([...bySub.keys(), ...saved]);
-            const subNames = Array.from(subSet).sort((a,b)=>a.localeCompare(b,'ru'));
-            subNames.forEach(name => {
+            const normMap = new Map();
+            const addKey = (key) => {
+                const norm = normalizeSubcategoryName(cat, key) || key;
+                if (!normMap.has(norm)) normMap.set(norm, key);
+            };
+            bySub.forEach((arr, key) => addKey(key));
+            saved.forEach(key => addKey(key));
+            const subNames = Array.from(normMap.keys()).sort((a,b)=>a.localeCompare(b,'ru'));
+            subNames.forEach(normKey => {
+                const display = getSubcategoryLabel(cat, normKey);
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(display)}</span>`;
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
                 const headingSpan = titleEl.querySelector('.category-heading');
@@ -487,9 +543,9 @@ function displayTasks() {
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
                     eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
-                    const hasActive = tasks.some(t => t.category === cat && t.subcategory === name && t.active && !t.completed);
-                    eyeBtn.innerHTML = `<i class="fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
-                    eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, name); });
+                    const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
+                    eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
+                    eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
                     leftWrap.appendChild(eyeBtn);
                 }
                 const menuBtn = document.createElement('button');
@@ -497,10 +553,10 @@ function displayTasks() {
                 menuBtn.type = 'button';
                 menuBtn.setAttribute('aria-label','Меню подкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
-                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
-                const arr = bySub.get(name) || [];
+                const arr = bySub.get(normMap.get(normKey)) || [];
                 arr.forEach(el => frag.appendChild(el));
             });
             grid.innerHTML = '';
@@ -723,7 +779,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для переключения активности задачи
+// ункция для переключ��ния активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -757,7 +813,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Функця для удаления задачи
+// Фу��кця для удаления задачи
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
@@ -796,7 +852,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать мас��ив задач');
+                openInfoModal('Ошибка: файл должен содержать мас��и�� задач');
                 return;
             }
             
@@ -866,7 +922,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показыва��м управлени аймером
+    // Скрывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1010,19 +1066,25 @@ function populateTaskSubcategoryDropdown(task) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
-    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
+    const present = new Set();
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }); present.add('work'); list.push({ key: 'home', label: 'Дом' }); present.add('home'); }
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
-    saved.forEach(s => list.push({ key: s, label: s }));
+    saved.forEach(s => {
+        const norm = normalizeSubcategoryName(task.category, s);
+        if (String(task.category) === '1' && (norm === 'home' || norm === 'work')) return;
+        const tag = (norm || s).toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+    });
 
     list.forEach(item => {
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'category-option';
-        b.dataset.sub = item.key;
-        b.textContent = item.label;
+        b.dataset.sub = normalizeSubcategoryName(task.category, item.key) || item.key;
+        b.textContent = getSubcategoryLabel(task.category, item.label);
         b.addEventListener('click', (e) => {
             e.stopPropagation();
-            changeTaskCategory(task.id, task.category, item.key);
+            changeTaskCategory(task.id, task.category, b.dataset.sub);
             dd.classList.remove('show');
             activeDropdown = null;
         });
@@ -1041,7 +1103,7 @@ function populateTaskSubcategoryDropdown(task) {
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
-        save.textContent = 'Добавить';
+        save.textContent = 'Доб��вить';
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
@@ -1081,7 +1143,7 @@ function setupAddCategorySelector() {
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
-            <button class="add-category-option" data-category="2">Безопасн��сть</button>
+            <button class="add-category-option" data-category="2">Безопасн����сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Прос��ые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
@@ -1126,12 +1188,18 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
+    const present = new Set();
     if (String(cat) === '1') {
-        list.push({ key: 'work', label: 'Работа' });
-        list.push({ key: 'home', label: 'Дом' });
+        list.push({ key: 'work', label: 'Работа' }); present.add('work');
+        list.push({ key: 'home', label: 'Дом' }); present.add('home');
     }
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-    saved.forEach(s => list.push({ key: s, label: s }));
+    saved.forEach(s => {
+        const norm = normalizeSubcategoryName(cat, s);
+        if (String(cat) === '1' && (norm === 'home' || norm === 'work')) return;
+        const tag = (norm || s).toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+    });
 
     controls.innerHTML = '';
 
@@ -1152,12 +1220,12 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
         b.type = 'button';
-        b.dataset.sub = item.key;
-        b.textContent = item.label;
+        b.dataset.sub = normalizeSubcategoryName(cat, item.key) || item.key;
+        b.textContent = getSubcategoryLabel(cat, item.label);
         b.addEventListener('click', () => {
             controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
             b.classList.add('selected');
-            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', item.key);
+            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', b.dataset.sub);
         });
         controls.appendChild(b);
     });
@@ -1169,7 +1237,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1371,7 +1439,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы таймеа
+// Функция для аузы тайм��а
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1562,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��достей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2025,12 +2093,12 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уве��омления не поддерживаются этим браузером');
+            openInfoModal('Уве��омления не по��держиваются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомления включены');
+            createBrowserNotification('Уведомлен��я включены');
             updateNotifyToggle();
             return;
         }
