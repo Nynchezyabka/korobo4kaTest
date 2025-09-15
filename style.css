@@ -875,7 +875,7 @@ textarea {
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
+    z-index: 11000;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -943,7 +943,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголовки ��атегорий для мобильной группировки */
+/* Позаголовки категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1121,7 +1121,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатег��рий внутри "Обязательные" */
+/* Сетка колонок подкатег��ри�� внутри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1170,7 +1170,7 @@ textarea {
 /* Редактор текста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
-/* Цветизация вбранной категории при добавлении задачи */
+/* Цветизация вбранной категории при доба��лении задачи */
 .add-category-badge[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-badge[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-badge[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -1692,7 +1692,7 @@ textarea {
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
+    z-index: 11000;
     display: flex;
     align-items: center;
     gap: 12px;
