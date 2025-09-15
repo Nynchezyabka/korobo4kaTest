@@ -141,7 +141,7 @@ let timerEndAt = 0;
 let timerEndTimeoutId = null;
 let timerSoundEnabled = true;
 
-// ежим отображеи�� архива ыолненных задач
+// ежим отображеия архива ыолненных задач
 let showArchive = false;
 
 // Элемнты DOM
@@ -504,7 +504,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сох��анённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -553,7 +553,7 @@ function displayTasks() {
                 menuBtn.type = 'button';
                 menuBtn.setAttribute('aria-label','Меню подкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
-                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, name); });
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(name) || [];
@@ -880,7 +880,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в масив чисел
+    // Преоразуем ст��оку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
     // Получаем все активные задачи из указанных категорий
@@ -931,7 +931,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : '��вук выключен');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -1368,7 +1368,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о р��спсании пуш-уведомления
+    // Сообщае серверу о распсании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1451,7 +1451,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функция для оста��овки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1630,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые рад��сти',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1952,7 +1952,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     };
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'По��тверждение',
+            title: 'Подтверждение',
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
@@ -2113,7 +2113,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить р��зрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
