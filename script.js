@@ -30,8 +30,34 @@ function loadTasks() {
             Object.keys(cs).forEach(k => {
                 cs[k] = cs[k].map(v => sanitizeStoredText(v));
             });
+            // Migration: remove built-in duplicates (Home/Work/Дом/Работа) from custom list for category 1
+            const c1 = cs['1'] || cs[1];
+            if (Array.isArray(c1)) {
+                const filtered = [];
+                const seen = new Set();
+                c1.forEach(v => {
+                    const norm = normalizeSubcategoryName(1, v);
+                    if (norm === 'home' || norm === 'work') return;
+                    const tag = (norm || v).toLowerCase();
+                    if (!seen.has(tag)) { seen.add(tag); filtered.push(v); }
+                });
+                cs[1] = filtered;
+            }
             localStorage.setItem('customSubcategories', JSON.stringify(cs));
         }
+    } catch (e) {}
+
+    // Migration: normalize existing tasks subcategory names for category 1
+    try {
+        tasks = tasks.map(t => {
+            if (t && t.category === 1 && typeof t.subcategory === 'string' && t.subcategory.trim()) {
+                const norm = normalizeSubcategoryName(1, t.subcategory);
+                if (norm) return { ...t, subcategory: norm };
+                const { subcategory, ...rest } = t; return rest;
+            }
+            return t;
+        });
+        saveTasks();
     } catch (e) {}
     return tasks;
 }
@@ -898,7 +924,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук вклю��ён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -928,7 +954,7 @@ function updateTimerControlsForViewport() {
         pauseTimerBtn.setAttribute('aria-label','Пауза');
         pauseTimerBtn.title = 'Пауза';
         resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
-        resetTimerBtn.setAttribute('aria-label','Сброс');
+        resetTimerBtn.setAttribute('aria-label','С��рос');
         resetTimerBtn.title = 'Сброс';
     } else {
         startTimerBtn.classList.remove('icon-only');
@@ -1033,7 +1059,7 @@ function populateTaskSubcategoryDropdown(task) {
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
-    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }, { key: 'home', label: 'Дом' }); }
+    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работ��' }, { key: 'home', label: 'Дом' }); }
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
     saved.forEach(s => list.push({ key: s, label: s }));
 
@@ -1060,7 +1086,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сф��ра удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1305,7 +1331,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// Функция для запуска тайме��а
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
