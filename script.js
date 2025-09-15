@@ -30,15 +30,14 @@ function loadTasks() {
             Object.keys(cs).forEach(k => {
                 cs[k] = cs[k].map(v => sanitizeStoredText(v));
             });
-            // Migration: remove built-in duplicates (Home/Work/Дом/Работа) from custom list for category 1
+            // Migration: deduplicate saved subcategories for category 1 (keep user-defined values intact)
             const c1 = cs['1'] || cs[1];
             if (Array.isArray(c1)) {
                 const filtered = [];
                 const seen = new Set();
                 c1.forEach(v => {
-                    const norm = normalizeSubcategoryName(1, v);
-                    if (norm === 'home' || norm === 'work') return;
-                    const tag = (norm || v).toLowerCase();
+                    const tag = String(v).trim().toLowerCase();
+                    if (!tag) return;
                     if (!seen.has(tag)) { seen.add(tag); filtered.push(v); }
                 });
                 cs[1] = filtered;
@@ -250,7 +249,7 @@ function updateNotifyToggle() {
 // Функция дя плучения названия категори�� по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Категория не определена",
+        0: "Категори�� не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
@@ -1067,11 +1066,9 @@ function populateTaskSubcategoryDropdown(task) {
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
     const present = new Set();
-    if (String(task.category) === '1') { list.push({ key: 'work', label: 'Работа' }); present.add('work'); list.push({ key: 'home', label: 'Дом' }); present.add('home'); }
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(task.category, s);
-        if (String(task.category) === '1' && (norm === 'home' || norm === 'work')) return;
         const tag = (norm || s).toLowerCase();
         if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
     });
@@ -1189,14 +1186,9 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
     const present = new Set();
-    if (String(cat) === '1') {
-        list.push({ key: 'work', label: 'Работа' }); present.add('work');
-        list.push({ key: 'home', label: 'Дом' }); present.add('home');
-    }
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
-        if (String(cat) === '1' && (norm === 'home' || norm === 'work')) return;
         const tag = (norm || s).toLowerCase();
         if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
     });
@@ -1758,7 +1750,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2043,7 +2035,7 @@ window.addEventListener('focus', () => {
     }
 });
 
-// Функция для показа toast-уведомле��ия
+// Функ��ия для показа toast-уведомле��ия
 function showToastNotification(title, message, duration = 5000) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
