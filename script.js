@@ -761,7 +761,7 @@ function toggleSubcategoryActiveByName(category, subName) {
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
-        message: 'Удалить эту задачу?',
+        message: 'Удалить эту зад��чу?',
         confirmText: 'Удалить',
         cancelText: 'Отмена',
         requireCheck: true,
@@ -866,7 +866,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрываем опции завершения и показываем управлени аймером
+    // Скрываем опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1583,7 +1583,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
 }
 
 // Modal helper functions
-function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, onConfirm=null }) {
+function openConfirmModal({ title='Подтверждени��', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, onConfirm=null }) {
     const m = document.getElementById('confirmModal'); if (!m) return;
     const backdrop = document.getElementById('confirmBackdrop');
     m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
@@ -1660,7 +1660,22 @@ function openSubcategoryActions(category, subName) {
             if (idx !== -1) arr[idx] = newName; else if (!arr.includes(newName)) arr.push(newName);
             cs[ctx.category] = Array.from(new Set(arr)); localStorage.setItem('customSubcategories', JSON.stringify(cs));
             tasks = tasks.map(t => (t.category === ctx.category && t.subcategory === ctx.subName) ? ({...t, subcategory: newName}) : t);
-            saveTasks(); displayTasks();
+            saveTasks();
+            displayTasks();
+            try {
+                if (addTaskModal && addTaskModal.style.display === 'flex') {
+                    let selCat = null;
+                    if (typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) selCat = modalPrimaryCategory;
+                    else if (modalCategoryOptions && modalCategoryOptions.dataset && modalCategoryOptions.dataset.selected) selCat = parseInt(modalCategoryOptions.dataset.selected);
+                    if (typeof selCat === 'number' && !Number.isNaN(selCat)) {
+                        showAddSubcategoriesFor(selCat, modalSubcategories);
+                    }
+                    const badge = document.querySelector('.add-category-badge');
+                    if (badge && badge.getAttribute('data-sub') === ctx.subName) {
+                        badge.setAttribute('data-sub', newName);
+                    }
+                }
+            } catch (_) {}
             // close rename modal
             if (renameModal) { renameModal.setAttribute('aria-hidden','true'); renameModal.style.display='none'; }
         });
@@ -1676,7 +1691,26 @@ function openSubcategoryActions(category, subName) {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
                 openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
-                    const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t); saveTasks(); displayTasks(); } });
+                    const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
+saveTasks();
+displayTasks();
+try {
+    if (addTaskModal && addTaskModal.style.display === 'flex') {
+        let selCat = null;
+        if (typeof modalPrimaryCategory === 'number' && modalPrimaryCategory !== null) {
+            selCat = modalPrimaryCategory;
+        } else if (modalCategoryOptions && modalCategoryOptions.dataset && modalCategoryOptions.dataset.selected) {
+            selCat = parseInt(modalCategoryOptions.dataset.selected);
+        }
+        if (typeof selCat === 'number' && !Number.isNaN(selCat)) {
+            showAddSubcategoriesFor(selCat, modalSubcategories);
+        }
+        const badge = document.querySelector('.add-category-badge');
+        if (badge && badge.getAttribute('data-sub') === ctx.subName) {
+            badge.setAttribute('data-sub', '');
+        }
+    }
+} catch (_) {} } });
             } else if (action === 'move') {
                 const mv = document.getElementById('moveTasksModal'); if (!mv) return; mv.setAttribute('aria-hidden','false'); mv.style.display='flex';
                 // render category options
@@ -2006,7 +2040,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }

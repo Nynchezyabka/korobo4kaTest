@@ -1286,10 +1286,10 @@ textarea {
 .subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
 .subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
 .subcat-action-btn.destructive { background: #ffcdd2; color: #8B0000; }
-#subcatActionsModal .modal-content { max-width: 480px; padding: 20px; max-height: none; overflow: visible; }
+#subcatActionsModal .modal-content { max-width: 640px; padding: 20px; max-height: none; overflow: visible; }
 #subcatActionsModal .modal-actions { justify-content: center; }
 @media (min-width:481px) {
-    #subcatActionsModal .subcat-actions { flex-direction: row; gap: 12px; }
+    #subcatActionsModal .subcat-actions { flex-direction: row; flex-wrap: wrap; gap: 12px; }
     #subcatActionsModal .subcat-action-btn { flex: 1; }
 }
 @media (max-width:480px) {
@@ -1461,7 +1461,7 @@ textarea {
     white-space: normal !important;
 }
 
-/* Адаптивность для мобильных устройств */
+/* Адаптивность д��я мобильных устройств */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -1566,7 +1566,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос для десктопов */
+/* Медиа-зпрос для дес��топов */
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
