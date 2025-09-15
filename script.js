@@ -477,7 +477,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для мобильного: папка ��е��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -803,7 +803,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по им��ни для указанной категрии
+// Переклюение активности подкатегоии по им����и для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -832,7 +832,7 @@ function deleteTask(taskId) {
     });
 }
 
-// Ф��нкия для экспорта зад��ч в фйл
+// Ф��нкия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -869,7 +869,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} з����ач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -905,7 +905,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ��м��лчанию пр�� новом таймере звук включён
+    // по ум��лчанию пр�� новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1044,7 +1044,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке страницы
+// Добавляем запрос разр��шения при загрузке страницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1099,7 +1099,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера ��довольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1203,7 +1203,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатего��ии';
+    noneBtn.textContent = 'Без подкатег����ии';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1298,7 +1298,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, ч��обы экран не засыпа�� во врея таймера
+// Поддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1646,7 +1646,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
 }
 
 // Modal helper functions
-function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
+function openConfirmModal({ title='Подтвержден��е', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
     const m = document.getElementById('confirmModal'); if (!m) return;
     const backdrop = document.getElementById('confirmBackdrop');
     m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
@@ -1757,7 +1757,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегор��ю "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -1911,14 +1911,20 @@ importFile.addEventListener('change', (e) => {
     }
 });
 
-// Paste tasks modal handling
+// Paste tasks handling (supports inline area and modal)
 const pasteTasksBtn = document.getElementById('pasteTasksBtn');
+// Modal elements (scoped to modal to avoid duplicate IDs)
 const pasteTasksModal = document.getElementById('pasteTasksModal');
-const pasteTasksBackdrop = document.getElementById('pasteTasksBackdrop');
-const pasteTasksCloseBtn = document.getElementById('pasteTasksCloseBtn');
-const pasteTasksInput = document.getElementById('pasteTasksInput');
-const pasteTasksAddBtn = document.getElementById('pasteTasksAddBtn');
-const pasteTasksCancelBtn = document.getElementById('pasteTasksCancelBtn');
+const pasteTasksBackdrop = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksBackdrop') : null;
+const pasteTasksCloseBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCloseBtn') : null;
+const pasteTasksInput = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksInput') : null;
+const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksAddBtn') : null;
+const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
+// Inline area elements
+const pasteTasksArea = document.getElementById('pasteTasksArea');
+const pasteTasksTextarea = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksTextarea') : null;
+const pasteTasksSaveBtn = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksSaveBtn') : null;
+const pasteTasksCancelBtnInline = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
     if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
@@ -1934,10 +1940,20 @@ function closePasteModal() {
 }
 
 if (pasteTasksBtn) {
-    pasteTasksBtn.addEventListener('click', openPasteModal);
+    pasteTasksBtn.addEventListener('click', () => {
+        if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+        if (pasteTasksArea) {
+            const show = pasteTasksArea.style.display !== 'block';
+            pasteTasksArea.style.display = show ? 'block' : 'none';
+            if (show && pasteTasksTextarea) setTimeout(() => pasteTasksTextarea.focus(), 50);
+        } else {
+            openPasteModal();
+        }
+    });
 }
-[pasteTasksBackdrop, pasteTasksCloseBtn, pasteTasksCancelBtn].forEach(el => { if (el) el.addEventListener('click', closePasteModal); });
+[pasteTasksBackdrop, pasteTasksCloseBtn, pasteTasksCancelBtnModal].forEach(el => { if (el) el.addEventListener('click', closePasteModal); });
 
+// Modal add button
 if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
@@ -1967,6 +1983,38 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         addAll();
     }
 });
+
+// Inline paste area add/cancel
+if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    const raw = pasteTasksTextarea ? (pasteTasksTextarea.value || '') : '';
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) return;
+    const addInline = () => {
+        lines.forEach(text => {
+            const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
+            tasks.push(newTask);
+        });
+        saveTasks();
+        if (pasteTasksArea) pasteTasksArea.style.display = 'none';
+        displayTasks();
+        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
+    };
+    if (lines.length > 1) {
+        openConfirmModal({
+            title: 'Подтверждение',
+            message: `Добавить ${lines.length} задач?`,
+            confirmText: 'Добавить',
+            cancelText: 'Отмена',
+            requireCheck: false,
+            compact: true,
+            onConfirm: addInline
+        });
+    } else {
+        addInline();
+    }
+});
+if (pasteTasksCancelBtnInline) pasteTasksCancelBtnInline.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
@@ -2113,7 +2161,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вруч��ую.');
+                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
