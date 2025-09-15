@@ -331,7 +331,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/развора��ивание гру��пы
+        // Клик по названи�� категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -416,7 +416,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без к��тегори��</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                                 <div class=\"category-subrow\">
@@ -567,7 +567,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обрабо��чики событий для ноы�� элементов
+    // Добавяем обработчики событий для ноы�� элементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -882,7 +882,7 @@ function getRandomTask(categories) {
     );
     
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных задач в этой категории!');
+        openInfoModal('Нет активных з��дач в этой категории!');
         return null;
     }
     
@@ -948,7 +948,7 @@ function updateTimerControlsForViewport() {
         pauseTimerBtn.classList.add('icon-only');
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
-        startTimerBtn.setAttribute('aria-label','Старт');
+        startTimerBtn.setAttribute('aria-label','С��арт');
         startTimerBtn.title = 'Старт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауза');
@@ -1067,11 +1067,11 @@ function populateTaskSubcategoryDropdown(task) {
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'category-option';
-        b.dataset.sub = item.key;
-        b.textContent = item.label;
+        b.dataset.sub = normalizeSubcategoryName(task.category, item.key) || item.key;
+        b.textContent = getSubcategoryLabel(task.category, item.label);
         b.addEventListener('click', (e) => {
             e.stopPropagation();
-            changeTaskCategory(task.id, task.category, item.key);
+            changeTaskCategory(task.id, task.category, b.dataset.sub);
             dd.classList.remove('show');
             activeDropdown = null;
         });
@@ -1207,12 +1207,12 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
         b.type = 'button';
-        b.dataset.sub = item.key;
-        b.textContent = item.label;
+        b.dataset.sub = normalizeSubcategoryName(cat, item.key) || item.key;
+        b.textContent = getSubcategoryLabel(cat, item.label);
         b.addEventListener('click', () => {
             controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
             b.classList.add('selected');
-            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', item.key);
+            const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', b.dataset.sub);
         });
         controls.appendChild(b);
     });
