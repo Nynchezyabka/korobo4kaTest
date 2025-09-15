@@ -1387,7 +1387,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Испо��ьзем Web Worker для тчного отсета времени в фоне
+    // Использем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1961,6 +1961,8 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
+        // Close the paste modal first so confirm modal is fully visible and clickable
+        closePasteModal();
         openConfirmModal({
             title: 'Подтверждение',
             message: `Добавить ${lines.length} задач?`,
