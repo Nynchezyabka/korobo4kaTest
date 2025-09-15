@@ -48,6 +48,27 @@ function getNextId() {
     return maxId + 1;
 }
 
+// Helpers for subcategory normalization/localization
+function normalizeSubcategoryName(category, name) {
+    if (!name || typeof name !== 'string') return null;
+    const n = name.trim().toLowerCase();
+    if (String(category) === '1') {
+        if (['work','работа','rabota'].includes(n)) return 'work';
+        if (['home','дом','doma','house'].includes(n)) return 'home';
+    }
+    return name.trim();
+}
+function getSubcategoryLabel(category, key) {
+    if (!key) return '';
+    if (String(category) === '1') {
+        if (key === 'work') return 'Работа';
+        if (key === 'home') return 'Дом';
+        if (key.toLowerCase() === 'работа') return 'Работа';
+        if (key.toLowerCase() === 'дом') return 'Дом';
+    }
+    return key;
+}
+
 // Add multiple lines as tasks helper
 function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     if (!Array.isArray(lines) || lines.length === 0) return;
@@ -851,7 +872,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос состояния таймера перед новым ��апуском
+    // Полный ��бос состояния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1292,7 +1313,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво зауске
+    // п��и перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1883,7 +1904,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     };
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'Подтверждение',
+            title: 'Подтв��рждение',
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
