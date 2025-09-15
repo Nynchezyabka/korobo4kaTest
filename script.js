@@ -519,12 +519,19 @@ function displayTasks() {
             const frag = document.createDocumentFragment();
             noneTasks.forEach(el => frag.appendChild(el));
             const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
-            const subSet = new Set([...bySub.keys(), ...saved]);
-            const subNames = Array.from(subSet).sort((a,b)=>a.localeCompare(b,'ru'));
-            subNames.forEach(name => {
+            const normMap = new Map();
+            const addKey = (key) => {
+                const norm = normalizeSubcategoryName(cat, key) || key;
+                if (!normMap.has(norm)) normMap.set(norm, key);
+            };
+            bySub.forEach((arr, key) => addKey(key));
+            saved.forEach(key => addKey(key));
+            const subNames = Array.from(normMap.keys()).sort((a,b)=>a.localeCompare(b,'ru'));
+            subNames.forEach(normKey => {
+                const display = getSubcategoryLabel(cat, normKey);
                 const titleEl = document.createElement('div');
                 titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(name)}</span>`;
+                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(display)}</span>`;
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
                 const headingSpan = titleEl.querySelector('.category-heading');
@@ -1004,7 +1011,7 @@ function showNotification(message) {
 
 // Сздани браузерного уведомления
 function createBrowserNotification(message) {
-    const title = "🎁 КОРОБОЧКА";
+    const title = "🎁 К��РОБОЧКА";
     const options = {
         body: message || "Время ышло! адача завершена.",
         icon: "/icon-192.png",
@@ -1623,7 +1630,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория н�� определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2091,7 +2098,7 @@ if (notifyToggleBtn) {
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомления включены');
+            createBrowserNotification('Увед��мления включены');
             updateNotifyToggle();
             return;
         }
