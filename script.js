@@ -309,7 +309,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем с��хранённе пользо��ательске подкатегории
+    // Загружаем сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -333,7 +333,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/развора��ив��ние гру��пы
+        // Клик по названию категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -413,7 +413,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить вы��олненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -421,7 +421,6 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
                                 </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
@@ -474,7 +473,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // П��рес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для мобильного: папка се��ху спра��, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -756,7 +755,7 @@ function displayTasks() {
     });
 }
 
-// Функция для изеения кат���гории задачи
+// Функция для изеения кат��гории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -989,7 +988,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показ�� уведо��ления
+// Функция для показа уведо��ления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -1141,7 +1140,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасн����сть</button>
-            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
+            <button class="add-category-option" data-category="5">Доступность простых рад��стей</button>
             <button class="add-category-option" data-category="3">Прос��ые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1754,7 +1753,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Уд��лить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
