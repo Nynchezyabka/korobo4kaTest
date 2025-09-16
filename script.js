@@ -88,7 +88,7 @@ function getSubcategoryLabel(category, key) {
     if (String(category) === '1') {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
-        if (key.toLowerCase() === 'рабо��а') return 'Работа';
+        if (key.toLowerCase() === 'работа') return 'Работа';
         if (key.toLowerCase() === 'дом') return 'Дом';
     }
     return key;
@@ -249,7 +249,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названи�� категори�� по номеру
+// Функция дя плучения названия категори�� по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категори�� не определена",
@@ -309,7 +309,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ательске подкатегории
+    // Загружаем с��хранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -333,7 +333,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по назван��ю категории — сворачивание/развора��ивание гру��пы
+        // Клик по названию категории — сворачивание/развора��ив��ние гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -421,7 +421,6 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
-                                    <span class=\"category-divider\"></span>
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
                                 </div>
                             </div>
@@ -475,7 +474,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // П��рес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -757,7 +756,7 @@ function displayTasks() {
     });
 }
 
-// Функция для изеения кат��гории задачи
+// Функция для изеения кат���гории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -990,7 +989,7 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведо��ления
+// Функция для показ�� уведо��ления
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
@@ -1140,7 +1139,7 @@ function setupAddCategorySelector() {
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
-            <button class="add-category-option" data-category="1">О��язательные</button>
+            <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасн����сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Прос��ые радости</button>
@@ -2116,7 +2115,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок���рованы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
