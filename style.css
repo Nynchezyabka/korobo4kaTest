@@ -262,7 +262,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный превью-список в несколько столбцов на широих экранах */
+/* Компактный пре��ью-список в несколько столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -1022,7 +1022,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для планшетов и десктопов */
+/* Сикерная сетка для план��етов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1110,6 +1110,7 @@ textarea {
     .group-grid .task-controls { float: right; clear: right; width: auto; display: flex; gap: 4px; align-items: center; margin-top: 2px; }
     .group-grid .task::after { content: ""; display: block; clear: both; }
     .group-grid .task-text { padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.2; word-break: break-word; }
+    .section { overflow: visible; }
     .category-dropdown { max-width: calc(100vw - 16px); }
     .add-category-dropdown { max-width: calc(100vw - 16px); }
 }
@@ -1693,7 +1694,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Поза��оловки категорий для мобильной группировки */
+/* Поза��оловки ка��егорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
