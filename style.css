@@ -711,7 +711,7 @@ textarea {
     }
 }
 
-/* Медиа-запрос ля планшетов и больших телефонов */
+/* Медиа-��апрос ля планшетов и больших телефонов */
 @media (min-width: 481px) {
     body {
         padding: 15px;
@@ -748,7 +748,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами икон��к справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1237,6 +1237,8 @@ textarea {
 .category-dropdown { color: #222; }
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 .category-dropdown .category-option:hover { background: rgba(0,0,0,0.06); }
+/* Disable scrollbars for special categories (2,3,4,5) */
+.category-dropdown.no-scroll { max-height: none !important; overflow: visible !important; }
 .category-dropdown .add-sub-btn-wrapper { padding: 6px 8px; }
 
 /* Modal for adding tasks */
@@ -1569,7 +1571,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выронять элементы задачи в сетку: т��кст слева, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: т��кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1616,7 +1618,7 @@ textarea {
         align-items: stretch; /* make all section tiles equal height */
     }
 
-    /* Кнопки действий выравниваем п сетке (3 колонки) */
+    /* Кно��ки действий выравниваем п сетке (3 колонки) */
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1675,7 +1677,7 @@ textarea {
 }
 
 
-/* Адаптив��ость для мобильных устройств */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
