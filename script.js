@@ -510,7 +510,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранё��ные подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -606,6 +606,8 @@ function displayTasks() {
                 dropdown.style.bottom = 'auto';
                 dropdown.style.left = '';
                 dropdown.style.right = '';
+                // Clamp width to viewport on mobile
+                dropdown.style.maxWidth = 'calc(100vw - 16px)';
                 const rect = dropdown.getBoundingClientRect();
                 const vw = window.innerWidth || document.documentElement.clientWidth;
                 const vh = window.innerHeight || document.documentElement.clientHeight;
@@ -909,7 +911,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� новом таймере звук включён
+    // по ум��лчанию пр��� н��вом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1444,7 +1446,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм��а
+// Функция для аузы тайм����
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1698,7 +1700,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязат��льные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
