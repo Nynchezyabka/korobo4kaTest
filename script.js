@@ -88,7 +88,7 @@ function getSubcategoryLabel(category, key) {
     if (String(category) === '1') {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
-        if (key.toLowerCase() === 'работа') return 'Работа';
+        if (key.toLowerCase() === 'рабо��а') return 'Работа';
         if (key.toLowerCase() === 'дом') return 'Дом';
     }
     return key;
@@ -249,7 +249,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категори�� по номеру
+// Функция дя плучения названи�� категори�� по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категори�� не определена",
@@ -309,7 +309,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружае�� сохранённе пользо��ательске подкатегории
+    // Загружаем сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -333,7 +333,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/развора��ивание гру��пы
+        // Клик по назван��ю категории — сворачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -421,7 +421,6 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
                                 </div>
@@ -1141,7 +1140,7 @@ function setupAddCategorySelector() {
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
-            <button class="add-category-option" data-category="1">Обязательные</button>
+            <button class="add-category-option" data-category="1">О��язательные</button>
             <button class="add-category-option" data-category="2">Безопасн����сть</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Прос��ые радости</button>
@@ -1326,7 +1325,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// З��уковой сигна���� по завершении
+// З��уковой сигна�� по завершении
 function playBeep() {
     if (!timerSoundEnabled) return;
     try {
@@ -1362,7 +1361,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомл��н��я
+    // Сообщае серверу о распсании пуш-уведомлен��я
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -2050,7 +2049,7 @@ window.addEventListener('focus', () => {
     }
 });
 
-// Функ��ия для пок��за toast-уведомле��ия
+// Функ��ия для показа toast-уведомле��ия
 function showToastNotification(title, message, duration = 5000) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
@@ -2117,7 +2116,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблок���рованы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
