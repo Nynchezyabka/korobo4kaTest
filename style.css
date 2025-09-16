@@ -943,7 +943,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголовки категорий для мобильной группировки */
+/* Позаголов��и категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1110,6 +1110,8 @@ textarea {
     .group-grid .task-controls { float: right; clear: right; width: auto; display: flex; gap: 4px; align-items: center; margin-top: 2px; }
     .group-grid .task::after { content: ""; display: block; clear: both; }
     .group-grid .task-text { padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.2; word-break: break-word; }
+    .category-dropdown { max-width: calc(100vw - 16px); }
+    .add-category-dropdown { max-width: calc(100vw - 16px); }
 }
 @media (min-width: 481px) and (max-width: 767px) {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
