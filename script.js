@@ -97,7 +97,7 @@ function getSubcategoryLabel(category, key) {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
         if (key.toLowerCase() === 'работа') return 'Работа';
-        if (key.toLowerCase() === 'дом') return 'Дом';
+        if (key.toLowerCase() === 'дом') return 'До��';
     }
     return key;
 }
@@ -602,28 +602,56 @@ function displayTasks() {
             activeDropdown = dropdown;
             if (dropdown.classList.contains('show')) {
                 if (dropdown.parentElement) dropdown.parentElement.style.zIndex = '9000';
-                dropdown.style.top = '100%';
-                dropdown.style.bottom = 'auto';
-                dropdown.style.left = '';
-                dropdown.style.right = '';
-                // Clamp width to viewport on mobile
-                dropdown.style.maxWidth = 'calc(100vw - 16px)';
-                const rect = dropdown.getBoundingClientRect();
+                const isMobile = window.matchMedia('(max-width: 480px)').matches;
                 const vw = window.innerWidth || document.documentElement.clientWidth;
                 const vh = window.innerHeight || document.documentElement.clientHeight;
-                if (rect.bottom > vh - 8) {
-                    dropdown.style.top = 'auto';
-                    dropdown.style.bottom = '100%';
-                }
-                if (rect.right > vw - 8) {
-                    dropdown.style.left = 'auto';
-                    dropdown.style.right = '0';
-                }
-                if (rect.left < 8) {
-                    dropdown.style.left = '0';
-                    dropdown.style.right = 'auto';
+                // Base styles
+                dropdown.style.maxWidth = 'calc(100vw - 16px)';
+                dropdown.style.left = '';
+                dropdown.style.right = '';
+                dropdown.style.top = '100%';
+                dropdown.style.bottom = 'auto';
+                if (isMobile) {
+                    // Use fixed positioning to avoid clipping by overflow on mobile
+                    const anchor = badge.getBoundingClientRect();
+                    dropdown.style.position = 'fixed';
+                    dropdown.style.zIndex = '11000';
+                    // Measure after showing
+                    const rectNow = dropdown.getBoundingClientRect();
+                    const width = Math.min(rectNow.width, vw - 16);
+                    const spaceBelow = vh - anchor.bottom - 8;
+                    const spaceAbove = anchor.top - 8;
+                    let left = Math.min(vw - width - 8, Math.max(8, anchor.left));
+                    dropdown.style.left = left + 'px';
+                    if (spaceBelow >= rectNow.height) {
+                        dropdown.style.top = (Math.min(anchor.bottom + 4, vh - rectNow.height - 8)) + 'px';
+                        dropdown.style.bottom = 'auto';
+                    } else if (spaceAbove >= rectNow.height) {
+                        dropdown.style.top = (Math.max(anchor.top - rectNow.height - 4, 8)) + 'px';
+                        dropdown.style.bottom = 'auto';
+                    } else {
+                        // Fallback: pin to viewport with small margins
+                        dropdown.style.top = '8px';
+                        dropdown.style.bottom = '8px';
+                        dropdown.style.overflowY = 'auto';
+                    }
+                } else {
+                    // Desktop/tablet: keep absolute but clamp into viewport
+                    const rect = dropdown.getBoundingClientRect();
+                    if (rect.bottom > vh - 8) { dropdown.style.top = 'auto'; dropdown.style.bottom = '100%'; }
+                    if (rect.right > vw - 8) { dropdown.style.left = 'auto'; dropdown.style.right = '0'; }
+                    if (rect.left < 8) { dropdown.style.left = '0'; dropdown.style.right = 'auto'; }
                 }
             } else {
+                // Reset any temporary styles
+                dropdown.style.position = '';
+                dropdown.style.zIndex = '';
+                dropdown.style.top = '';
+                dropdown.style.bottom = '';
+                dropdown.style.left = '';
+                dropdown.style.right = '';
+                dropdown.style.maxWidth = '';
+                dropdown.style.overflowY = '';
                 if (dropdown.parentElement) dropdown.parentElement.style.zIndex = '';
             }
         });
@@ -860,7 +888,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать мас��и�� задач');
+                openInfoModal('Ошибка: файл ��олжен содержать мас��и�� задач');
                 return;
             }
             
@@ -1320,7 +1348,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибки
+        // игнорируем ошибк��
     }
 }
 
