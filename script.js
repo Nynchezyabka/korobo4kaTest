@@ -86,7 +86,7 @@ function normalizeSubcategoryName(category, name) {
     if (!name || typeof name !== 'string') return null;
     const n = name.trim().toLowerCase();
     if (String(category) === '1') {
-        if (['work','��абота','rabota'].includes(n)) return 'work';
+        if (['work','работа','rabota'].includes(n)) return 'work';
         if (['home','дом','doma'].includes(n)) return 'home';
     }
     return name.trim();
@@ -157,7 +157,7 @@ let showArchive = false;
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для за��рыт��я откытого выпадащего меню категорий
+// Глоб��льный обработчик для за��рыт��я откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -329,7 +329,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добави��ь задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -360,7 +360,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк папки — в��рачивание/разворачивание
+        // Клик по ик��нк папки — в��рачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -543,7 +543,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -889,7 +889,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем вс�� активные задачи из указанных категорий
+    // Получаем все активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -1015,7 +1015,7 @@ function showNotification(message) {
     }
 }
 
-// Сздани браузерного уведомления
+// Сздан�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1242,7 +1242,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'но��а�� сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1635,7 +1635,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'К��тегория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1796,12 +1796,10 @@ try {
                 if (subCont) { subCont.innerHTML=''; subCont.style.display='none'; }
                 // wire ok/cancel
                 const okBtn = document.getElementById('moveTasksOk'); const cancel = document.getElementById('moveTasksCancel'); const closeBtn = document.getElementById('moveTasksClose'); const backdrop2 = document.getElementById('moveTasksBackdrop');
-                const chk = document.getElementById('moveConfirmCheck'); if (chk) chk.checked = false; if (okBtn) okBtn.disabled = true;
-                const enableOk = () => { if (okBtn) okBtn.disabled = !chk.checked; };
-                chk.addEventListener('change', enableOk);
-                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; chk.removeEventListener('change', enableOk); };
+                if (okBtn) okBtn.disabled = false;
+                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; };
                 if (cancel) cancel.onclick = closeMove; if (closeBtn) closeBtn.addEventListener('click', closeMove); if (backdrop2) backdrop2.addEventListener('click', closeMove);
-                okBtn.onclick = () => {
+                if (okBtn) okBtn.onclick = () => {
                     const sel = catCont.querySelector('.modal-category-btn.selected'); if (!sel) return; const targetCat = parseInt(sel.dataset.category);
                     const selSub = subCont ? subCont.querySelector('.add-subcategory-btn.selected') : null; const targetSub = selSub ? selSub.dataset.sub || null : null;
                     // perform move
@@ -1951,7 +1949,7 @@ if (pasteTasksBtn) {
 
 // Modal add button
 if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Н��льзя добавлять задачи в списке выполненных'); return; }
     const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
@@ -2111,7 +2109,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уве��омления не по��держиваются этим браузером');
+            openInfoModal('Уве��омления не по��держиваются этим бра��зером');
             return;
         }
         if (Notification.permission === 'granted') {
