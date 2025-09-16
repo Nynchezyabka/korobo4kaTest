@@ -18,6 +18,14 @@ function loadTasks() {
         tasks = JSON.parse(tasksJSON);
         // sanitize stored texts
         tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+        // sanitize categories: force invalid/missing to 0 (Категория не определена)
+        const valid = new Set([0,1,2,3,4,5]);
+        tasks = tasks.map(t => {
+            const n = parseInt(t.category);
+            const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
+            const active = (typeof t.active === 'boolean') ? t.active : true;
+            return { ...t, category, active };
+        });
         localStorage.setItem('tasks', JSON.stringify(tasks));
     } else {
         tasks = [];
@@ -78,7 +86,7 @@ function normalizeSubcategoryName(category, name) {
     if (!name || typeof name !== 'string') return null;
     const n = name.trim().toLowerCase();
     if (String(category) === '1') {
-        if (['work','работа','rabota'].includes(n)) return 'work';
+        if (['work','��абота','rabota'].includes(n)) return 'work';
         if (['home','дом','doma'].includes(n)) return 'home';
     }
     return name.trim();
@@ -249,17 +257,17 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категори�� по номеру
+// Функция для получения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Категори�� не определена",
+        0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[category] || "Неизвестно";
+    return categories[Number(category)] ?? "Категория не определена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -299,12 +307,13 @@ function displayTasks() {
     const groups = new Map();
     const source = tasks.filter(t => showArchive ? t.completed : !t.completed);
     source.forEach(t => {
-        const arr = groups.get(t.category) || [];
-        arr.push(t);
-        groups.set(t.category, arr);
+        const cat = Number.isFinite(Number(t.category)) ? Number(t.category) : 0;
+        const arr = groups.get(cat) || [];
+        arr.push({ ...t, category: cat });
+        groups.set(cat, arr);
     });
 
-    const categories = Array.from(groups.keys()).sort((a, b) => a - b);
+    const categories = Array.from(groups.keys()).map(Number).sort((a, b) => a - b);
 
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
@@ -880,7 +889,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
     
-    // Получаем все активные задачи из указанных категорий
+    // Получаем вс�� активные задачи из указанных категорий
     const filteredTasks = tasks.filter(task => 
         categoryArray.includes(task.category) && task.active
     );
@@ -1046,6 +1055,12 @@ function populateTaskSubcategoryDropdown(task) {
     dd.innerHTML = '';
     // Apply category-colored background for the dropdown
     try { dd.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.92); dd.style.color = '#222'; } catch (e) {}
+    // Disable scroll for categories 2,3,4,5 to match others
+    if ([2,3,4,5].includes(Number(task.category))) {
+        dd.classList.add('no-scroll');
+    } else {
+        dd.classList.remove('no-scroll');
+    }
     // option: none
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
@@ -1227,7 +1242,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'но��а�� сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1620,7 +1635,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
+    const labels = {0: 'К��тегория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
