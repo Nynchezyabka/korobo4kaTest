@@ -875,7 +875,7 @@ textarea {
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
+    z-index: 11000;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -1121,7 +1121,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатег��рий внутри "Обязательные" */
+/* Сетка колонок подкатег��ри�� внутри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1170,7 +1170,7 @@ textarea {
 /* Редактор текста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
-/* Цветизация вбранной категории при добавлении задачи */
+/* Цветизация вбранной категории при доба��лении задачи */
 .add-category-badge[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-badge[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-badge[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -1256,6 +1256,13 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* Compact confirm modal variant */
+#confirmModal .modal-content.compact { padding: 16px 12px 12px; max-width: 380px; }
+#confirmModal .modal-content.compact h3 { font-size: 1.3rem; margin-bottom: 6px; }
+#confirmModal .modal-content.compact .modal-message { font-size: 0.95rem; margin: 6px 0 8px; }
+#confirmModal .modal-content.compact .modal-actions { gap: 6px; margin-top: 8px; }
+#confirmModal .modal-content.compact .modal-actions button { min-width: 100px; padding: 8px 10px; font-size: 0.95rem; }
 
 /* Paste tasks modal: compact, no internal scrollbars */
 #pasteTasksModal .paste-modal-content { max-height: none; overflow: visible; padding: 20px 14px 14px; }
@@ -1685,7 +1692,7 @@ textarea {
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
+    z-index: 11000;
     display: flex;
     align-items: center;
     gap: 12px;
