@@ -803,7 +803,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по им��ни для указанной категрии
+// Переклюение акти��ности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -869,7 +869,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт з��вершён');
             displayTasks();
             
         } catch (error) {
@@ -905,7 +905,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр�� новом таймере звук включён
+    // по ум��лчанию пр��� новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1920,11 +1920,6 @@ const pasteTasksCloseBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pas
 const pasteTasksInput = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksInput') : null;
 const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksAddBtn') : null;
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
-// Inline area elements
-const pasteTasksArea = document.getElementById('pasteTasksArea');
-const pasteTasksTextarea = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksTextarea') : null;
-const pasteTasksSaveBtn = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksSaveBtn') : null;
-const pasteTasksCancelBtnInline = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
     if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
@@ -1977,40 +1972,6 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     }
 });
 
-// Ensure inline paste area stays hidden (use modal instead)
-if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-
-// Inline paste area add/cancel
-if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
-    const raw = pasteTasksTextarea ? (pasteTasksTextarea.value || '') : '';
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    if (lines.length === 0) return;
-    const addInline = () => {
-        lines.forEach(text => {
-            const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-            tasks.push(newTask);
-        });
-        saveTasks();
-        if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-        displayTasks();
-        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
-    };
-    if (lines.length > 1) {
-        openConfirmModal({
-            title: 'Подтверждение',
-            message: `Добавить ${lines.length} задач?`,
-            confirmText: 'Добавить',
-            cancelText: 'Отмена',
-            requireCheck: false,
-            compact: true,
-            onConfirm: addInline
-        });
-    } else {
-        addInline();
-    }
-});
-if (pasteTasksCancelBtnInline) pasteTasksCancelBtnInline.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);

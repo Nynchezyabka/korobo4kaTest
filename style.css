@@ -748,7 +748,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя рядами икон��к справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1229,17 +1229,9 @@ textarea {
     .modal-actions { width: 100%; }
 }
 
-/* Paste tasks area (inline paste list) */
-.paste-tasks-area { display: none; margin-top: 8px; width: 100%; order: 99; }
-.paste-tasks-area .paste-textarea { min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
-.paste-tasks-area .paste-actions { display: flex; gap: 8px; margin-top: 6px; justify-content: flex-start; }
-.paste-tasks-area .paste-actions button { padding: 10px 12px; border-radius: 6px; border: none; background: #5d4037; color: #fff; cursor: pointer; min-width: 120px; }
-.paste-tasks-area .paste-actions button[type="button"] { background: #9E9E9E; }
-
-/* Ensure import/paste buttons don't stretch on wider screens; paste area sits full-width below them */
+/* Ensure import/paste buttons don't stretch on wider screens */
 .import-export { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
 .import-export .file-label { flex: none; display: inline-block; }
-.import-export .paste-tasks-area { flex-basis: 100%; }
 
 /* Category dropdown background adapts via inline style from JS; ensure text/buttons visible */
 .category-dropdown { color: #222; }
@@ -1682,71 +1674,8 @@ textarea {
     }
 }
 
-/* Стили для toast-уведомлений */
-.toast-notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #5d4037;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 11000;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transform: translateX(100%);
-    opacity: 0;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    max-width: 350px;
-}
 
-.toast-notification.show {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.toast-notification.hide {
-    transform: translateX(100%);
-    opacity: 0;
-}
-
-.toast-icon {
-    font-size: 1.4rem;
-}
-
-.toast-content {
-    flex: 1;
-}
-
-.toast-title {
-    font-weight: bold;
-    margin-bottom: 4px;
-    font-size: 1.1rem;
-}
-
-.toast-message {
-    font-size: 1rem;
-    opacity: 0.9;
-}
-
-.toast-close {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0;
-    min-height: auto;
-    box-shadow: none;
-}
-
-.toast-close:active {
-    transform: scale(0.9);
-}
-
-/* Адаптивность для мобильных устройств */
+/* Адаптив��ость для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
