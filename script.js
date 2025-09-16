@@ -18,6 +18,14 @@ function loadTasks() {
         tasks = JSON.parse(tasksJSON);
         // sanitize stored texts
         tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+        // sanitize categories: force invalid/missing to 0 (Категория не определена)
+        const valid = new Set([0,1,2,3,4,5]);
+        tasks = tasks.map(t => {
+            const n = parseInt(t.category);
+            const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
+            const active = (typeof t.active === 'boolean') ? t.active : true;
+            return { ...t, category, active };
+        });
         localStorage.setItem('tasks', JSON.stringify(tasks));
     } else {
         tasks = [];
@@ -89,7 +97,7 @@ function getSubcategoryLabel(category, key) {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
         if (key.toLowerCase() === 'работа') return 'Работа';
-        if (key.toLowerCase() === 'дом') return 'Дом';
+        if (key.toLowerCase() === 'дом') return 'До��';
     }
     return key;
 }
@@ -149,7 +157,7 @@ let showArchive = false;
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глобальный обработчик для за��рыт��я откытого выпадащего меню категорий
+// Глоб��льный обработчик для за��рыт��я откытого выпадащего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -249,17 +257,17 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция дя плучения названия категори�� по номеру
+// Функция для получения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
-        0: "Категори�� не определена",
+        0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[category] || "Неизвестно";
+    return categories[Number(category)] ?? "Категория не определена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -299,12 +307,13 @@ function displayTasks() {
     const groups = new Map();
     const source = tasks.filter(t => showArchive ? t.completed : !t.completed);
     source.forEach(t => {
-        const arr = groups.get(t.category) || [];
-        arr.push(t);
-        groups.set(t.category, arr);
+        const cat = Number.isFinite(Number(t.category)) ? Number(t.category) : 0;
+        const arr = groups.get(cat) || [];
+        arr.push({ ...t, category: cat });
+        groups.set(cat, arr);
     });
 
-    const categories = Array.from(groups.keys()).sort((a, b) => a - b);
+    const categories = Array.from(groups.keys()).map(Number).sort((a, b) => a - b);
 
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
@@ -320,7 +329,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добави��ь задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -351,7 +360,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по иконк папки — в��рачивание/разворачивание
+        // Клик по ик��нк папки — в��рачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -421,11 +430,6 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
-                                <div class=\"category-subrow\">
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
-                                    <span class=\"category-divider\"></span>
-                                    <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
-                                </div>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
@@ -506,7 +510,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохранённые подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -539,7 +543,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -598,26 +602,56 @@ function displayTasks() {
             activeDropdown = dropdown;
             if (dropdown.classList.contains('show')) {
                 if (dropdown.parentElement) dropdown.parentElement.style.zIndex = '9000';
-                dropdown.style.top = '100%';
-                dropdown.style.bottom = 'auto';
-                dropdown.style.left = '';
-                dropdown.style.right = '';
-                const rect = dropdown.getBoundingClientRect();
+                const isMobile = window.matchMedia('(max-width: 480px)').matches;
                 const vw = window.innerWidth || document.documentElement.clientWidth;
                 const vh = window.innerHeight || document.documentElement.clientHeight;
-                if (rect.bottom > vh - 8) {
-                    dropdown.style.top = 'auto';
-                    dropdown.style.bottom = '100%';
-                }
-                if (rect.right > vw - 8) {
-                    dropdown.style.left = 'auto';
-                    dropdown.style.right = '0';
-                }
-                if (rect.left < 8) {
-                    dropdown.style.left = '0';
-                    dropdown.style.right = 'auto';
+                // Base styles
+                dropdown.style.maxWidth = 'calc(100vw - 16px)';
+                dropdown.style.left = '';
+                dropdown.style.right = '';
+                dropdown.style.top = '100%';
+                dropdown.style.bottom = 'auto';
+                if (isMobile) {
+                    // Use fixed positioning to avoid clipping by overflow on mobile
+                    const anchor = badge.getBoundingClientRect();
+                    dropdown.style.position = 'fixed';
+                    dropdown.style.zIndex = '11000';
+                    // Measure after showing
+                    const rectNow = dropdown.getBoundingClientRect();
+                    const width = Math.min(rectNow.width, vw - 16);
+                    const spaceBelow = vh - anchor.bottom - 8;
+                    const spaceAbove = anchor.top - 8;
+                    let left = Math.min(vw - width - 8, Math.max(8, anchor.left));
+                    dropdown.style.left = left + 'px';
+                    if (spaceBelow >= rectNow.height) {
+                        dropdown.style.top = (Math.min(anchor.bottom + 4, vh - rectNow.height - 8)) + 'px';
+                        dropdown.style.bottom = 'auto';
+                    } else if (spaceAbove >= rectNow.height) {
+                        dropdown.style.top = (Math.max(anchor.top - rectNow.height - 4, 8)) + 'px';
+                        dropdown.style.bottom = 'auto';
+                    } else {
+                        // Fallback: pin to viewport with small margins
+                        dropdown.style.top = '8px';
+                        dropdown.style.bottom = '8px';
+                        dropdown.style.overflowY = 'auto';
+                    }
+                } else {
+                    // Desktop/tablet: keep absolute but clamp into viewport
+                    const rect = dropdown.getBoundingClientRect();
+                    if (rect.bottom > vh - 8) { dropdown.style.top = 'auto'; dropdown.style.bottom = '100%'; }
+                    if (rect.right > vw - 8) { dropdown.style.left = 'auto'; dropdown.style.right = '0'; }
+                    if (rect.left < 8) { dropdown.style.left = '0'; dropdown.style.right = 'auto'; }
                 }
             } else {
+                // Reset any temporary styles
+                dropdown.style.position = '';
+                dropdown.style.zIndex = '';
+                dropdown.style.top = '';
+                dropdown.style.bottom = '';
+                dropdown.style.left = '';
+                dropdown.style.right = '';
+                dropdown.style.maxWidth = '';
+                dropdown.style.overflowY = '';
                 if (dropdown.parentElement) dropdown.parentElement.style.zIndex = '';
             }
         });
@@ -654,7 +688,7 @@ function displayTasks() {
             const newCategory = parseInt(this.dataset.category);
             const newSub = null;
             changeTaskCategory(taskId, newCategory, newSub);
-            // Закрываем dropdown
+            // Закрывае�� dropdown
             const dd = this.closest('.category-dropdown');
             dd.classList.remove('show');
             if (dd && dd.parentElement) dd.parentElement.style.zIndex = '';
@@ -803,7 +837,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение активности подкатегоии по им��ни для указанной категрии
+// Переклюение акти��ности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -854,7 +888,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать мас��и�� задач');
+                openInfoModal('Ошибка: файл ��олжен содержать мас��и�� задач');
                 return;
             }
             
@@ -869,7 +903,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} з��дач`, 'Импорт завершён');
+            openInfoModal(`Успешн�� импортировано ${importedTasks.length} з��дач`, 'Импорт з��вершён');
             displayTasks();
             
         } catch (error) {
@@ -905,7 +939,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр�� новом таймере звук включён
+    // по ум��лчанию пр��� н��вом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1011,7 +1045,7 @@ function showNotification(message) {
     }
 }
 
-// Сздани браузерного уведомления
+// Сздан�� браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1051,6 +1085,12 @@ function populateTaskSubcategoryDropdown(task) {
     dd.innerHTML = '';
     // Apply category-colored background for the dropdown
     try { dd.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.92); dd.style.color = '#222'; } catch (e) {}
+    // Disable scroll for categories 2,3,4,5 to match others
+    if ([2,3,4,5].includes(Number(task.category))) {
+        dd.classList.add('no-scroll');
+    } else {
+        dd.classList.remove('no-scroll');
+    }
     // option: none
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
@@ -1232,7 +1272,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1298,7 +1338,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
+// П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1308,7 +1348,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибки
+        // игнорируем ошибк��
     }
 }
 
@@ -1434,7 +1474,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм��а
+// Функция для аузы тайм����
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1494,7 +1534,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обраотчки обытий
+// Обраотчки об��тий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -1688,7 +1728,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязат��льные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1786,12 +1826,10 @@ try {
                 if (subCont) { subCont.innerHTML=''; subCont.style.display='none'; }
                 // wire ok/cancel
                 const okBtn = document.getElementById('moveTasksOk'); const cancel = document.getElementById('moveTasksCancel'); const closeBtn = document.getElementById('moveTasksClose'); const backdrop2 = document.getElementById('moveTasksBackdrop');
-                const chk = document.getElementById('moveConfirmCheck'); if (chk) chk.checked = false; if (okBtn) okBtn.disabled = true;
-                const enableOk = () => { if (okBtn) okBtn.disabled = !chk.checked; };
-                chk.addEventListener('change', enableOk);
-                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; chk.removeEventListener('change', enableOk); };
+                if (okBtn) okBtn.disabled = false;
+                const closeMove = () => { mv.setAttribute('aria-hidden','true'); mv.style.display='none'; };
                 if (cancel) cancel.onclick = closeMove; if (closeBtn) closeBtn.addEventListener('click', closeMove); if (backdrop2) backdrop2.addEventListener('click', closeMove);
-                okBtn.onclick = () => {
+                if (okBtn) okBtn.onclick = () => {
                     const sel = catCont.querySelector('.modal-category-btn.selected'); if (!sel) return; const targetCat = parseInt(sel.dataset.category);
                     const selSub = subCont ? subCont.querySelector('.add-subcategory-btn.selected') : null; const targetSub = selSub ? selSub.dataset.sub || null : null;
                     // perform move
@@ -1920,11 +1958,6 @@ const pasteTasksCloseBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pas
 const pasteTasksInput = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksInput') : null;
 const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksAddBtn') : null;
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
-// Inline area elements
-const pasteTasksArea = document.getElementById('pasteTasksArea');
-const pasteTasksTextarea = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksTextarea') : null;
-const pasteTasksSaveBtn = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksSaveBtn') : null;
-const pasteTasksCancelBtnInline = pasteTasksArea ? pasteTasksArea.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
     if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
@@ -1946,7 +1979,7 @@ if (pasteTasksBtn) {
 
 // Modal add button
 if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Н��льзя добавлять задачи в списке выполненных'); return; }
     const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
@@ -1977,40 +2010,6 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     }
 });
 
-// Ensure inline paste area stays hidden (use modal instead)
-if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-
-// Inline paste area add/cancel
-if (pasteTasksSaveBtn) pasteTasksSaveBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
-    const raw = pasteTasksTextarea ? (pasteTasksTextarea.value || '') : '';
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    if (lines.length === 0) return;
-    const addInline = () => {
-        lines.forEach(text => {
-            const newTask = { id: getNextId(), text, category: 0, completed: false, active: true, statusChangedAt: Date.now() };
-            tasks.push(newTask);
-        });
-        saveTasks();
-        if (pasteTasksArea) pasteTasksArea.style.display = 'none';
-        displayTasks();
-        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
-    };
-    if (lines.length > 1) {
-        openConfirmModal({
-            title: 'Подтверждение',
-            message: `Добавить ${lines.length} задач?`,
-            confirmText: 'Добавить',
-            cancelText: 'Отмена',
-            requireCheck: false,
-            compact: true,
-            onConfirm: addInline
-        });
-    } else {
-        addInline();
-    }
-});
-if (pasteTasksCancelBtnInline) pasteTasksCancelBtnInline.addEventListener('click', () => { if (pasteTasksArea) pasteTasksArea.style.display = 'none'; });
 
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
@@ -2140,7 +2139,7 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уве��омления не по��держиваются этим браузером');
+            openInfoModal('Уве��омления не по��держиваются этим бра��зером');
             return;
         }
         if (Notification.permission === 'granted') {
