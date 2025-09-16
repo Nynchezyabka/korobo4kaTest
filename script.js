@@ -309,7 +309,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ательске подкатегории
+    // Загружае�� сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -421,7 +421,6 @@ function displayTasks() {
                             <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
-                                <div class=\"category-subrow\">
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"work\">Работа</button>
                                     <span class=\"category-divider\"></span>
                                     <button class=\"category-option\" data-category=\"1\" data-subcategory=\"home\">Дом</button>
@@ -1327,7 +1326,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// З��уковой сигна�� по завершении
+// З��уковой сигна���� по завершении
 function playBeep() {
     if (!timerSoundEnabled) return;
     try {
@@ -1363,7 +1362,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомлен��я
+    // Сообщае серверу о распсании пуш-уведомл��н��я
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -2051,7 +2050,7 @@ window.addEventListener('focus', () => {
     }
 });
 
-// Функ��ия для показа toast-уведомле��ия
+// Функ��ия для пок��за toast-уведомле��ия
 function showToastNotification(title, message, duration = 5000) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
