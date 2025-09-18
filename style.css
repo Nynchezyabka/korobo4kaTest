@@ -190,7 +190,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветная индика��ия катгории при добавлении задачи */
+/* Цветная индикация катгории при добавлении задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -245,7 +245,7 @@ textarea, select, input {
 .add-category-option:active { transform: scale(0.98); }
 .add-category-option:last-child { margin-bottom: 0; }
 
-/* Цвета для опций категорий (как в списке задач) */
+/* Цвета для опций категорий (как в списке за��ач) */
 .add-category-option[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-option[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-option[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -330,6 +330,8 @@ textarea {
     z-index: 9000;
     display: none;
     min-width: 130px;
+    max-height: 70vh;
+    overflow: auto;
 }
 
 .task-control-btn {
@@ -425,6 +427,8 @@ textarea {
     z-index: 9000;
     display: none;
     min-width: 130px;
+    max-height: 70vh;
+    overflow: auto;
 }
 
 .category-dropdown.show {
@@ -453,7 +457,7 @@ textarea {
     margin-bottom: 0;
 }
 
-/* Цвета для ��пций категорий */
+/* Цвета для опций категорий */
 .category-option[data-category="0"] {
     background-color: #f5f5f5;
     border-left: 2px solid #9E9E9E;
@@ -711,7 +715,7 @@ textarea {
     }
 }
 
-/* Мед��а-��апрос ля планшетов и больших телефонов */
+/* Медиа-��апрос ля планшетов и больших телефонов */
 @media (min-width: 481px) {
     body {
         padding: 15px;
