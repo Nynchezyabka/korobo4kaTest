@@ -97,7 +97,7 @@ function getSubcategoryLabel(category, key) {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
         if (key.toLowerCase() === 'работа') return 'Работа';
-        if (key.toLowerCase() === 'дом') return 'До��';
+        if (key.toLowerCase() === 'дом') return 'Дом';
     }
     return key;
 }
@@ -329,7 +329,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добави��ь задачу в катего��ию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -427,7 +427,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">��ез категори��</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -472,7 +472,7 @@ function displayTasks() {
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
                     ret.dataset.id = String(task.id);
-                    ret.title = 'Вернуть в актив��ые';
+                    ret.title = 'Вернуть в активные';
                     ret.innerHTML = '<i class="fas fa-undo"></i>';
                     controls.appendChild(ret);
                 }
@@ -548,7 +548,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показат�� все задачи подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -863,7 +863,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'От��ена',
+        cancelText: 'Отмена',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -879,7 +879,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'к���робочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -896,14 +896,14 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл ��олжен содержать мас��и�� задач');
+                openInfoModal('Ошибка: файл должен содержать массив задач');
                 return;
             }
             
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: не��равильный формат ��айла');
+                    openInfoModal('Ошибка: неправильный формат файла');
                     return;
                 }
             }
@@ -911,7 +911,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешн�� импортировано ${importedTasks.length} з��дач`, 'Импорт з��вершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -1036,7 +1036,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Зад��ча завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -1057,7 +1057,7 @@ function showNotification(message) {
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время ышло! адача завершена.",
+        body: message || "Время вышло! Задача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1168,11 +1168,11 @@ function populateTaskSubcategoryDropdown(task) {
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
-        save.textContent = 'Доб��вить';
+        save.textContent = 'Добавить';
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'Отм��на';
+        cancel.textContent = 'Отмена';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -1208,9 +1208,9 @@ function setupAddCategorySelector() {
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
-            <button class="add-category-option" data-category="2">Безопасн����сть</button>
+            <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Прос��ые радости</button>
+            <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -1268,7 +1268,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
     noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатего��ии';
+    noneBtn.textContent = 'Без подкатегории';
     noneBtn.addEventListener('click', () => {
         controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
         noneBtn.classList.add('selected');
@@ -1297,7 +1297,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     inline.className = 'inline-add-form';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложна�� радость' : ((String(cat) === '3' || String(cat) === '4') ? 'нова�� сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удов��льствия' : 'Новая подкатегория'));
     const saveBtn = document.createElement('button');
     saveBtn.type = 'button';
     saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
@@ -1357,13 +1357,13 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибраци не поддерживается на это�� устройстве");
+        console.log("Вибрация не поддерживается на этом устройстве");
     }
 });
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея таймера
+// П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1491,7 +1491,7 @@ function startTimer() {
 
             if (timerTime <= 0) {
                 stopTimer();
-                showNotification(currentTask ? `Заача: ${currentTask.text}` : undefined);
+                showNotification(currentTask ? `Задача: ${currentTask.text}` : undefined);
                 timerCompleteOptions.style.display = 'flex';
                 document.querySelector('.timer-controls').style.display = 'none';
             }
@@ -1690,7 +1690,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эг��-радос��и',5: 'Доступность простых р��до��тей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1753,7 +1753,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязат��льные',2: 'Сист��ма безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1822,7 +1822,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удали��ь подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отме��а', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2004,7 +2004,7 @@ if (pasteTasksBtn) {
 
 // Modal add button
 if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
-    if (showArchive) { openInfoModal('Н��льзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     const raw = pasteTasksInput ? (pasteTasksInput.value || '') : '';
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
