@@ -657,8 +657,8 @@ function displayTasks() {
         });
     });
 
-    document.querySelectorAll('.category-option').forEach(option => {
-        // attach + button on category titles and task badges to open add modal
+    document.querySelectorAll('.category-dropdown .category-option[data-category]').forEach(option => {
+        // attach + button on category titles and task badges to open add modal (handled below)
     });
 
     // attach handlers for category-add buttons (open modal restricted to this category)
@@ -676,19 +676,18 @@ function displayTasks() {
     });
 
     // continue with category-option bindings
-    document.querySelectorAll('.category-option').forEach(option => {
+    // Handle clicks only on category options that actually change category
+    document.querySelectorAll('.category-dropdown .category-option[data-category]').forEach(option => {
         option.addEventListener('click', function() {
             const badge = this.closest('.category-selector').querySelector('.category-badge');
             const taskId = parseInt(badge.dataset.id);
             const idx = tasks.findIndex(t => t.id === taskId);
             if (idx !== -1 && tasks[idx].completed) {
-                // don't allow changing category of completed tasks
                 return;
             }
             const newCategory = parseInt(this.dataset.category);
-            const newSub = null;
-            changeTaskCategory(taskId, newCategory, newSub);
-            // Закрывае�� dropdown
+            if (!Number.isFinite(newCategory)) return;
+            changeTaskCategory(taskId, newCategory, null);
             const dd = this.closest('.category-dropdown');
             dd.classList.remove('show');
             if (dd && dd.parentElement) dd.parentElement.style.zIndex = '';
@@ -797,20 +796,29 @@ function displayTasks() {
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
-    const wasActive = !!tasks[taskIndex].active;
+    const prev = tasks[taskIndex];
+    const wasActive = !!prev.active;
+    const prevCategory = Number(prev.category);
 
-    const updateData = { category: newCategory };
+    // Build updated task
+    let updated = { ...prev, category: newCategory };
+
+    // If explicitly provided a subcategory, keep it; otherwise, when moving across categories, drop subcategory
     if (typeof newSubcategory === 'string' && newSubcategory.trim()) {
-        updateData.subcategory = newSubcategory.trim();
-    }
-    if (tasks[taskIndex].category === 0 && !tasks[taskIndex].active && newCategory !== 0) {
-        updateData.active = true;
-    }
-    if (!wasActive && updateData.active === true) {
-        updateData.statusChangedAt = Date.now();
+        updated.subcategory = newSubcategory.trim();
+    } else if (prevCategory !== Number(newCategory)) {
+        delete updated.subcategory;
     }
 
-    tasks[taskIndex] = { ...tasks[taskIndex], ...updateData };
+    // Auto-activate when moving from undefined category to a defined one
+    if (prevCategory === 0 && !prev.active && newCategory !== 0) {
+        updated.active = true;
+    }
+    if (!wasActive && updated.active === true) {
+        updated.statusChangedAt = Date.now();
+    }
+
+    tasks[taskIndex] = updated;
     saveTasks();
     displayTasks();
 }
@@ -855,7 +863,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'Отмена',
+        cancelText: 'От��ена',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -1095,7 +1103,7 @@ function populateTaskSubcategoryDropdown(task) {
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
     noneBtn.className = 'category-option';
-    noneBtn.textContent = 'Без подкатег��рии';
+    noneBtn.textContent = 'Без подкатегории';
     noneBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         changeTaskCategory(task.id, task.category, null);
@@ -1107,14 +1115,31 @@ function populateTaskSubcategoryDropdown(task) {
     // gather subcategories: defaults + saved
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+
+    // Build list from saved subcategories and existing tasks in this category
     const list = [];
     const present = new Set();
+
+    // include existing subcategories from tasks
+    tasks.filter(t => t.category === task.category && typeof t.subcategory === 'string' && t.subcategory.trim())
+         .forEach(t => {
+            const norm = normalizeSubcategoryName(task.category, t.subcategory);
+            const key = norm || t.subcategory.trim();
+            const tag = key.toLowerCase();
+            if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
+         });
+
+    // include saved (custom) subcategories
     const saved = Array.isArray(customSubs[task.category]) ? customSubs[task.category] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(task.category, s);
-        const tag = (norm || s).toLowerCase();
-        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+        const key = norm || s;
+        const tag = key.toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key, label: s }); }
     });
+
+    // sort alphabetically (ru-friendly)
+    list.sort((a,b) => String(a.label).localeCompare(String(b.label), 'ru'));
 
     list.forEach(item => {
         const b = document.createElement('button');
@@ -1728,7 +1753,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязат��льные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязат��льные',2: 'Сист��ма безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступнос��ь простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2156,7 +2181,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок��рованы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
