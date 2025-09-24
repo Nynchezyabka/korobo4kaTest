@@ -543,7 +543,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Д��бавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -966,7 +966,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // Скрывае�� опции завершения и показыва��м управлени аймером
+    // ��крывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1057,7 +1057,7 @@ function showNotification(message) {
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время вышло! Задача завершена.",
+        body: message || "Время выш��о! Задача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1263,7 +1263,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // option for none
+    // 1) "Без подкатегории" — не выбираем ничего по умолчанию
     const noneBtn = document.createElement('button');
     noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
     noneBtn.type = 'button';
@@ -1276,9 +1276,10 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     });
     controls.appendChild(noneBtn);
 
+    // 2) Существующие подкатегории в виде чипсов
     list.forEach(item => {
         const b = document.createElement('button');
-        b.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
+        b.className = 'add-subcategory-btn modal-subcat-chip modal-subcat-btn modal-btn cat-' + String(cat);
         b.type = 'button';
         b.dataset.sub = normalizeSubcategoryName(cat, item.key) || item.key;
         b.textContent = getSubcategoryLabel(cat, item.label);
@@ -1290,31 +1291,41 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    // inline add form instead of prompt
-    const addWrapper = document.createElement('div');
-    addWrapper.className = 'add-subcategory-btn add-subcategory-add';
-    const inline = document.createElement('div');
-    inline.className = 'inline-add-form';
+    // 3) Кнопка «+» для добавления новой подкатегории
+    const plusBtn = document.createElement('button');
+    plusBtn.type = 'button';
+    plusBtn.className = 'add-subcategory-btn add-subcategory-plus modal-subcat-btn modal-btn cat-' + String(cat);
+    plusBtn.setAttribute('aria-label', 'Добавить подкатегорию');
+    plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
+    controls.appendChild(plusBtn);
+
+    // 4) Скрытый инлайн-редактор, показывается по клику на «+»
+    const editor = document.createElement('div');
+    editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удов��льствия' : 'Новая подкатегория'));
-    const saveBtn = document.createElement('button');
-    saveBtn.type = 'button';
-    saveBtn.className = 'inline-save-btn modal-btn modal-subcat-btn cat-' + String(cat);
-    saveBtn.textContent = 'Добавить';
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасн��сти' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    const actions = document.createElement('div');
+    actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
-    cancelBtn.className = 'inline-cancel-btn modal-btn modal-subcat-btn cat-' + String(cat);
-    cancelBtn.textContent = 'Отмена';
-    // wrap buttons into action row so we can align left/right
-    const actionsRow = document.createElement('div');
-    actionsRow.className = 'inline-add-actions';
-    actionsRow.appendChild(saveBtn);
-    actionsRow.appendChild(cancelBtn);
-    inline.appendChild(inp);
-    inline.appendChild(actionsRow);
-    addWrapper.appendChild(inline);
-    controls.appendChild(addWrapper);
+    cancelBtn.className = 'icon-btn subcat-cancel';
+    cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'icon-btn subcat-save';
+    saveBtn.innerHTML = '<i class="fas fa-check"></i>';
+    actions.appendChild(cancelBtn);
+    actions.appendChild(saveBtn);
+    editor.appendChild(inp);
+    editor.appendChild(actions);
+    controls.appendChild(editor);
+
+    const hideEditor = () => { editor.style.display = 'none'; inp.value = ''; };
+    const showEditor = () => { editor.style.display = 'flex'; setTimeout(()=>inp.focus(), 30); };
+
+    plusBtn.addEventListener('click', showEditor);
+    cancelBtn.addEventListener('click', hideEditor);
 
     saveBtn.addEventListener('click', () => {
         const name = inp.value && inp.value.trim();
@@ -1324,12 +1335,12 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         if (!arrSaved.includes(val)) arrSaved.push(val);
         customSubs[cat] = arrSaved;
         localStorage.setItem('customSubcategories', JSON.stringify(customSubs));
+        hideEditor();
         showAddSubcategoriesFor(cat, targetContainer);
         if (addTaskModal && addTaskModal.style.display === 'flex') {
             showAddSubcategoriesFor(cat, modalSubcategories);
         }
     });
-    cancelBtn.addEventListener('click', () => { showAddSubcategoriesFor(cat, targetContainer); });
 
     controls.classList.add('show');
     controls.style.display = 'flex';
@@ -1361,7 +1372,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВА�� РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
 async function requestWakeLock() {
@@ -1499,7 +1510,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм����
+// Функция для аузы тайм������
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1690,7 +1701,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обя��ательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1753,7 +1764,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1970,7 +1981,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбра��ываем значение input
+        e.target.value = ''; // Сбра��ываем значени�� input
     }
 });
 
