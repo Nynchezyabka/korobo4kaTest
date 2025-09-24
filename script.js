@@ -360,7 +360,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по ик��нк папки — в��рачивание/разворачивание
+        // Клик по ик��нк папки — в��рачивание/разворачи��ание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -543,7 +543,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -863,7 +863,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'Отмена',
+        cancelText: 'Отмен��',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -1002,7 +1002,7 @@ function updateTimerControlsForViewport() {
         startTimerBtn.setAttribute('aria-label','Старт');
         startTimerBtn.title = 'Старт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        pauseTimerBtn.setAttribute('aria-label','Пауза');
+        pauseTimerBtn.setAttribute('aria-label','Пауз��');
         pauseTimerBtn.title = 'Пауза';
         resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
         resetTimerBtn.setAttribute('aria-label','Сброс');
@@ -1450,7 +1450,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // ��спользем Web Worker для тчного отсета времени в фоне
+    // Использем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1688,7 +1688,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1751,7 +1751,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1894,7 +1894,7 @@ function openAddModal(initialCategory, options = {}) {
         // determine if this primary category supports subcategories (defaults or saved)
         const customSubsRaw = localStorage.getItem('customSubcategories');
         const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
-        const hasDefaults = (primary === 1 || primary === 2 || primary === 4);
+        const hasDefaults = (primary === 2 || primary === 4);
         const hasSaved = Array.isArray(customSubs[primary]) && customSubs[primary].length > 0;
         if (hasDefaults || hasSaved) {
             showAddSubcategoriesFor(primary, modalSubcategories);
