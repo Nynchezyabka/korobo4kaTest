@@ -257,7 +257,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категории по номеру
+// Функция для п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -543,7 +543,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Д��бавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -569,7 +569,7 @@ function displayTasks() {
             grid.appendChild(frag);
         }
 
-        // Обработчик сворачивания перенесён на иконку папки выше
+        // Обработчик сворачивания перен��сён на иконку папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -966,7 +966,7 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    // ��крывае�� опции завершения и показыва��м управлени аймером
+    // Скрывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1057,7 +1057,7 @@ function showNotification(message) {
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время выш��о! Задача завершена.",
+        body: message || "Время вышло! Задача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1258,8 +1258,16 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
         const tag = (norm || s).toLowerCase();
-        if (!present.has(tag)) { present.add(tag); list.push({ key: s, label: s }); }
+        if (!present.has(tag)) { present.add(tag); list.push({ key: norm || s, label: s }); }
     });
+    // Defaults for category 1
+    if (String(cat) === '1') {
+        const defaults = [ { key: 'home', label: 'Дом' }, { key: 'work', label: 'Работа' } ];
+        defaults.forEach(it => {
+            const tag = String(it.key).toLowerCase();
+            if (!present.has(tag)) { present.add(tag); list.push(it); }
+        });
+    }
 
     controls.innerHTML = '';
 
@@ -1304,7 +1312,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасн��сти' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1372,7 +1380,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВА�� РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
 async function requestWakeLock() {
@@ -1510,7 +1518,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм������
+// Функция для аузы тайм����
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1701,7 +1709,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обя��ательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1764,7 +1772,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1981,7 +1989,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбра��ываем значени�� input
+        e.target.value = ''; // Сбра��ываем значение input
     }
 });
 
@@ -2195,7 +2203,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления заблок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрям��ю и попробуйте снова.');
         }
         updateNotifyToggle();
     });
