@@ -1000,7 +1000,7 @@ function updateTimerControlsForViewport() {
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
         startTimerBtn.setAttribute('aria-label','Старт');
-        startTimerBtn.title = 'Ст��рт';
+        startTimerBtn.title = 'Старт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауз��');
         pauseTimerBtn.title = 'Пауза';
@@ -1209,7 +1209,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступ��ость простых радостей</button>
+            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1297,7 +1297,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     // 3) Кнопка «+» для добавления новой подкатегории
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
-    plusBtn.className = 'add-subcategory-btn add-subcategory-plus modal-subcat-btn modal-btn cat-' + String(cat);
+    plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
     plusBtn.setAttribute('aria-label', 'Добавить подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
@@ -1882,7 +1882,7 @@ try {
 
 
 function openAddModal(initialCategory, options = {}) {
-    if (showArchive) { openInfoModal('Нельзя добавлять за��ачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2196,7 +2196,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблок��рованы в настройк��х браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления з��блок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрям��ю и попробуйте снова.');
