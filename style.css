@@ -139,7 +139,7 @@ button:active {
     transform: scale(0.98);
 }
 
-/* Кнопка-колоко��ьчик уведомлений в шапке */
+/* Кнопка-колокольчик уведомлений в шапке */
 .notify-toggle {
     position: absolute;
     top: 4px;
@@ -262,7 +262,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколь��о столбцов на широих экранах */
+/* Компактный пре��ью-список в несколько столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -1436,21 +1436,31 @@ textarea {
 .add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
 .add-subcategory-controls.show { max-height: none; overflow: visible; padding-right: 0; }
 
-/* Compact subcategory buttons: tighter padding, compact font, allow wrapping */
-.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 70px; }
-.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-/* Pills for existing subcategories */
-.add-subcategory-controls .modal-subcat-chip { white-space: nowrap; }
-/* Small round + button */
-.add-subcategory-controls .add-subcategory-plus { min-width: 36px; padding: 6px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; border-radius: 999px; }
+/* Compact subcategory buttons: base for controls; chips override via .modal-subcat-chip */
+.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 0; }
+.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: none; }
+/* Pills for existing subcategories (non-button look) */
+.add-subcategory-controls .modal-subcat-chip { white-space: nowrap; border-radius: 20px; padding: 6px 12px; border: 1px solid rgba(0,0,0,0.08); box-shadow: none; font-weight: 600; cursor: pointer; }
+/* color variants to match category palette */
+.modal-subcat-chip.cat-1 { background-color: #fff9c4; color: #5d4037; }
+.modal-subcat-chip.cat-2 { background-color: #bbdefb; color: #1b3b5a; }
+.modal-subcat-chip.cat-3 { background-color: #c8e6c9; color: #1b5e20; }
+.modal-subcat-chip.cat-4 { background-color: #ffcdd2; color: #7f1d1d; }
+.modal-subcat-chip.cat-5 { background-color: #d1c4e9; color: #3d2a5a; }
+.modal-subcat-chip.cat-0 { background-color: #f5f5f5; color: #333; }
+/* Selected chip — subtle outline */
+.modal-subcat-chip.selected { outline: 2px solid rgba(0,0,0,0.12); }
+/* Minimal + button */
+.add-subcategory-controls .add-subcategory-plus { min-width: 32px; padding: 6px; background: transparent; border: none; color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; }
+.add-subcategory-controls .add-subcategory-plus:active { transform: scale(0.96); background: rgba(0,0,0,0.06); }
 .add-subcategory-controls .add-subcategory-plus i { pointer-events: none; }
 /* Hidden inline editor (appears after pressing +) */
-.subcat-inline-editor { display: none; width: 100%; align-items: center; gap: 8px; }
-.subcat-inline-editor input { flex: 1 1 auto; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; }
-.subcat-editor-actions { display: inline-flex; gap: 6px; }
-.icon-btn { background: #5d4037; color: #fff; border: none; border-radius: 8px; padding: 8px 10px; cursor: pointer; min-height: auto; box-shadow: none; }
-.icon-btn.subcat-cancel { background: #9E9E9E; }
-.icon-btn.subcat-save { background: #5d4037; }
+.subcat-inline-editor { display: none; position: relative; width: 100%; align-items: center; }
+.subcat-inline-editor input { width: 100%; padding: 10px 44px 10px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; background: #fff; }
+.subcat-editor-actions { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: inline-flex; gap: 6px; }
+.icon-btn { background: transparent; color: #5d4037; border: none; border-radius: 8px; padding: 6px; cursor: pointer; min-height: auto; box-shadow: none; }
+.icon-btn.subcat-cancel { color: #e53935; }
+.icon-btn.subcat-save { color: #2e7d32; }
 
 /* When subcategory buttons carry category classes, selected becomes colored */
 .add-subcategory-controls .add-subcategory-btn.selected.cat-1 { background: #FFD54F; color: #5d4037; }
@@ -1603,7 +1613,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним уч��ствовать в сетке родителя */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
