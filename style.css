@@ -1225,14 +1225,12 @@ textarea {
 
 /* Mobile adjustments: stack subcategory add controls under the input and make controls full-width */
 @media (max-width: 480px) {
-    .add-subcategory-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-    .add-subcategory-controls .add-subcategory-btn { width: 100%; }
+    .add-subcategory-controls { width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .add-subcategory-controls .add-subcategory-btn { width: auto; flex: 0 0 auto; }
     .inline-add-form { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
     .inline-add-form input { min-width: 0; width: 100%; }
     .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { width: 100%; padding: 10px; }
-    /* Ensure the main task input textarea stretches fully on mobile inside modal */
     #modalTaskText { width: 100%; box-sizing: border-box; }
-    /* Keep modal actions below and full width (already handled elsewhere) */
     .modal-actions { width: 100%; }
 }
 
@@ -1287,6 +1285,8 @@ textarea {
 @media (max-width:480px) {
     #addTaskModal .modal-actions { flex-direction: column-reverse; width: 100%; padding-top: 8px; }
     #addTaskModal .modal-actions button { width: 100%; }
+    .modal-category-options { gap: 6px; }
+    .modal-category-options .modal-category-btn { padding: 6px 10px; font-size: 0.95rem; }
 }
 
 /* Subcategory actions modal — nicer layout and spacing */
@@ -1306,9 +1306,9 @@ textarea {
 }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
-.modal-category-options .modal-category-btn { padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); background: transparent; cursor: pointer; font-weight: 600; color: #333; min-width: 80px; max-width: 260px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; text-align: center; font-size: 0.95rem; }
-.modal-category-options .modal-category-btn:hover { transform: translateY(-2px); }
-.modal-category-options .modal-category-btn.selected { box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+.modal-category-options .modal-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); cursor: pointer; font-weight: 700; color: #333; min-width: 0; max-width: 100%; white-space: nowrap; text-align: center; font-size: 0.95rem; box-shadow: none; }
+.modal-category-options .modal-category-btn:hover { transform: translateY(-1px); }
+.modal-category-options .modal-category-btn.selected { box-shadow: none; outline: 2px solid rgba(0,0,0,0.08); }
 
 /* Strong selected variants per category for better contrast */
 .modal-category-btn.cat-0.selected { background-color: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.06); }
@@ -1451,7 +1451,7 @@ textarea {
 /* Selected chip — subtle outline */
 .modal-subcat-chip.selected { outline: 2px solid rgba(0,0,0,0.12); }
 /* Minimal + button */
-.add-subcategory-controls .add-subcategory-plus { min-width: 32px; padding: 6px; background: transparent; border: none; color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; }
+.add-subcategory-controls .add-subcategory-plus { min-width: 0; padding: 6px 12px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.08); color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 20px; }
 .add-subcategory-controls .add-subcategory-plus:active { transform: scale(0.96); background: rgba(0,0,0,0.06); }
 .add-subcategory-controls .add-subcategory-plus i { pointer-events: none; }
 /* Hidden inline editor (appears after pressing +) */
@@ -1482,7 +1482,7 @@ textarea {
 /* Ensure buttons remain compact but readable on small screens */
 @media (max-width: 480px) {
     .add-subcategory-controls { gap: 6px; }
-    .add-subcategory-controls .add-subcategory-btn { padding: 8px 6px; font-size: 0.95rem; min-width: 0; flex: 1 1 auto; }
+    .add-subcategory-controls .add-subcategory-btn { padding: 6px 10px; font-size: 0.95rem; min-width: 0; flex: 0 0 auto; }
     .add-subcategory-controls .add-subcategory-add { width: 100%; }
     .inline-add-form input { min-width: 0; }
 }
