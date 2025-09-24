@@ -836,7 +836,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри категории
+// Пееклю��ен��е активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1211,7 +1211,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-радости</button>
+            <button class="add-category-option" data-category="4">��го-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1254,12 +1254,28 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
     const list = [];
     const present = new Set();
+
+    // 0) взять подкатегории из уже существующих задач выбранной категории
+    const catNum = Number(cat);
+    tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
+         .forEach(t => {
+            const norm = normalizeSubcategoryName(catNum, t.subcategory);
+            const key = norm || t.subcategory.trim();
+            const tag = key.toLowerCase();
+            if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
+         });
+
+    // 1) добавить сохранённые пользователем подкатегории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
-        const tag = (norm || s).toLowerCase();
-        if (!present.has(tag)) { present.add(tag); list.push({ key: norm || s, label: s }); }
+        const key = norm || s;
+        const tag = key.toLowerCase();
+        if (!present.has(tag)) { present.add(tag); list.push({ key, label: s }); }
     });
+
+    // 2) сортировка
+    list.sort((a,b) => String(a.label).localeCompare(String(b.label), 'ru'));
 
     controls.innerHTML = '';
 
