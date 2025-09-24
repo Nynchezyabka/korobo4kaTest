@@ -257,7 +257,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п��лучения названия категории по номеру
+// Функция для п����лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -836,7 +836,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ен��е активности всех задач внтри категории
+// Пееклю��ение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -975,7 +975,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключ��н');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -1211,7 +1211,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">��го-радости</button>
+            <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1371,7 +1371,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибрация не поддерживается на этом устройстве");
+        console.log("Виб��ация не поддерживается на этом устройстве");
     }
 });
 
@@ -1912,7 +1912,8 @@ function openAddModal(initialCategory, options = {}) {
         const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
         const hasDefaults = (primary === 2 || primary === 4);
         const hasSaved = Array.isArray(customSubs[primary]) && customSubs[primary].length > 0;
-        if (hasDefaults || hasSaved) {
+        const hasExisting = tasks.some(t => t.category === primary && typeof t.subcategory === 'string' && t.subcategory.trim());
+        if (hasDefaults || hasSaved || hasExisting) {
             showAddSubcategoriesFor(primary, modalSubcategories);
         } else {
             if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
@@ -2113,7 +2114,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возрае на кладку/разворачивании окна
+// Пересчет при возрае на кладку/развора��ивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
