@@ -139,7 +139,7 @@ button:active {
     transform: scale(0.98);
 }
 
-/* Кнопка-колокольчик уведомлений в шапке */
+/* Кнопка-колоко��ьчик уведомлений в шапке */
 .notify-toggle {
     position: absolute;
     top: 4px;
@@ -262,7 +262,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбцов на широих экранах */
+/* Компактный пре��ью-список в несколь��о столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -1439,6 +1439,18 @@ textarea {
 /* Compact subcategory buttons: tighter padding, compact font, allow wrapping */
 .add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 70px; }
 .add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+/* Pills for existing subcategories */
+.add-subcategory-controls .modal-subcat-chip { white-space: nowrap; }
+/* Small round + button */
+.add-subcategory-controls .add-subcategory-plus { min-width: 36px; padding: 6px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; border-radius: 999px; }
+.add-subcategory-controls .add-subcategory-plus i { pointer-events: none; }
+/* Hidden inline editor (appears after pressing +) */
+.subcat-inline-editor { display: none; width: 100%; align-items: center; gap: 8px; }
+.subcat-inline-editor input { flex: 1 1 auto; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; }
+.subcat-editor-actions { display: inline-flex; gap: 6px; }
+.icon-btn { background: #5d4037; color: #fff; border: none; border-radius: 8px; padding: 8px 10px; cursor: pointer; min-height: auto; box-shadow: none; }
+.icon-btn.subcat-cancel { background: #9E9E9E; }
+.icon-btn.subcat-save { background: #5d4037; }
 
 /* When subcategory buttons carry category classes, selected becomes colored */
 .add-subcategory-controls .add-subcategory-btn.selected.cat-1 { background: #FFD54F; color: #5d4037; }
@@ -1452,6 +1464,10 @@ textarea {
 .inline-add-form input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; }
 .inline-add-actions { display: flex; gap: 8px; justify-content: space-between; }
 .inline-add-actions button { width: 48%; padding: 10px 12px; border-radius: 8px; }
+/* Icon-only buttons sizing on mobile */
+@media (max-width:480px) {
+  .icon-btn { padding: 10px; border-radius: 10px; }
+}
 
 /* Ensure buttons remain compact but readable on small screens */
 @media (max-width: 480px) {
@@ -1587,7 +1603,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* позволяет дочерним уч��ствовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
