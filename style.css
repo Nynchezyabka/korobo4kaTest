@@ -1185,7 +1185,7 @@ textarea {
 .add-category-badge[data-category="4"] { background-color: #ffcdd2; border-left: 2px solid #E57373; }
 .add-category-badge[data-category="5"] { background-color: #d1c4e9; border-left: 2px solid #9575CD; }
 
-/* Кнопка активаии/деактивации всей категории в зголовке группы */
+/* Кн��пка активаии/деактивации всей категории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
 /* ��нопки на секциях главного экрана */
@@ -1252,7 +1252,7 @@ textarea {
 .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
 .modal-content { position: relative; background: white; border-radius: 10px; padding: 28px 16px 16px; width: 92%; max-width: 520px; max-height: 88vh; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 .modal-content h3 { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #5d4037; margin-bottom: 8px; }
-.modal-close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.modal-close { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 
@@ -1604,7 +1604,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выронять элементы задачи в сетку: т��кст сле��а, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
