@@ -257,7 +257,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п����лучения названия категории по номеру
+// Функция для п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -975,7 +975,7 @@ function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
     soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
-    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключ��н');
+    soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
         soundToggleBtn.classList.remove('is-muted');
@@ -1000,7 +1000,7 @@ function updateTimerControlsForViewport() {
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
         startTimerBtn.setAttribute('aria-label','Старт');
-        startTimerBtn.title = 'Старт';
+        startTimerBtn.title = 'Ст��рт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауз��');
         pauseTimerBtn.title = 'Пауза';
@@ -1209,7 +1209,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
+            <button class="add-category-option" data-category="5">Доступ��ость простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
@@ -1282,7 +1282,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
-        b.className = 'add-subcategory-btn modal-subcat-chip modal-subcat-btn modal-btn cat-' + String(cat);
+        b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
         b.type = 'button';
         b.dataset.sub = normalizeSubcategoryName(cat, item.key) || item.key;
         b.textContent = getSubcategoryLabel(cat, item.label);
@@ -1371,7 +1371,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Виб��ация не поддерживается на этом устройстве");
+        console.log("Вибрация не поддерживается на этом устройстве");
     }
 });
 
@@ -1882,7 +1882,7 @@ try {
 
 
 function openAddModal(initialCategory, options = {}) {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять за��ачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2114,7 +2114,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Пересчет при возрае на кладку/развора��ивании окна
+// Пересчет при возрае на кладку/разворачивании окна
 window.addEventListener('focus', () => {
     if (timerRunning) {
         timerTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
