@@ -547,7 +547,7 @@ textarea {
     transition: all 0.3s;
 }
 
-/* овые цвета для кнопок таймера */
+/* ��вые цвета для кнопок таймера */
 #startTimerBtn {
     background-color: #9CCC65; /* желто-зеленый */
 }
@@ -960,7 +960,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаго��овки на всех экран��х */
+/* Показыв��ем подзаго��овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1451,9 +1451,9 @@ textarea {
 /* Selected chip — subtle outline */
 .modal-subcat-chip.selected { outline: 2px solid rgba(0,0,0,0.12); }
 /* Minimal + button */
-.add-subcategory-controls .add-subcategory-plus { min-width: 0; padding: 6px 12px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.08); color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 20px; }
+.add-subcategory-controls .add-subcategory-plus { width: 32px; height: 32px; padding: 0; background: transparent; border: 1px solid rgba(0,0,0,0.12); color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; flex: 0 0 auto; }
 .add-subcategory-controls .add-subcategory-plus:active { transform: scale(0.96); background: rgba(0,0,0,0.06); }
-.add-subcategory-controls .add-subcategory-plus i { pointer-events: none; }
+.add-subcategory-controls .add-subcategory-plus i { pointer-events: none; font-size: 1rem; line-height: 1; }
 /* Hidden inline editor (appears after pressing +) */
 .subcat-inline-editor { display: none; position: relative; width: 100%; align-items: center; }
 .subcat-inline-editor input { width: 100%; padding: 10px 44px 10px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; background: #fff; }
