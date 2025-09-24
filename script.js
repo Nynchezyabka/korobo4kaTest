@@ -261,7 +261,7 @@ function updateNotifyToggle() {
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "��бязательные",
+        1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
@@ -1263,20 +1263,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // 1) "Без подкатегории" — не выбираем ничего по умолчанию
-    const noneBtn = document.createElement('button');
-    noneBtn.className = 'add-subcategory-btn modal-subcat-btn modal-btn cat-' + String(cat);
-    noneBtn.type = 'button';
-    noneBtn.dataset.sub = '';
-    noneBtn.textContent = 'Без подкатегории';
-    noneBtn.addEventListener('click', () => {
-        controls.querySelectorAll('.add-subcategory-btn').forEach(x => x.classList.remove('selected'));
-        noneBtn.classList.add('selected');
-        const badge = document.querySelector('.add-category-badge'); if (badge) badge.setAttribute('data-sub', '');
-    });
-    controls.appendChild(noneBtn);
-
-    // 2) Существующие подкатегории в виде чипсов
+    // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip modal-subcat-btn modal-btn cat-' + String(cat);
@@ -1463,7 +1450,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчного отсета времени в фоне
+    // ��спользем Web Worker для тчного отсета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1522,7 +1509,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функ��ия для остановки таймра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -2190,7 +2177,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройк��х сайта.');
+                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
