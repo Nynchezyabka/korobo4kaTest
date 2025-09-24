@@ -547,7 +547,7 @@ textarea {
     transition: all 0.3s;
 }
 
-/* овые цвета для кнопок таймера */
+/* ��вые цвета для кнопок таймера */
 #startTimerBtn {
     background-color: #9CCC65; /* желто-зеленый */
 }
@@ -960,7 +960,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаго��овки на всех экран��х */
+/* Показыв��ем подзаго��овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1225,14 +1225,12 @@ textarea {
 
 /* Mobile adjustments: stack subcategory add controls under the input and make controls full-width */
 @media (max-width: 480px) {
-    .add-subcategory-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-    .add-subcategory-controls .add-subcategory-btn { width: 100%; }
+    .add-subcategory-controls { width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .add-subcategory-controls .add-subcategory-btn { width: auto; flex: 0 0 auto; }
     .inline-add-form { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
     .inline-add-form input { min-width: 0; width: 100%; }
     .inline-add-form .inline-save-btn, .inline-add-form .inline-cancel-btn { width: 100%; padding: 10px; }
-    /* Ensure the main task input textarea stretches fully on mobile inside modal */
     #modalTaskText { width: 100%; box-sizing: border-box; }
-    /* Keep modal actions below and full width (already handled elsewhere) */
     .modal-actions { width: 100%; }
 }
 
@@ -1287,6 +1285,8 @@ textarea {
 @media (max-width:480px) {
     #addTaskModal .modal-actions { flex-direction: column-reverse; width: 100%; padding-top: 8px; }
     #addTaskModal .modal-actions button { width: 100%; }
+    .modal-category-options { gap: 6px; }
+    .modal-category-options .modal-category-btn { padding: 6px 10px; font-size: 0.95rem; }
 }
 
 /* Subcategory actions modal — nicer layout and spacing */
@@ -1306,9 +1306,9 @@ textarea {
 }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
-.modal-category-options .modal-category-btn { padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); background: transparent; cursor: pointer; font-weight: 600; color: #333; min-width: 80px; max-width: 260px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; text-align: center; font-size: 0.95rem; }
-.modal-category-options .modal-category-btn:hover { transform: translateY(-2px); }
-.modal-category-options .modal-category-btn.selected { box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+.modal-category-options .modal-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); cursor: pointer; font-weight: 700; color: #333; min-width: 0; max-width: 100%; white-space: nowrap; text-align: center; font-size: 0.95rem; box-shadow: none; }
+.modal-category-options .modal-category-btn:hover { transform: translateY(-1px); }
+.modal-category-options .modal-category-btn.selected { box-shadow: none; outline: 2px solid rgba(0,0,0,0.08); }
 
 /* Strong selected variants per category for better contrast */
 .modal-category-btn.cat-0.selected { background-color: #f5f5f5; color: #333; border-color: rgba(0,0,0,0.06); }
@@ -1436,9 +1436,31 @@ textarea {
 .add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
 .add-subcategory-controls.show { max-height: none; overflow: visible; padding-right: 0; }
 
-/* Compact subcategory buttons: tighter padding, compact font, allow wrapping */
-.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 70px; }
-.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+/* Compact subcategory buttons: base for controls; chips override via .modal-subcat-chip */
+.add-subcategory-controls .add-subcategory-btn { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.06); color: #333; cursor: pointer; font-size: 0.92rem; min-width: 0; }
+.add-subcategory-controls .add-subcategory-btn.selected { box-shadow: none; }
+/* Pills for existing subcategories (non-button look) */
+.add-subcategory-controls .modal-subcat-chip { white-space: nowrap; border-radius: 20px; padding: 6px 12px; border: 1px solid rgba(0,0,0,0.08); box-shadow: none; font-weight: 600; cursor: pointer; }
+/* color variants to match category palette */
+.modal-subcat-chip.cat-1 { background-color: #fff9c4; color: #5d4037; }
+.modal-subcat-chip.cat-2 { background-color: #bbdefb; color: #1b3b5a; }
+.modal-subcat-chip.cat-3 { background-color: #c8e6c9; color: #1b5e20; }
+.modal-subcat-chip.cat-4 { background-color: #ffcdd2; color: #7f1d1d; }
+.modal-subcat-chip.cat-5 { background-color: #d1c4e9; color: #3d2a5a; }
+.modal-subcat-chip.cat-0 { background-color: #f5f5f5; color: #333; }
+/* Selected chip — subtle outline */
+.modal-subcat-chip.selected { outline: 2px solid rgba(0,0,0,0.12); }
+/* Minimal + button */
+.add-subcategory-controls .add-subcategory-plus { width: 32px; height: 32px; padding: 0; background: transparent; border: 1px solid rgba(0,0,0,0.12); color: #5d4037; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; flex: 0 0 auto; }
+.add-subcategory-controls .add-subcategory-plus:active { transform: scale(0.96); background: rgba(0,0,0,0.06); }
+.add-subcategory-controls .add-subcategory-plus i { pointer-events: none; font-size: 1rem; line-height: 1; }
+/* Hidden inline editor (appears after pressing +) */
+.subcat-inline-editor { display: none; position: relative; width: 100%; align-items: center; }
+.subcat-inline-editor input { width: 100%; padding: 10px 44px 10px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; background: #fff; }
+.subcat-editor-actions { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: inline-flex; gap: 6px; }
+.icon-btn { background: transparent; color: #5d4037; border: none; border-radius: 8px; padding: 6px; cursor: pointer; min-height: auto; box-shadow: none; }
+.icon-btn.subcat-cancel { color: #e53935; }
+.icon-btn.subcat-save { color: #2e7d32; }
 
 /* When subcategory buttons carry category classes, selected becomes colored */
 .add-subcategory-controls .add-subcategory-btn.selected.cat-1 { background: #FFD54F; color: #5d4037; }
@@ -1452,11 +1474,15 @@ textarea {
 .inline-add-form input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); font-size: 1rem; }
 .inline-add-actions { display: flex; gap: 8px; justify-content: space-between; }
 .inline-add-actions button { width: 48%; padding: 10px 12px; border-radius: 8px; }
+/* Icon-only buttons sizing on mobile */
+@media (max-width:480px) {
+  .icon-btn { padding: 10px; border-radius: 10px; }
+}
 
 /* Ensure buttons remain compact but readable on small screens */
 @media (max-width: 480px) {
     .add-subcategory-controls { gap: 6px; }
-    .add-subcategory-controls .add-subcategory-btn { padding: 8px 6px; font-size: 0.95rem; min-width: 0; flex: 1 1 auto; }
+    .add-subcategory-controls .add-subcategory-btn { padding: 6px 10px; font-size: 0.95rem; min-width: 0; flex: 0 0 auto; }
     .add-subcategory-controls .add-subcategory-add { width: 100%; }
     .inline-add-form input { min-width: 0; }
 }
