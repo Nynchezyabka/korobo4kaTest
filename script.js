@@ -261,7 +261,7 @@ function updateNotifyToggle() {
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "Обязательные",
+        1: "��бязательные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
@@ -1260,14 +1260,6 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         const tag = (norm || s).toLowerCase();
         if (!present.has(tag)) { present.add(tag); list.push({ key: norm || s, label: s }); }
     });
-    // Defaults for category 1
-    if (String(cat) === '1') {
-        const defaults = [ { key: 'home', label: 'Дом' }, { key: 'work', label: 'Работа' } ];
-        defaults.forEach(it => {
-            const tag = String(it.key).toLowerCase();
-            if (!present.has(tag)) { present.add(tag); list.push(it); }
-        });
-    }
 
     controls.innerHTML = '';
 
@@ -1530,7 +1522,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функ��ия для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -2198,7 +2190,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройк��х сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
