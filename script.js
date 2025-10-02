@@ -12,24 +12,34 @@ function sanitizeStoredText(s) {
     return t;
 }
 
-function loadTasks() {
-    const tasksJSON = localStorage.getItem('tasks');
-    if (tasksJSON) {
-        tasks = JSON.parse(tasksJSON);
-        // sanitize stored texts
-        tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
-        // sanitize categories: force invalid/missing to 0 (Категория не определена)
-        const valid = new Set([0,1,2,3,4,5]);
-        tasks = tasks.map(t => {
-            const n = parseInt(t.category);
-            const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
-            const active = (typeof t.active === 'boolean') ? t.active : true;
-            return { ...t, category, active };
-        });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    } else {
-        tasks = [];
+async function loadTasks() {
+    try { await (window.DB && DB.init ? DB.init() : Promise.resolve()); } catch (_) {}
+
+    // Prefer IndexedDB
+    try {
+        const fromDb = (window.DB && DB.getAllTasks) ? await DB.getAllTasks() : [];
+        if (Array.isArray(fromDb) && fromDb.length) {
+            tasks = fromDb;
+        } else {
+            const tasksJSON = localStorage.getItem('tasks');
+            tasks = tasksJSON ? JSON.parse(tasksJSON) : [];
+        }
+    } catch (_) {
+        const tasksJSON = localStorage.getItem('tasks');
+        tasks = tasksJSON ? JSON.parse(tasksJSON) : [];
     }
+
+    // sanitize stored texts
+    tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+    // sanitize categories: force invalid/missing to 0 (Категория не определена)
+    const valid = new Set([0,1,2,3,4,5]);
+    tasks = tasks.map(t => {
+        const n = parseInt(t.category);
+        const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
+        const active = (typeof t.active === 'boolean') ? t.active : true;
+        return { ...t, category, active };
+    });
+
     // sanitize custom subcategories if any
     try {
         const customSubsRaw = localStorage.getItem('customSubcategories');
@@ -38,7 +48,6 @@ function loadTasks() {
             Object.keys(cs).forEach(k => {
                 cs[k] = cs[k].map(v => sanitizeStoredText(v));
             });
-            // Migration: deduplicate saved subcategories for category 1 (keep user-defined values intact)
             const c1 = cs['1'] || cs[1];
             if (Array.isArray(c1)) {
                 const filtered = [];
@@ -54,7 +63,7 @@ function loadTasks() {
         }
     } catch (e) {}
 
-    // Migration: normalize existing tasks subcategory names for category 1
+    // Normalize existing tasks subcategory names for category 1 then persist to DB
     try {
         tasks = tasks.map(t => {
             if (t && t.category === 1 && typeof t.subcategory === 'string' && t.subcategory.trim()) {
@@ -911,7 +920,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, '��мпорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -947,7 +956,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом таймере звук включён
+    // по ум����чанию пр��� н��вом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1836,7 +1845,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подка��егорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
