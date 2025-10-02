@@ -656,7 +656,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная весия — компактное отображение */
+/* Мобильная весия — компактное отоб��ажение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -933,7 +933,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устр��йств */
+/* Адаптивность для мобильных устр����йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -947,7 +947,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголов����и категорий для мобильной группировки */
+/* Позаголов��и категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1196,7 +1196,7 @@ textarea {
 .section-action-btn:active { transform: scale(0.98); }
 .section-action-btn:focus { outline: 2px solid rgba(0,0,0,0.08); outline-offset: 2px; }
 
-/* Цвет�� в тон стикеров по секциям */
+/* Цвета в тон стикеров по секциям */
 .mandatory .section-action-btn { background-color: rgba(255,213,79,0.20); }
 .mandatory .section-action-btn:hover { background-color: rgba(255,213,79,0.30); }
 .security .section-action-btn { background-color: rgba(100,181,246,0.18); }
@@ -1378,7 +1378,7 @@ textarea {
   .section-action-btn { gap: 6px; padding: 6px 10px; }
   .section-action-btn .action-text { font-size: 0.85rem; }
   .category-title { gap: 6px; }
-  .category-title .category-add-btn { width: 36px; height: auto; aspect-ratio: 1 / 1; }
+  .category-title .category-add-btn { width: 36px; height: 36px; padding: 0; aspect-ratio: auto; }
   .category-title .subcategory-toggle-all { padding: 4px; font-size: 0.95rem; }
   .task-control-btn { padding: 3px; font-size: 0.9rem; }
   .category-dropdown { max-height: 60vh; }
@@ -1613,7 +1613,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* поз��оляет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
