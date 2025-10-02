@@ -152,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
 
-// Новые переме��ные для точного аймера
+// Новые переменные для точного аймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -299,7 +299,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех заач
+// Функция отобра��ения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -520,7 +520,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сох��а��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -932,7 +932,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора с��учайной адачи из категории
+// Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -1317,7 +1317,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сл��жная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1360,7 +1360,12 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 }
 
 window.addEventListener('load', async () => {
-    loadTasks();
+    await loadTasks();
+
+    // Register Service Worker for PWA/offline
+    if ('serviceWorker' in navigator) {
+        try { await navigator.serviceWorker.register('/sw.js'); } catch (e) {}
+    }
 
     setupAddCategorySelector();
 
@@ -1385,7 +1390,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный �� работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
 async function requestWakeLock() {
@@ -1463,7 +1468,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локальный fallback
+    // ланируем локал��ный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1535,7 +1540,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для о��тановки таймра
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1735,7 +1740,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
 }
 
 // Modal helper functions
-function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
+function openConfirmModal({ title='��одтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
     const m = document.getElementById('confirmModal'); if (!m) return;
     const backdrop = document.getElementById('confirmBackdrop');
     m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
@@ -1777,7 +1782,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радо��ти',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2204,7 +2209,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Ув��домления не ��ключены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления з��блок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
