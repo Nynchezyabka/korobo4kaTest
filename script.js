@@ -299,7 +299,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отобра��ения сех заач
+// Функция отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -520,7 +520,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сох��а��ё��ные подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -976,6 +976,15 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
+    // Close any open dropdown to avoid it appearing above overlay
+    try {
+        if (activeDropdown) {
+            activeDropdown.classList.remove('show');
+            if (activeDropdown.parentElement) activeDropdown.parentElement.style.zIndex = '';
+            activeDropdown = null;
+        }
+    } catch (_) {}
+
     // Скрывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
@@ -1032,7 +1041,7 @@ window.addEventListener('resize', updateTimerControlsForViewport);
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
+    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
     stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
@@ -1392,7 +1401,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
+// П��ддержка Wake Lock API, чтобы экран не засыпа���� во врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1468,7 +1477,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локал��ный fallback
+    // ланируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -1740,7 +1749,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
 }
 
 // Modal helper functions
-function openConfirmModal({ title='��одтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
+function openConfirmModal({ title='Подтверждение', message='', confirmText='Ок', cancelText='Отмена', requireCheck=false, checkboxLabel='Подтверждаю действие', hideCancel=false, compact=false, onConfirm=null }) {
     const m = document.getElementById('confirmModal'); if (!m) return;
     const backdrop = document.getElementById('confirmBackdrop');
     m.setAttribute('aria-hidden','false'); m.style.display = 'flex';
@@ -1782,7 +1791,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радост��й'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2053,7 +2062,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         closePasteModal();
         openConfirmModal({
             title: 'Подтверждение',
-            message: `Добавить ${lines.length} задач?`,
+            message: `Добавить ${lines.length} зад��ч?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: false,
