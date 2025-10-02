@@ -79,7 +79,8 @@ async function loadTasks() {
 }
 
 function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    try { if (window.DB && DB.saveAllTasks) DB.saveAllTasks(tasks); } catch (_) {}
+    try { localStorage.setItem('tasks', JSON.stringify(tasks)); } catch (_) {}
 }
 
 function getNextId() {
@@ -151,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
 
-// Новые переменные для точного аймера
+// Новые переме��ные для точного аймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -920,7 +921,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, '��мпорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -931,7 +932,7 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
-// Функция для выбора случайной адачи из категории
+// Функция для выбора с��учайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
@@ -956,7 +957,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум����чанию пр��� н��вом таймере звук включён
+    // по ум��лчанию пр��� н��вом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1316,7 +1317,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сл��жная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1384,7 +1385,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный �� работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
 async function requestWakeLock() {
@@ -1534,7 +1535,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функция для о��тановки таймра
 function stopTimer() {
     timerRunning = false;
     releaseWakeLock();
@@ -1776,7 +1777,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радо��ти',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1845,7 +1846,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подка��егорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2203,7 +2204,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Ув��домления не ��ключены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления з��блок��рованы в настройк��х браузера. Разрешите их вручную.');
             }
