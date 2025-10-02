@@ -499,7 +499,7 @@ textarea {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 10050;
     padding: 15px;
     overflow-y: auto;
 }
