@@ -656,7 +656,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная весия — компактное отоб��ажение */
+/* Мобильная весия — компактное отображение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -933,7 +933,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устр����йств */
+/* Адаптивность для мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1333,7 +1333,7 @@ textarea {
 .category-dropdown .category-option { background: transparent; color: inherit; border-radius: 6px; padding: 6px 8px; display: block; width: 100%; text-align: left; }
 
 /* category + button near category title: match section + style but colored per category */
-.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; aspect-ratio: 1 / 1; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.2rem; font-weight: 700; transition: background-color 0.18s, transform 0.06s; line-height: 1; }
+.category-add-btn { border: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 0; aspect-ratio: 1 / 1; border-radius: 8px; padding: 6px; cursor: pointer; box-shadow: none; color: #5d4037; font-size: 1.2rem; font-weight: 700; transition: background-color 0.18s, transform 0.06s; line-height: 1; }
 .category-add-btn i, .category-add-btn > * { color: #5d4037 !important; font-size: 1.2rem; line-height:1; }
 /* category-specific backgrounds matching section sticker backgrounds */
 .category-group.category-1 .category-add-btn { background-color: rgba(255,213,79,0.20); }
@@ -1378,7 +1378,7 @@ textarea {
   .section-action-btn { gap: 6px; padding: 6px 10px; }
   .section-action-btn .action-text { font-size: 0.85rem; }
   .category-title { gap: 6px; }
-  .category-title .category-add-btn { width: 36px; height: 36px; padding: 0; aspect-ratio: auto; }
+  .category-title .category-add-btn { width: 36px; height: 36px; min-height: 36px; padding: 0; aspect-ratio: auto; }
   .category-title .subcategory-toggle-all { padding: 4px; font-size: 0.95rem; }
   .task-control-btn { padding: 3px; font-size: 0.9rem; }
   .category-dropdown { max-height: 60vh; }
@@ -1613,7 +1613,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* поз��оляет дочерним участвовать в сетке родителя */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1724,7 +1724,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Поза��оловки ка��егорий для мобильной группировки */
+/* Поза���оловки ка��егорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
