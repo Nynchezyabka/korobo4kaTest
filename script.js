@@ -12,24 +12,34 @@ function sanitizeStoredText(s) {
     return t;
 }
 
-function loadTasks() {
-    const tasksJSON = localStorage.getItem('tasks');
-    if (tasksJSON) {
-        tasks = JSON.parse(tasksJSON);
-        // sanitize stored texts
-        tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
-        // sanitize categories: force invalid/missing to 0 (Категория не определена)
-        const valid = new Set([0,1,2,3,4,5]);
-        tasks = tasks.map(t => {
-            const n = parseInt(t.category);
-            const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
-            const active = (typeof t.active === 'boolean') ? t.active : true;
-            return { ...t, category, active };
-        });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    } else {
-        tasks = [];
+async function loadTasks() {
+    try { await (window.DB && DB.init ? DB.init() : Promise.resolve()); } catch (_) {}
+
+    // Prefer IndexedDB
+    try {
+        const fromDb = (window.DB && DB.getAllTasks) ? await DB.getAllTasks() : [];
+        if (Array.isArray(fromDb) && fromDb.length) {
+            tasks = fromDb;
+        } else {
+            const tasksJSON = localStorage.getItem('tasks');
+            tasks = tasksJSON ? JSON.parse(tasksJSON) : [];
+        }
+    } catch (_) {
+        const tasksJSON = localStorage.getItem('tasks');
+        tasks = tasksJSON ? JSON.parse(tasksJSON) : [];
     }
+
+    // sanitize stored texts
+    tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
+    // sanitize categories: force invalid/missing to 0 (Категория не определена)
+    const valid = new Set([0,1,2,3,4,5]);
+    tasks = tasks.map(t => {
+        const n = parseInt(t.category);
+        const category = (Number.isFinite(n) && valid.has(n)) ? n : 0;
+        const active = (typeof t.active === 'boolean') ? t.active : true;
+        return { ...t, category, active };
+    });
+
     // sanitize custom subcategories if any
     try {
         const customSubsRaw = localStorage.getItem('customSubcategories');
@@ -38,7 +48,6 @@ function loadTasks() {
             Object.keys(cs).forEach(k => {
                 cs[k] = cs[k].map(v => sanitizeStoredText(v));
             });
-            // Migration: deduplicate saved subcategories for category 1 (keep user-defined values intact)
             const c1 = cs['1'] || cs[1];
             if (Array.isArray(c1)) {
                 const filtered = [];
@@ -54,7 +63,7 @@ function loadTasks() {
         }
     } catch (e) {}
 
-    // Migration: normalize existing tasks subcategory names for category 1
+    // Normalize existing tasks subcategory names for category 1 then persist to DB
     try {
         tasks = tasks.map(t => {
             if (t && t.category === 1 && typeof t.subcategory === 'string' && t.subcategory.trim()) {
@@ -70,7 +79,8 @@ function loadTasks() {
 }
 
 function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    try { if (window.DB && DB.saveAllTasks) DB.saveAllTasks(tasks); } catch (_) {}
+    try { localStorage.setItem('tasks', JSON.stringify(tasks)); } catch (_) {}
 }
 
 function getNextId() {
@@ -966,6 +976,15 @@ function showTimer(task) {
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
+    // Close any open dropdown to avoid it appearing above overlay
+    try {
+        if (activeDropdown) {
+            activeDropdown.classList.remove('show');
+            if (activeDropdown.parentElement) activeDropdown.parentElement.style.zIndex = '';
+            activeDropdown = null;
+        }
+    } catch (_) {}
+
     // Скрывае�� опции завершения и показыва��м управлени аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
@@ -1022,7 +1041,7 @@ window.addEventListener('resize', updateTimerControlsForViewport);
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восстанавливам прокрутку
+    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
     stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
@@ -1350,7 +1369,12 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 }
 
 window.addEventListener('load', async () => {
-    loadTasks();
+    await loadTasks();
+
+    // Register Service Worker for PWA/offline
+    if ('serviceWorker' in navigator) {
+        try { await navigator.serviceWorker.register('/sw.js'); } catch (e) {}
+    }
 
     setupAddCategorySelector();
 
@@ -1377,7 +1401,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран не засыпа�� во врея тайме��а
+// П��ддержка Wake Lock API, чтобы экран не засыпа���� во врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1767,7 +1791,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определе��а',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2038,7 +2062,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         closePasteModal();
         openConfirmModal({
             title: 'Подтверждение',
-            message: `Добавить ${lines.length} задач?`,
+            message: `Добавить ${lines.length} зад��ч?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: false,
