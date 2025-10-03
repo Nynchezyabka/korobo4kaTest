@@ -936,17 +936,17 @@ function importTasks(file) {
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
-    
-    // Получаем все активные задачи из указанных категорий
-    const filteredTasks = tasks.filter(task => 
-        categoryArray.includes(task.category) && task.active
+
+    // Получаем все активные задачи из указанных категорий, исключая выполненные
+    const filteredTasks = tasks.filter(task =>
+        categoryArray.includes(task.category) && task.active && !task.completed
     );
-    
+
     if (filteredTasks.length === 0) {
         openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
-    
+
     const randomIndex = Math.floor(Math.random() * filteredTasks.length);
     return filteredTasks[randomIndex];
 }
@@ -1321,7 +1321,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
-    // 4) Скрытый инлайн-редактор, показывается по клику на «+»
+    // 4) Скрытый инлайн-редактор, показывает��я по клику на «+»
     const editor = document.createElement('div');
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
@@ -1791,7 +1791,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радост��й'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
