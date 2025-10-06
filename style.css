@@ -137,7 +137,7 @@ h1 {
 }
 
 .joys {
-    background-color: #c8e6c9; /* зелен��й */
+    background-color: #c8e6c9; /* зеленый */
 }
 
 .controls {
@@ -1089,7 +1089,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для план��етов и деск��опов */
+/* Сикерная сетка для план��етов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1222,7 +1222,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыт�� з��дач при с��ёрнутой группе */
+/* Скрыт�� з����дач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1699,7 +1699,7 @@ textarea {
         gap: 6px;
     }
     body {
-        padding: 12px 20px 24px;
+        padding: 12px 12px 24px;
     }
 
     .container {
