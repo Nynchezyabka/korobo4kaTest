@@ -826,11 +826,38 @@ textarea {
         min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
     }
 
-    .sections {
+    .dashboard-layout {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+        column-gap: 24px;
+        align-items: start;
+    }
+
+    .task-column {
+        max-width: 760px;
+        width: 100%;
+        gap: 24px;
+    }
+
+    .random-column {
+        position: sticky;
+        top: 20px;
+        align-self: start;
+    }
+
+    .random-column .section {
+        width: 100%;
+    }
+
+    .sections {
+        display: flex;
+        flex-direction: column;
         gap: 12px;
-        align-items: stretch; /* make all section tiles equal height */
+        margin-bottom: 0;
+    }
+
+    .tasks {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 
     /* Кноки действий вырав��иваем п етке (3 колонки) */
@@ -1195,7 +1222,7 @@ textarea {
 .add-category-dropdown .category-subrow .add-category-option,
 .category-dropdown .category-subrow .category-option { display: none !important; }
 
-/* Редактор текста задачи */
+/* Редактор ��екста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
 /* Цветизация вбранной категории при доба��лении задачи */
