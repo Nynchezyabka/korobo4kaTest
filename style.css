@@ -36,6 +36,10 @@ body {
     gap: 20px;
 }
 
+.task-column .controls {
+    margin-bottom: 0;
+}
+
 .random-column {
     display: flex;
     flex-direction: column;
@@ -224,7 +228,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Сры��аем наивный select и используем кастомный цветной дропдау�� */
+/* Сры��аем наивный select и используем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -1001,7 +1005,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголов��и категорий для мобильной группировки */
+/* Позаголов��и категорий для мобильной группи��овки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1667,7 +1671,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участво��ать в сетке родителя */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
