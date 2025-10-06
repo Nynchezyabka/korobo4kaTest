@@ -1693,8 +1693,13 @@ textarea {
         margin: 0;
         gap: 6px;
     }
+    body {
+        padding: 12px 20px 24px;
+    }
+
     .container {
-        max-width: 1000px;
+        max-width: none;
+        width: 100%;
     }
 
     .section {
@@ -1704,18 +1709,18 @@ textarea {
 
     .dashboard-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
-        column-gap: 24px;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+        column-gap: 20px;
         align-items: start;
     }
 
     .task-column {
-        max-width: 760px;
+        max-width: none;
         width: 100%;
         gap: 24px;
         grid-column: 1;
         grid-row: 1;
-        justify-self: start;
+        justify-self: stretch;
     }
 
     .random-column {
@@ -1727,6 +1732,16 @@ textarea {
         justify-self: stretch;
     }
 
+    .random-column .sections {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .random-column .section {
+        width: 100%;
+    }
+
     .sections {
         display: flex;
         flex-direction: column;
@@ -1735,7 +1750,9 @@ textarea {
     }
 
     .tasks {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
     }
 
     .controls {
@@ -1796,7 +1813,7 @@ textarea {
 }
 
 
-/* Адаптивность для мобильн��х устройств */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
