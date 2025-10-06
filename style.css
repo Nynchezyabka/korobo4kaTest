@@ -24,6 +24,27 @@ body {
     margin: 0 auto;
 }
 
+.dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.random-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.random-column .sections {
+    margin-bottom: 0;
+}
+
 header {
     text-align: center;
     margin-bottom: 15px;
@@ -765,7 +786,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху категория, снизу под ней кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа сверху кат��гория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -812,7 +833,7 @@ textarea {
         align-items: stretch; /* make all section tiles equal height */
     }
 
-    /* Кноки действий выравниваем п етке (3 колонки) */
+    /* Кноки действий вырав��иваем п етке (3 колонки) */
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
