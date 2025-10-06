@@ -606,7 +606,7 @@ textarea {
 #soundToggleBtn.is-muted { opacity: 0.45; }
 
 #completeTaskBtn {
-    background-color: #388E3C; /* темно-зеленый */
+    background-color: #388E3C; /* темно-з��леный */
 }
 #completeNowBtn { background-color: #388E3C; }
 #completeNowBtn:active { background-color: #2E7D32; }
@@ -686,7 +686,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Мобильная весия — компактное отображение */
+/* Мобильная весия — ��омпактное отображение */
 @media (max-width: 480px) {
     .task {
         position: relative;
@@ -1023,7 +1023,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго��овки на всех экран��х */
+/* Показыв��ем подзаго����овки на всех экран��х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1222,7 +1222,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыт�� з����дач при свёрнутой группе */
+/* Скрыт�� з��дач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1714,7 +1714,7 @@ textarea {
 
     .dashboard-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
         column-gap: 20px;
         align-items: start;
     }
@@ -1756,7 +1756,7 @@ textarea {
 
     .tasks {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 12px;
     }
 
