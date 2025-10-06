@@ -1696,20 +1696,48 @@ textarea {
     .container {
         max-width: 1000px;
     }
-    
+
     .section {
         max-width: none;
-        min-height: 140px; /* reserve vertical space so action buttons remain aligned across sections */
+        min-height: 140px;
+    }
+
+    .dashboard-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+        column-gap: 24px;
+        align-items: start;
+    }
+
+    .task-column {
+        max-width: 760px;
+        width: 100%;
+        gap: 24px;
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+    }
+
+    .random-column {
+        position: sticky;
+        top: 20px;
+        align-self: start;
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: stretch;
     }
 
     .sections {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: 12px;
-        align-items: stretch; /* make all section tiles equal height */
+        margin-bottom: 0;
     }
 
-    /* Кно��ки действий выравниваем п сетке (3 колонки) */
+    .tasks {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1768,7 +1796,7 @@ textarea {
 }
 
 
-/* Адаптивность для мобильных устройств */
+/* Адаптивность для мобильн��х устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
