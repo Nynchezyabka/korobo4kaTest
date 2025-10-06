@@ -22,85 +22,91 @@
             </button>
         </header>
 
-        <div class="sections">
-            <div class="section mandatory" data-category="1">
-                <h2>Обязательные дела</h2>
-                <div class="section-actions">
-                    <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
-                        <i class="fas fa-dice"></i>
-                        <span class="action-text">случайная задача</span>
-                    </button>
-                    <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
-                        <i class="fas fa-plus"></i>
-                    </button>
+        <div class="dashboard-layout">
+            <aside class="random-column">
+                <div class="sections">
+                    <div class="section mandatory" data-category="1">
+                        <h2>Обязательные дела</h2>
+                        <div class="section-actions">
+                            <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
+                                <i class="fas fa-dice"></i>
+                                <span class="action-text">случайная задача</span>
+                            </button>
+                            <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section security" data-category="2,5">
+                        <h2>Система безопасности <br>и доступность простых радостей</h2>
+                        <div class="section-actions">
+                            <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
+                                <i class="fas fa-dice"></i>
+                                <span class="action-text">случайная задача</span>
+                            </button>
+                            <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section joys" data-category="3,4">
+                        <h2>Простые и эго-радости</h2>
+                        <div class="section-actions">
+                            <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
+                                <i class="fas fa-dice"></i>
+                                <span class="action-text">случайная задача</span>
+                            </button>
+                            <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="task-column">
+                <div class="controls">
+                    <button id="showTasksBtn">Все задачи</button>
+                    <button id="archiveBtn">Выполненные</button>
+                    <button id="addMultipleBtn">Добавить несколько задач</button>
+                    <button id="exportTasksBtn">Скачать задачи</button>
+                </div>
+
+                <div class="task-list" id="taskList" style="display: none;">
+                    <h2>Все задачи</h2>
+
+                    <div class="task-form">
+                        <textarea id="taskText" placeholder="Введите новую задачу или несколько (каждая с новой строки)..."></textarea>
+                        <select id="taskCategory">
+                            <option value="0">Категория не определена (неактивна)</option>
+                            <option value="1">Обязательные дела</option>
+                            <option value="2">Система безопасности</option>
+                            <option value="5">Доступность простых радостей</option>
+                            <option value="3">Простые радости</option>
+                            <option value="4">Эго-радости</option>
+                        </select>
+                        <button id="addTaskBtn">Добавить задачу</button>
+                    </div>
+
+                    <div class="import-export">
+                        <label for="importFile" class="file-label">
+                            <i class="fas fa-upload"></i> Загрузить задачи из файла
+                        </label>
+                        <input type="file" id="importFile" class="file-input" accept=".json">
+                        <button id="pasteTasksBtn" class="file-label" type="button">
+                            <i class="fas fa-clipboard"></i> Вставить список задач
+                        </button>
+                    </div>
+
+                    <div class="tasks" id="tasksContainer">
+                        <!-- Задачи будут добавляться здесь -->
+                    </div>
+
+                    <button id="hideTasksBtn">Скрыть список</button>
                 </div>
             </div>
-            
-            <div class="section security" data-category="2,5">
-                <h2>Система безопасности <br>и доступность простых радостей</h2>
-                <div class="section-actions">
-                    <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
-                        <i class="fas fa-dice"></i>
-                        <span class="action-text">случайная задача</span>
-                    </button>
-                    <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="section joys" data-category="3,4">
-                <h2>Простые и эго-радости</h2>
-                <div class="section-actions">
-                    <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
-                        <i class="fas fa-dice"></i>
-                        <span class="action-text">случайная задача</span>
-                    </button>
-                    <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button id="showTasksBtn">Все задачи</button>
-            <button id="archiveBtn">Выполненные</button>
-            <button id="addMultipleBtn">Добавить несколько задач</button>
-            <button id="exportTasksBtn">Скачать задачи</button>
-        </div>
-        
-        <div class="task-list" id="taskList" style="display: none;">
-            <h2>Все задачи</h2>
-            
-            <div class="task-form">
-                <textarea id="taskText" placeholder="Введите новую задачу или несколько (каждая с новой строки)..."></textarea>
-                <select id="taskCategory">
-                    <option value="0">Категория не определена (неактивна)</option>
-                    <option value="1">Обязательные дела</option>
-                    <option value="2">Система безопасности</option>
-                    <option value="5">Доступность простых радостей</option>
-                    <option value="3">Простые радости</option>
-                    <option value="4">Эго-радости</option>
-                </select>
-                <button id="addTaskBtn">Добавить задачу</button>
-            </div>
-            
-            <div class="import-export">
-                <label for="importFile" class="file-label">
-                    <i class="fas fa-upload"></i> Загрузить задачи из файла
-                </label>
-                <input type="file" id="importFile" class="file-input" accept=".json">
-                <button id="pasteTasksBtn" class="file-label" type="button">
-                    <i class="fas fa-clipboard"></i> Вставить список задач
-                </button>
-            </div>
-            
-            <div class="tasks" id="tasksContainer">
-                <!-- Задачи будут добавляться здесь -->
-            </div>
-            
-            <button id="hideTasksBtn">Скрыть список</button>
         </div>
     </div>
     
