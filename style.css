@@ -224,7 +224,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Сры��аем наивный select и используем кастомный цветной дропдаун */
+/* Сры��аем наивный select и используем кастомный цветной дропдау�� */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -839,6 +839,7 @@ textarea {
         gap: 24px;
         grid-column: 1;
         grid-row: 1;
+        justify-self: start;
     }
 
     .random-column {
@@ -847,6 +848,7 @@ textarea {
         align-self: start;
         grid-column: 2;
         grid-row: 1;
+        justify-self: stretch;
     }
 
     .random-column .section {
@@ -864,7 +866,7 @@ textarea {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 
-    /* Кно��и действий вырав��иваем п етке (3 колонки) */
+    /* Кноки действий вырав��иваем п етке (3 колонки) */
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1341,7 +1343,7 @@ textarea {
     .modal-category-options .modal-category-btn { padding: 6px 10px; font-size: 0.95rem; }
 }
 
-/* Subcategory actions modal �� nicer layout and spacing */
+/* Subcategory actions modal — nicer layout and spacing */
 .subcat-actions { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
 .subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
 .subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
@@ -1665,7 +1667,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* позволяет дочерним участво��ать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
