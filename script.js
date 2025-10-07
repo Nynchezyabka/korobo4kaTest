@@ -360,7 +360,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в кате��орию\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -934,7 +934,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат файла');
+                    openInfoModal('Ошибка: неправильный форма�� файла');
                     return;
                 }
             }
@@ -1068,7 +1068,7 @@ window.addEventListener('resize', updateTimerControlsForViewport);
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // В��сста��авливам прокрутку
+    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
     stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
@@ -1103,7 +1103,7 @@ function showNotification(message) {
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время вышло! Задача завершена.",
+        body: message || "Время вышло! Задача зав��ршена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1481,6 +1481,7 @@ function startTimer() {
     requestWakeLock();
 
     timerRunning = true;
+    setQuickAddVisible(true);
     // при возобновлении с паузы
     if (timerPausedTime > 0) {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
@@ -1755,7 +1756,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательны��',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
