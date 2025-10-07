@@ -143,14 +143,14 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     return added;
 }
 
-// Переменные состояния
+// Переме��ные состояния
 let currentTask = null;
 let timerInterval = null;
 let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
+let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
 
 // Новые переменные для точного аймера
 let timerStartTime = 0;
@@ -163,6 +163,7 @@ let timerSoundEnabled = true;
 
 // ежим отображеия архива ыолненных задач
 let showArchive = false;
+let quickAddContext = { active: false, resumeTimer: false };
 
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
@@ -204,6 +205,8 @@ const timerCompleteOptions = document.getElementById('timerCompleteOptions');
 const notifyBanner = document.getElementById('notifyBanner');
 const enableNotifyBtn = document.getElementById('enableNotifyBtn');
 const notifyToggleBtn = document.getElementById('notifyToggleBtn');
+const timerQuickAdd = document.getElementById('timerQuickAdd');
+const quickAddTaskBtn = document.getElementById('quickAddTaskBtn');
 
 function applyCategoryVisualToSelect() {
     if (!taskCategory) return;
@@ -272,7 +275,7 @@ function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
         1: "Обязательные",
-        2: "Безопасность",
+        2: "Безопасност��",
         3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
@@ -299,7 +302,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех заач
+// Функ��ия отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -339,7 +342,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категорию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категори��\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -443,7 +446,7 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Пр��стые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -491,7 +494,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -520,7 +523,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -855,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение акти��ности подкатегоии по им��ни для указанной категрии
+// Переклю��ние акти��ности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -889,7 +892,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробо��ка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -921,7 +924,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт за��ершён');
             displayTasks();
             
         } catch (error) {
@@ -930,6 +933,11 @@ function importTasks(file) {
     };
     
     reader.readAsText(file);
+}
+
+function setQuickAddVisible(visible) {
+    if (!timerQuickAdd) return;
+    timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
 // Функция для выбора случайной адачи из категории
@@ -973,6 +981,7 @@ function showTimer(task) {
 
     timerTime = Math.max(1, parseInt(timerMinutes.value)) * 60;
     updateTimerDisplay();
+    setQuickAddVisible(false);
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
@@ -1046,7 +1055,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления оображения таймера
+// Функция для обновления оображения та��мера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1454,6 +1463,7 @@ function startTimer() {
     requestWakeLock();
 
     timerRunning = true;
+    setQuickAddVisible(true);
     // при возобновлении с паузы
     if (timerPausedTime > 0) {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
@@ -1552,6 +1562,7 @@ function pauseTimer() {
 // Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
+    setQuickAddVisible(false);
     releaseWakeLock();
 
     if (timerEndTimeoutId) {
@@ -1655,6 +1666,7 @@ const modalSubcategories = document.getElementById('modalSubcategories');
 const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
+const modalTaskTextDefaultPlaceholder = modalTaskText ? modalTaskText.getAttribute('placeholder') : '';
 
 function getCategoryColor(cat) {
     switch (Number(cat)) {
@@ -2074,6 +2086,18 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     }
 });
 
+
+if (quickAddTaskBtn) {
+    quickAddTaskBtn.addEventListener('click', () => {
+        if (!timerRunning && timerPausedTime <= 0) return;
+        const wasRunning = timerRunning;
+        if (timerRunning) {
+            pauseTimer();
+        }
+        showArchive = false;
+        openAddModal(0, { quick: true, reopenTimer: wasRunning });
+    });
+}
 
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
