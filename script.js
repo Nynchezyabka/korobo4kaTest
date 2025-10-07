@@ -143,7 +143,7 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     return added;
 }
 
-// Переменные состояния
+// Переме��ные состояния
 let currentTask = null;
 let timerInterval = null;
 let timerTime = 15 * 60; // 15 мину в секундах
@@ -445,7 +445,7 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Пр��стые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -569,7 +569,7 @@ function displayTasks() {
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','Меню по��категории');
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
@@ -908,7 +908,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать массив з��дач');
+                openInfoModal('Ошибка: файл должен содержать массив задач');
                 return;
             }
             
@@ -1054,7 +1054,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления оображения таймера
+// Функция для обновления оображения та��мера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1113,7 +1113,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке ст��аницы
+// Добавляем запрос разрешения при загрузке страницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1199,7 +1199,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'О��мена';
+        cancel.textContent = 'Отмена';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -1665,6 +1665,7 @@ const modalSubcategories = document.getElementById('modalSubcategories');
 const modalAddTaskBtn = document.getElementById('modalAddTaskBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 const modalCloseBtn = document.getElementById('modalCloseBtn');
+const modalTaskTextDefaultPlaceholder = modalTaskText ? modalTaskText.getAttribute('placeholder') : '';
 
 function getCategoryColor(cat) {
     switch (Number(cat)) {
@@ -2002,7 +2003,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             compact: true,
             onConfirm: () => {
                 const added = addLinesAsTasks(lines, category, selectedSub);
-                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} зад��ч`);
+                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} задач`);
             }
         });
         return;
