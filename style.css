@@ -1052,7 +1052,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго����овки на всех экран��х */
+/* Показыв��ем подзаго����овки на всех экран����х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1369,6 +1369,8 @@ textarea {
   #timerMinutes { width: 72px; padding: 6px 8px; font-size: 0.95rem; }
   .timer-btn { min-height: 36px; padding: 8px 10px; font-size: 0.95rem; }
   #soundToggleBtn, .timer-btn.icon-only { width: 40px; height: 40px; padding: 0; }
+  .timer-quick-add { margin-bottom: 10px; }
+  .timer-quick-add-btn { width: 44px; height: 44px; font-size: 1.2rem; border-radius: 10px; }
 }
 
 /* Make add-task modal actions responsive so they don't overlap the input and are fully visible */
