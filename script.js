@@ -143,25 +143,6 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     return added;
 }
 
-function addQuickTaskFromTimer(text) {
-    if (typeof text !== 'string') return false;
-    const sanitized = sanitizeStoredText(text);
-    const finalText = sanitized.trim();
-    if (!finalText) return false;
-    const newTask = {
-        id: getNextId(),
-        text: finalText,
-        category: 0,
-        completed: false,
-        active: true,
-        statusChangedAt: Date.now()
-    };
-    tasks.push(newTask);
-    saveTasks();
-    displayTasks();
-    return true;
-}
-
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
@@ -588,7 +569,7 @@ function displayTasks() {
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.setAttribute('aria-label','Меню по��категории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
@@ -927,7 +908,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать массив задач');
+                openInfoModal('Ошибка: файл должен содержать массив з��дач');
                 return;
             }
             
@@ -1132,7 +1113,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке страницы
+// Добавляем запрос разрешения при загрузке ст��аницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1218,7 +1199,7 @@ function populateTaskSubcategoryDropdown(task) {
         const cancel = document.createElement('button');
         cancel.type = 'button';
         cancel.className = 'inline-cancel-btn';
-        cancel.textContent = 'Отмена';
+        cancel.textContent = 'О��мена';
         inline.appendChild(input);
         inline.appendChild(save);
         inline.appendChild(cancel);
@@ -2021,7 +2002,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             compact: true,
             onConfirm: () => {
                 const added = addLinesAsTasks(lines, category, selectedSub);
-                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} задач`);
+                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} зад��ч`);
             }
         });
         return;
