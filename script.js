@@ -496,7 +496,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'Удалить зад��чу';
+                    del.title = 'Удалить задачу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -894,7 +894,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'Отмен��',
+        cancelText: 'От��ен��',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -953,9 +953,14 @@ function importTasks(file) {
     reader.readAsText(file);
 }
 
+function setQuickAddVisible(visible) {
+    if (!timerQuickAdd) return;
+    timerQuickAdd.style.display = visible ? 'flex' : 'none';
+}
+
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в маси�� чисел
+    // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
 
     // Получаем все активные задачи из указанных категорий, исключая выполненные
@@ -1295,7 +1300,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже существующих за��ач выбранной категории
+    // 0) взять подкатегории из уже существующих задач выбранной категории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1480,7 +1485,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // пр�� перво зауске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
