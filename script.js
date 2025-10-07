@@ -360,7 +360,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в кате��орию\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категори��\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -934,7 +934,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный форма�� файла');
+                    openInfoModal('Ошибка: неправильный формат файла');
                     return;
                 }
             }
@@ -1103,7 +1103,7 @@ function showNotification(message) {
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
-        body: message || "Время вышло! Задача зав��ршена.",
+        body: message || "Время вышло! Задача завершена.",
         icon: "/icon-192.png",
         badge: "/icon-192.png",
         vibrate: [500, 300, 500],
@@ -1580,6 +1580,7 @@ function pauseTimer() {
 // Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
+    setQuickAddVisible(false);
     releaseWakeLock();
 
     if (timerEndTimeoutId) {
@@ -1756,7 +1757,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательны��',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
