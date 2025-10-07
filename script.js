@@ -894,7 +894,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'От��ен��',
+        cancelText: 'Отмен��',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -999,6 +999,7 @@ function showTimer(task) {
 
     timerTime = Math.max(1, parseInt(timerMinutes.value)) * 60;
     updateTimerDisplay();
+    setQuickAddVisible(false);
     timerScreen.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
@@ -1067,7 +1068,7 @@ window.addEventListener('resize', updateTimerControlsForViewport);
 // Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
+    document.body.style.overflow = 'auto'; // В��сста��авливам прокрутку
     stopTimer(); // Останавливем таймр при закр��ти
     releaseWakeLock();
 }
