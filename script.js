@@ -143,6 +143,25 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     return added;
 }
 
+function addQuickTaskFromTimer(text) {
+    if (typeof text !== 'string') return false;
+    const sanitized = sanitizeStoredText(text);
+    const finalText = sanitized.trim();
+    if (!finalText) return false;
+    const newTask = {
+        id: getNextId(),
+        text: finalText,
+        category: 0,
+        completed: false,
+        active: true,
+        statusChangedAt: Date.now()
+    };
+    tasks.push(newTask);
+    saveTasks();
+    displayTasks();
+    return true;
+}
+
 // Переменные состояния
 let currentTask = null;
 let timerInterval = null;
@@ -918,7 +937,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавлям за��ачи в бзу данных
+            // Добавлям за��ачи в б��у данных
             tasks = importedTasks;
             saveTasks();
             openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
@@ -1791,7 +1810,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Си��тема безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
