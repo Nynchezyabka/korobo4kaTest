@@ -349,7 +349,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ательске подкатегории
+    // Загружаем сохранё��не пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -1210,7 +1210,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радо��ть' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1257,7 +1257,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-радости</button>
+            <button class="add-category-option" data-category="4">Эго-р��дости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2104,6 +2104,27 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
 });
 
 
+if (quickAddTaskBtn) {
+    quickAddTaskBtn.addEventListener('click', () => {
+        if (!timerRunning && timerPausedTime <= 0) return;
+        const wasRunning = timerRunning;
+        if (timerRunning) {
+            pauseTimer();
+        }
+        const input = prompt('Введите короткую задачу:');
+        let added = false;
+        if (typeof input === 'string') {
+            added = addQuickTaskFromTimer(input);
+            if (added) {
+                showToastNotification('Задача добавлена', 'Сохранена в «Категория не определена»', 2200);
+            }
+        }
+        if (wasRunning && timerPausedTime > 0) {
+            startTimer();
+        }
+    });
+}
+
 startTimerBtn.addEventListener('click', startTimer);
 pauseTimerBtn.addEventListener('click', pauseTimer);
 resetTimerBtn.addEventListener('click', resetTimer);
@@ -2245,7 +2266,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Увед��мления включены');
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
