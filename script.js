@@ -293,7 +293,7 @@ function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
         1: "Обязательные",
-        2: "Безопасность",
+        2: "Безопасност��",
         3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
@@ -320,7 +320,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функция отображения сех заач
+// Функ��ия отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -349,7 +349,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранё��не пользо��ательске подкатегории
+    // Загружаем сохранённе пользо��ательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -541,7 +541,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (учитываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по подкатегориям для текущей категории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1210,7 +1210,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радо��ть' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1257,7 +1257,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-р��дости</button>
+            <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2111,17 +2111,8 @@ if (quickAddTaskBtn) {
         if (timerRunning) {
             pauseTimer();
         }
-        const input = prompt('Введите короткую задачу:');
-        let added = false;
-        if (typeof input === 'string') {
-            added = addQuickTaskFromTimer(input);
-            if (added) {
-                showToastNotification('Задача добавлена', 'Сохранена в «Категория не определена»', 2200);
-            }
-        }
-        if (wasRunning && timerPausedTime > 0) {
-            startTimer();
-        }
+        showArchive = false;
+        openAddModal(0, { quick: true, reopenTimer: wasRunning });
     });
 }
 
@@ -2266,7 +2257,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Увед��мления включены');
+                createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
                 openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
