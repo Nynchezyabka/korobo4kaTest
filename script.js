@@ -150,7 +150,7 @@ let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны н�� засыают во время таймера (где поддержвается)
+let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
 
 // Новые переменные для точного аймера
 let timerStartTime = 0;
@@ -163,6 +163,7 @@ let timerSoundEnabled = true;
 
 // ежим отображеия архива ыолненных задач
 let showArchive = false;
+let quickAddContext = { active: false, resumeTimer: false };
 
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
@@ -493,7 +494,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для мобильного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты для моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -857,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклюение акти��ности подкатегоии по им��ни для указанной категрии
+// Переклю��ние акти��ности подкатегоии по им��ни для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -891,7 +892,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробо��ка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -923,7 +924,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт за��ершён');
             displayTasks();
             
         } catch (error) {
