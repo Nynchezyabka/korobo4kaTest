@@ -223,6 +223,8 @@ const timerCompleteOptions = document.getElementById('timerCompleteOptions');
 const notifyBanner = document.getElementById('notifyBanner');
 const enableNotifyBtn = document.getElementById('enableNotifyBtn');
 const notifyToggleBtn = document.getElementById('notifyToggleBtn');
+const timerQuickAdd = document.getElementById('timerQuickAdd');
+const quickAddTaskBtn = document.getElementById('quickAddTaskBtn');
 
 function applyCategoryVisualToSelect() {
     if (!taskCategory) return;
@@ -494,7 +496,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'Удалить задачу';
+                    del.title = 'Удалить зад��чу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -937,7 +939,7 @@ function importTasks(file) {
                 }
             }
             
-            // Добавлям за��ачи в б��у данных
+            // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
             openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
@@ -953,7 +955,7 @@ function importTasks(file) {
 
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в масив чисел
+    // Преоразуем строку категорий в маси�� чисел
     const categoryArray = categories.split(',').map(Number);
 
     // Получаем все активные задачи из указанных категорий, исключая выполненные
@@ -1293,7 +1295,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже существующих задач выбранной категории
+    // 0) взять подкатегории из уже существующих за��ач выбранной категории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1478,7 +1480,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво зауске
+    // пр�� перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1810,7 +1812,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Си��тема безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
