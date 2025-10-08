@@ -45,7 +45,7 @@
                                 <i class="fas fa-dice"></i>
                                 <span class="action-text">случайная задача</span>
                             </button>
-                            <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
+                            <button class="section-action-btn section-add-btn" aria-label="Добавить з��дачу">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -124,12 +124,6 @@
                 <button class="timer-btn" id="resetTimerBtn">Сброс</button>
             </div>
 
-            <div class="timer-quick-add" id="timerQuickAdd">
-                <button class="timer-btn timer-quick-add-btn" id="quickAddTaskBtn" type="button" aria-label="Быстро добавить задачу">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-
             <div class="timer-primary-actions">
                 <button class="timer-btn" id="completeNowBtn"><i class="fas fa-check"></i> Готово</button>
             </div>
@@ -139,7 +133,14 @@
                 <button class="timer-btn" id="returnTaskBtn">Вернуть в коробочку</button>
             </div>
 
-            <button class="timer-btn" id="closeTimerBtn" style="margin-top: 15px;">Закрыть</button>
+            <div class="timer-quick-add" id="timerQuickAdd">
+                <span class="timer-new-task-label">Добавить новую задачу</span>
+                <button class="timer-btn timer-quick-add-btn" id="quickAddTaskBtn" type="button" aria-label="Добавить новую задачу">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <button class="timer-btn timer-close-action" id="closeTimerBtn">Закрыть</button>
         </div>
     </div>
 
