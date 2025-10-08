@@ -52,7 +52,7 @@
                     </div>
 
                     <div class="section joys" data-category="3,4">
-                        <h2>Простые и эго-радости</h2>
+                        <h2>Просты�� и эго-радости</h2>
                         <div class="section-actions">
                             <button class="section-action-btn section-random-btn" aria-label="Случайная задача">
                                 <i class="fas fa-dice"></i>
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="task-list" id="taskList" style="display: none;">
-                    <h2>Все задачи</h2>
+                    <h2>Все зад��чи</h2>
 
                     <div class="task-form">
                         <textarea id="taskText" placeholder="Введите новую задачу или несколько (каждая с новой строки)..."></textarea>
@@ -117,11 +117,15 @@
             <div class="timer-display" id="timerDisplay">15:00</div>
             
             <div class="timer-controls">
-                <input type="number" id="timerMinutes" min="1" max="120" value="15">
-                <button class="timer-btn" id="soundToggleBtn" aria-pressed="true" aria-label="Звук включён" title="Звук включён"><i class="fas fa-volume-up"></i></button>
-                <button class="timer-btn" id="startTimerBtn">Старт</button>
-                <button class="timer-btn" id="pauseTimerBtn">Пауза</button>
-                <button class="timer-btn" id="resetTimerBtn">Сброс</button>
+                <div class="timer-settings-row">
+                    <input type="number" id="timerMinutes" min="1" max="120" value="15">
+                    <button class="timer-btn" id="soundToggleBtn" aria-pressed="true" aria-label="Звук включён" title="Звук включён"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="timer-action-row">
+                    <button class="timer-btn" id="startTimerBtn">Старт</button>
+                    <button class="timer-btn" id="pauseTimerBtn">Пауза</button>
+                    <button class="timer-btn" id="resetTimerBtn">Сброс</button>
+                </div>
             </div>
 
             <div class="timer-primary-actions">
@@ -134,9 +138,9 @@
             </div>
 
             <div class="timer-quick-add" id="timerQuickAdd">
-                <span class="timer-new-task-label">Добавить новую задачу</span>
                 <button class="timer-btn timer-quick-add-btn" id="quickAddTaskBtn" type="button" aria-label="Добавить новую задачу">
                     <i class="fas fa-plus"></i>
+                    <span class="timer-quick-add-text">Добавить новую задачу</span>
                 </button>
             </div>
 
@@ -231,7 +235,7 @@
         <div class="modal-backdrop" id="pasteTasksBackdrop"></div>
         <div class="modal-content paste-modal-content">
             <button class="modal-close" id="pasteTasksCloseBtn" aria-label="Закрыть">&times;</button>
-            <h3>Вставить список задач</h3>
+            <h3>Вставить ��писок задач</h3>
             <div class="paste-modal-body">
                 <label for="pasteTasksInput" class="modal-label">Каждая задача с новой строки</label>
                 <textarea id="pasteTasksInput" class="paste-modal-textarea" placeholder="Вставьте задачи..." aria-label="Список задач построчно"></textarea>
