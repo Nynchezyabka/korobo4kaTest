@@ -152,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
 
-// Новые переменные для точного аймера
+// Новые переменные для точного айме��а
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -275,7 +275,7 @@ function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
         1: "Обязательные",
-        2: "Безопасност��",
+        2: "Безопасность",
         3: "Простые радости",
         4: "Эго-радости",
         5: "Доступность простых радостей"
@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ательске подкатегории
+    // Загружаем сохранённе пользо��ат��льске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -342,7 +342,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категори��\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категории\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/развора��ивание гру��пы
+        // Клик по названию категории — сво��ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -418,7 +418,7 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Ра��обрать')
+            // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
             raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
@@ -435,7 +435,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отме��ить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -446,7 +446,7 @@ function displayTasks() {
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
-                            <button class=\"category-option\" data-category=\"3\">Пр��стые радости</button>
+                            <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
                     </div>
@@ -523,7 +523,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по подкатегориям для текущей категории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для текущей кате��ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -561,7 +561,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показат�� все задачи подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -858,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклю��ние акти��ности подкатегоии по им��ни для указанной категрии
+// Переклю��ние акти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -876,7 +876,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'Отмен��',
+        cancelText: 'Отмена',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -892,7 +892,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробо��ка-задачи.json';
+    const exportFileDefaultName = 'коробочка-задачи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -924,7 +924,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт за��ершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
             displayTasks();
             
         } catch (error) {
@@ -1028,9 +1028,9 @@ function updateTimerControlsForViewport() {
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
         startTimerBtn.setAttribute('aria-label','Старт');
-        startTimerBtn.title = 'Старт';
+        startTimerBtn.title = '����арт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        pauseTimerBtn.setAttribute('aria-label','Пауз��');
+        pauseTimerBtn.setAttribute('aria-label','Пауза');
         pauseTimerBtn.title = 'Пауза';
         resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
         resetTimerBtn.setAttribute('aria-label','Сброс');
@@ -1047,7 +1047,7 @@ function updateTimerControlsForViewport() {
 
 window.addEventListener('resize', updateTimerControlsForViewport);
 
-// Функция для скрытия таймера
+// Функция для скрытия таймер��
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
@@ -1192,7 +1192,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1469,7 +1469,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво зауске
+    // ��ри перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1500,7 +1500,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчного отсета времени в фоне
+    // Использем Web Worker для тчно��о отсета времени в ��оне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1740,7 +1740,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1803,7 +1803,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -1918,6 +1918,13 @@ try {
 
 
 function openAddModal(initialCategory, options = {}) {
+    // capture quick-add context flags as a fallback
+    if (options && options.quick) {
+        if (typeof quickAddContext === 'object') {
+            quickAddContext.active = true;
+            quickAddContext.resumeTimer = !!options.reopenTimer;
+        }
+    }
     if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
@@ -1976,6 +1983,14 @@ function closeAddModal() {
     addTaskModal.setAttribute('aria-hidden', 'true');
     addTaskModal.style.display = 'none';
     if (modalSubcategories) { modalSubcategories.classList.remove('show'); modalSubcategories.style.display = 'none'; }
+    // If opened from timer quick-add and timer was running, resume automatically
+    try {
+        const shouldResume = quickAddContext && quickAddContext.active && quickAddContext.resumeTimer;
+        if (quickAddContext) { quickAddContext.active = false; quickAddContext.resumeTimer = false; }
+        if (shouldResume) {
+            startTimer();
+        }
+    } catch (_) {}
 }
 
 modalBackdrop && modalBackdrop.addEventListener('click', () => closeAddModal());
@@ -1997,7 +2012,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     if (lines.length > 1) {
         openConfirmModal({
             title: 'Подтверждение',
-            message: `Добавить ${lines.length} задач?`,
+            message: `Д��бавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: false,
@@ -2036,7 +2051,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списк�� выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
@@ -2074,7 +2089,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         closePasteModal();
         openConfirmModal({
             title: 'Подтверждение',
-            message: `Добавить ${lines.length} зад��ч?`,
+            message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: false,
@@ -2095,6 +2110,11 @@ if (quickAddTaskBtn) {
             pauseTimer();
         }
         showArchive = false;
+        // mark quick-add context to resume timer after modal closes if it was running
+        if (typeof quickAddContext === 'object') {
+            quickAddContext.active = true;
+            quickAddContext.resumeTimer = !!wasRunning;
+        }
         openAddModal(0, { quick: true, reopenTimer: wasRunning });
     });
 }
@@ -2185,7 +2205,7 @@ function showToastNotification(title, message, duration = 5000) {
         toast.id = 'toast-notification';
         toast.className = 'toast-notification';
         toast.innerHTML = `
-            <div class="toast-icon">🎁</div>
+            <div class="toast-icon">���</div>
             <div class="toast-content">
                 <div class="toast-title"></div>
                 <div class="toast-message"></div>
@@ -2227,12 +2247,12 @@ function hideToastNotification() {
 if (notifyToggleBtn) {
     notifyToggleBtn.addEventListener('click', async () => {
         if (!('Notification' in window)) {
-            openInfoModal('Уве��омления не по��держиваются этим бра��зером');
+            openInfoModal('Уведомления не поддерживаются этим браузером');
             return;
         }
         if (Notification.permission === 'granted') {
             await ensurePushSubscribed();
-            createBrowserNotification('Уведомлен��я включены');
+            createBrowserNotification('Уведомления включены');
             updateNotifyToggle();
             return;
         }
@@ -2242,12 +2262,12 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Ув��домления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления з��блок��рованы в настройк��х браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрям��ю и попробуйте снова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });

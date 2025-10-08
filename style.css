@@ -605,17 +605,44 @@ textarea {
     transition: background-color 0.2s, transform 0.2s;
 }
 
+/* Combined variant inside timer quick-add section */
+.timer-quick-add .timer-quick-add-btn {
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #9E9E9E;
+    border: 1px solid rgba(93, 64, 55, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
 .timer-quick-add-btn i {
     pointer-events: none;
+    font-size: 1rem;
 }
 
 .timer-quick-add-btn:hover {
     background-color: rgba(93, 64, 55, 0.16);
 }
 
+.timer-quick-add .timer-quick-add-btn:hover {
+    background-color: rgba(93, 64, 55, 0.06);
+}
+
 .timer-quick-add-btn:active {
     transform: scale(0.96);
     background-color: rgba(93, 64, 55, 0.22);
+}
+
+.timer-quick-add .timer-quick-add-btn:active {
+    background-color: rgba(93, 64, 55, 0.12);
 }
 
 .timer-quick-add-btn:focus-visible {
@@ -825,6 +852,8 @@ textarea {
         flex: 1;
         min-width: 100px;
     }
+
+    .timer-settings-row, .timer-action-row { display: contents; }
 
     .import-export {
         flex-direction: row;
@@ -1395,11 +1424,12 @@ textarea {
   #pasteTasksModal .modal-actions { flex-direction: column-reverse; }
   #pasteTasksModal .modal-actions button { width: 100%; }
 
-  .timer-controls { flex-direction: row; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .timer-controls { flex-direction: column; align-items: center; gap: 10px; }
+  .timer-settings-row, .timer-action-row { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; }
   #timerMinutes { width: 72px; padding: 6px 8px; font-size: 0.95rem; }
   .timer-btn { min-height: 36px; padding: 8px 10px; font-size: 0.95rem; }
   #soundToggleBtn, .timer-btn.icon-only { width: 40px; height: 40px; padding: 0; }
-  .timer-quick-add { margin: 16px auto 0; padding-top: 10px; }
+  .timer-quick-add { margin: 20px auto 0; padding-top: 12px; }
   .timer-new-task-label { font-size: 0.9rem; }
   .timer-quick-add-btn { width: 40px; height: 40px; font-size: 1.1rem; }
 }
@@ -1701,6 +1731,8 @@ textarea {
         min-width: 100px;
     }
 
+    .timer-settings-row, .timer-action-row { display: contents; }
+
     .import-export {
         flex-direction: row;
     }
@@ -1716,7 +1748,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/пл��ншет: тот же компактный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }

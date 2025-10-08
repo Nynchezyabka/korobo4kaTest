@@ -45,7 +45,7 @@
                                 <i class="fas fa-dice"></i>
                                 <span class="action-text">случайная задача</span>
                             </button>
-                            <button class="section-action-btn section-add-btn" aria-label="Добавить з��дачу">
+                            <button class="section-action-btn section-add-btn" aria-label="Добавить задачу">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -117,11 +117,15 @@
             <div class="timer-display" id="timerDisplay">15:00</div>
             
             <div class="timer-controls">
-                <input type="number" id="timerMinutes" min="1" max="120" value="15">
-                <button class="timer-btn" id="soundToggleBtn" aria-pressed="true" aria-label="Звук включён" title="Звук включён"><i class="fas fa-volume-up"></i></button>
-                <button class="timer-btn" id="startTimerBtn">Старт</button>
-                <button class="timer-btn" id="pauseTimerBtn">Пауза</button>
-                <button class="timer-btn" id="resetTimerBtn">Сброс</button>
+                <div class="timer-settings-row">
+                    <input type="number" id="timerMinutes" min="1" max="120" value="15">
+                    <button class="timer-btn" id="soundToggleBtn" aria-pressed="true" aria-label="Звук включён" title="Звук включён"><i class="fas fa-volume-up"></i></button>
+                </div>
+                <div class="timer-action-row">
+                    <button class="timer-btn" id="startTimerBtn">Старт</button>
+                    <button class="timer-btn" id="pauseTimerBtn">Пауза</button>
+                    <button class="timer-btn" id="resetTimerBtn">Сброс</button>
+                </div>
             </div>
 
             <div class="timer-primary-actions">
@@ -134,9 +138,9 @@
             </div>
 
             <div class="timer-quick-add" id="timerQuickAdd">
-                <span class="timer-new-task-label">Добавить новую задачу</span>
                 <button class="timer-btn timer-quick-add-btn" id="quickAddTaskBtn" type="button" aria-label="Добавить новую задачу">
                     <i class="fas fa-plus"></i>
+                    <span class="timer-quick-add-text">Добавить новую задачу</span>
                 </button>
             </div>
 
