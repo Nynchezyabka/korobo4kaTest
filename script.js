@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ательске подкатегории
+    // Загружаем сохранённе пользо��ат��льске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -561,7 +561,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показат�� все задачи подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -858,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклю��ние акти��ности подкатегоии по им��ни для указанной категрии
+// Переклю��ние акти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -1028,7 +1028,7 @@ function updateTimerControlsForViewport() {
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
         startTimerBtn.setAttribute('aria-label','Старт');
-        startTimerBtn.title = '��тарт';
+        startTimerBtn.title = '����арт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауза');
         pauseTimerBtn.title = 'Пауза';
@@ -2205,7 +2205,7 @@ function showToastNotification(title, message, duration = 5000) {
         toast.id = 'toast-notification';
         toast.className = 'toast-notification';
         toast.innerHTML = `
-            <div class="toast-icon">🎁</div>
+            <div class="toast-icon">���</div>
             <div class="toast-content">
                 <div class="toast-title"></div>
                 <div class="toast-message"></div>
