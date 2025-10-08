@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сворачивание/развора��ивание гру��пы
+        // Клик по названию категории — сво��ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -435,7 +435,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отме��ить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -1192,7 +1192,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная р��дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1469,7 +1469,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // при перво зауске
+    // ��ри перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
@@ -1500,7 +1500,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчного отсета времени в ��оне
+    // Использем Web Worker для тчно��о отсета времени в ��оне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -2264,7 +2264,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручн��ю.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
