@@ -1740,7 +1740,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2051,7 +2051,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельз�� добавлять задачи в списке выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
@@ -2264,7 +2264,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручн��ю.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
