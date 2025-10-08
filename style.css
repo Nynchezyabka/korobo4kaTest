@@ -589,6 +589,8 @@ textarea {
 .timer-quick-add-btn {
     width: 42px;
     height: 42px;
+    min-width: 0;
+    min-height: 0;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -597,6 +599,7 @@ textarea {
     background-color: rgba(93, 64, 55, 0.1);
     color: #5d4037;
     font-size: 1.2rem;
+    line-height: 1;
     box-shadow: none;
     border: 1px dashed rgba(93, 64, 55, 0.4);
     transition: background-color 0.2s, transform 0.2s;
@@ -651,7 +654,7 @@ textarea {
 }
 
 #resetTimerBtn {
-    background-color: #f44336; /* красн��й */
+    background-color: #f44336; /* красный */
 }
 
 #resetTimerBtn:active {
