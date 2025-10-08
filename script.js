@@ -161,7 +161,7 @@ let timerEndAt = 0;
 let timerEndTimeoutId = null;
 let timerSoundEnabled = true;
 
-// ежим отображеия архива ыолненных задач
+// ежим отобра��еия архива ыолненных задач
 let showArchive = false;
 let quickAddContext = { active: false, resumeTimer: false };
 
@@ -876,7 +876,7 @@ function deleteTask(taskId) {
         title: 'Удаление задачи',
         message: 'Удалить эту задачу?',
         confirmText: 'Удалить',
-        cancelText: 'Отмен��',
+        cancelText: 'Отмена',
         requireCheck: false,
         compact: true,
         onConfirm: () => {
@@ -2088,7 +2088,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         // Close the paste modal first so confirm modal is fully visible and clickable
         closePasteModal();
         openConfirmModal({
-            title: 'Подтверждение',
+            title: 'Подтверж��ение',
             message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
