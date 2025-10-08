@@ -651,7 +651,7 @@ textarea {
 }
 
 #resetTimerBtn {
-    background-color: #f44336; /* красный */
+    background-color: #f44336; /* красн��й */
 }
 
 #resetTimerBtn:active {
@@ -1396,8 +1396,9 @@ textarea {
   #timerMinutes { width: 72px; padding: 6px 8px; font-size: 0.95rem; }
   .timer-btn { min-height: 36px; padding: 8px 10px; font-size: 0.95rem; }
   #soundToggleBtn, .timer-btn.icon-only { width: 40px; height: 40px; padding: 0; }
-  .timer-quick-add { margin-bottom: 10px; }
-  .timer-quick-add-btn { width: 44px; height: 44px; font-size: 1.2rem; border-radius: 10px; }
+  .timer-quick-add { margin: 16px auto 0; padding-top: 10px; }
+  .timer-new-task-label { font-size: 0.9rem; }
+  .timer-quick-add-btn { width: 40px; height: 40px; font-size: 1.1rem; }
 }
 
 /* Make add-task modal actions responsive so they don't overlap the input and are fully visible */
