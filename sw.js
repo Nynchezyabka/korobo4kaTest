@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const STATIC_CACHE = `korobochka-static-${CACHE_VERSION}`;
 const ASSETS = [
   '/',
