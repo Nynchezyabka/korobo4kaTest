@@ -858,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклю��ние акти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -1238,7 +1238,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="3">Просты�� радости</button>
             <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -2101,6 +2101,16 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     }
 });
 
+
+// About modal
+const infoFab = document.getElementById('infoFab');
+const infoModal = document.getElementById('infoModal');
+const infoBackdrop = document.getElementById('infoBackdrop');
+const infoCloseBtn = document.getElementById('infoCloseBtn');
+function openAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','false'); infoModal.style.display='flex'; }
+function closeAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','true'); infoModal.style.display='none'; }
+if (infoFab) infoFab.addEventListener('click', openAboutModal);
+[infoBackdrop, infoCloseBtn].forEach(el => { if (el) el.addEventListener('click', closeAboutModal); });
 
 if (quickAddTaskBtn) {
     quickAddTaskBtn.addEventListener('click', () => {
