@@ -302,7 +302,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ��ия отображения сех заач
+// Функ��ия отобр��жения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -951,7 +951,7 @@ function getRandomTask(categories) {
     );
 
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных задач в этой категор��и!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
 
@@ -965,7 +965,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом таймере звук включён
+    // по ум���лчанию пр��� н��вом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1064,7 +1064,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
+    const body = message || (currentTask ? `Зад��ча: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playBeep();
 
@@ -1192,7 +1192,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р����дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
