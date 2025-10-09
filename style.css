@@ -1294,7 +1294,7 @@ textarea {
     .subcategory-columns { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 }
 
-/* Стикер на всю строку для длинных задач */
+/* Стикер на всю ст��оку для длинных задач */
 .group-grid .sticker-wide { grid-column: 1 / -1; }
 .group-grid .task { padding: 6px 8px; border-radius: 12px; }
 .group-grid .category-badge { background-color: transparent; padding: 0 6px; }
@@ -1406,6 +1406,21 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; min-width: 32px; min-height: 32px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* Floating info button */
+.info-fab { position: fixed; bottom: 16px; right: 16px; width: 48px; height: 48px; border-radius: 50%; background: rgba(93, 64, 55, 0.12); color: #5d4037; border: 1px solid rgba(93, 64, 55, 0.2); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.12); z-index: 11000; transition: background-color 0.18s, transform 0.06s; }
+.info-fab:active { transform: scale(0.96); background: rgba(93, 64, 55, 0.18); }
+@media (hover:hover) { .info-fab:hover { background: rgba(93, 64, 55, 0.16); } }
+
+/* Info modal content */
+#infoModal .info-modal-content { max-width: 760px; padding: 24px 18px 16px; }
+#infoModal h2 { font-family: 'Caveat', cursive; color: #5d4037; font-size: 2rem; margin-bottom: 8px; text-align: center; }
+#infoModal h3 { margin-top: 10px; }
+#infoModal h4 { margin-top: 8px; color: #5d4037; }
+#infoModal .info-section { margin: 10px 0; }
+#infoModal .psychology-points p { margin: 6px 0; }
+#infoModal .categories-list, #infoModal .features-list, #infoModal .usage-steps { margin: 8px 0 8px 18px; }
+#infoModal .footer-note { margin-top: 12px; opacity: 0.9; text-align: center; }
 
 /* Compact confirm modal variant */
 #confirmModal .modal-content.compact { padding: 16px 12px 12px; max-width: 380px; }

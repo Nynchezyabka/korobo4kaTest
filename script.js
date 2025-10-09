@@ -858,7 +858,7 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
-// Переклю��ние акти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
     const newActive = !hasActive;
@@ -887,7 +887,7 @@ function deleteTask(taskId) {
     });
 }
 
-// Ф��нкия для экспорта задач в фйл
+// Ф����кия для экспорта задач в фйл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -951,7 +951,7 @@ function getRandomTask(categories) {
     );
 
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных задач в этой категории!');
+        openInfoModal('Нет активных задач в этой категор��и!');
         return null;
     }
 
@@ -1028,7 +1028,7 @@ function updateTimerControlsForViewport() {
         resetTimerBtn.classList.add('icon-only');
         startTimerBtn.innerHTML = '<i class="fas fa-play"></i>';
         startTimerBtn.setAttribute('aria-label','Старт');
-        startTimerBtn.title = '����арт';
+        startTimerBtn.title = 'Старт';
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i>';
         pauseTimerBtn.setAttribute('aria-label','Пауза');
         pauseTimerBtn.title = 'Пауза';
@@ -1055,7 +1055,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления оображения та��мера
+// Функция для обновления ��ображения та��мера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1457,7 +1457,7 @@ function playBeep() {
     } catch (_) {}
 }
 
-// Функция для запуска таймера
+// Функция для запуска ��аймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1492,7 +1492,7 @@ function startTimer() {
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `За��ача: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -2051,7 +2051,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списк�� выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
@@ -2101,6 +2101,16 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
     }
 });
 
+
+// About modal
+const infoFab = document.getElementById('infoFab');
+const infoModal = document.getElementById('infoModal');
+const infoBackdrop = document.getElementById('infoBackdrop');
+const infoCloseBtn = document.getElementById('infoCloseBtn');
+function openAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','false'); infoModal.style.display='flex'; }
+function closeAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','true'); infoModal.style.display='none'; }
+if (infoFab) infoFab.addEventListener('click', openAboutModal);
+[infoBackdrop, infoCloseBtn].forEach(el => { if (el) el.addEventListener('click', closeAboutModal); });
 
 if (quickAddTaskBtn) {
     quickAddTaskBtn.addEventListener('click', () => {
@@ -2205,7 +2215,7 @@ function showToastNotification(title, message, duration = 5000) {
         toast.id = 'toast-notification';
         toast.className = 'toast-notification';
         toast.innerHTML = `
-            <div class="toast-icon">���</div>
+            <div class="toast-icon">🎁</div>
             <div class="toast-content">
                 <div class="toast-title"></div>
                 <div class="toast-message"></div>
