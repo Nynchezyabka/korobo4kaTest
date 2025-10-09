@@ -1411,6 +1411,7 @@ textarea {
 .info-fab { position: fixed; top: 12px; left: 12px; width: 48px; height: 48px; border-radius: 50%; background: rgba(93, 64, 55, 0.12); color: #5d4037; border: 1px solid rgba(93, 64, 55, 0.2); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.12); z-index: 11000; transition: background-color 0.18s, transform 0.06s; }
 .info-fab:active { transform: scale(0.96); background: rgba(93, 64, 55, 0.18); }
 @media (hover:hover) { .info-fab:hover { background: rgba(93, 64, 55, 0.16); } }
+@media (max-width:480px) { .info-fab { width: 34px; height: 34px; font-size: 0.95rem; top: 8px; left: 8px; } }
 
 /* Info modal content */
 #infoModal .info-modal-content { max-width: 760px; padding: 24px 18px 16px; background: #fffaf0; border: 1px solid rgba(93, 64, 55, 0.12); color: #5d4037; }
