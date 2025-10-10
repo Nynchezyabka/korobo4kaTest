@@ -280,7 +280,7 @@ function getCategoryName(category) {
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[Number(category)] ?? "Категория не определена";
+    return categories[Number(category)] ?? "Категория не ��пределена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -307,7 +307,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны��' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -2107,10 +2107,11 @@ const infoFab = document.getElementById('infoFab');
 const infoModal = document.getElementById('infoModal');
 const infoBackdrop = document.getElementById('infoBackdrop');
 const infoCloseBtn = document.getElementById('infoCloseBtn');
+const infoCloseAction = document.getElementById('infoCloseAction');
 function openAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','false'); infoModal.style.display='flex'; }
 function closeAboutModal() { if (!infoModal) return; infoModal.setAttribute('aria-hidden','true'); infoModal.style.display='none'; }
 if (infoFab) infoFab.addEventListener('click', openAboutModal);
-[infoBackdrop, infoCloseBtn].forEach(el => { if (el) el.addEventListener('click', closeAboutModal); });
+[infoBackdrop, infoCloseBtn, infoCloseAction].forEach(el => { if (el) el.addEventListener('click', closeAboutModal); });
 
 if (quickAddTaskBtn) {
     quickAddTaskBtn.addEventListener('click', () => {
