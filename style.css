@@ -242,7 +242,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Сры����аем наивный select и используем кастомный цветной дропдаун */
+/* Сры��аем наивный select и используем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -1120,13 +1120,13 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго����овк�� на всех экран����х */
+/* Показыв��ем подзаго����овки на всех экран����х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный режим "стиеров" для мобильных */
+/* Компактный р��жим "стиеров" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
@@ -1415,6 +1415,7 @@ textarea {
 .modal-close { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; min-width: 32px; min-height: 32px; aspect-ratio: 1 / 1; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.04); border-radius: 8px; border: none; font-size: 1.0rem; line-height: 1; padding: 0; cursor: pointer; color: #5d4037; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .modal-close:active { transform: scale(0.98); }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+.info-modal-actions { justify-content: center; }
 
 /* Info modal content */
 #infoModal .info-modal-content { max-width: 760px; padding: 24px 18px 16px; background: #fffaf0; border: 1px solid rgba(93, 64, 55, 0.12); color: #5d4037; }
