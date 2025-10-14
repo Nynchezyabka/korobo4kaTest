@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный обработчик для за��рыт��я откытого выпадащего меню категорий
+// Глоб��льный обработчик для за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -570,7 +570,7 @@ function displayTasks() {
                 const menuBtn = document.createElement('button');
                 menuBtn.className = 'subcategory-menu-btn';
                 menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.setAttribute('aria-label','Меню ��одкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
                 titleEl.appendChild(menuBtn);
@@ -858,14 +858,80 @@ function toggleCategoryActive(category) {
     displayTasks();
 }
 
+function getSubcategorySnapshotKey(category, subName) {
+    return `cat:${category}|sub:${subName}`;
+}
+
+function loadSubcategoryActiveSnapshots() {
+    try {
+        const raw = localStorage.getItem('subcategoryActiveSnapshots');
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return (parsed && typeof parsed === 'object') ? parsed : {};
+    } catch (_) {
+        return {};
+    }
+}
+
+function saveSubcategoryActiveSnapshots(store) {
+    try {
+        localStorage.setItem('subcategoryActiveSnapshots', JSON.stringify(store));
+    } catch (_) {}
+}
+
+function taskMatchesSubcategory(task, category, normalizedName) {
+    if (!task || task.category !== category) return false;
+    const raw = normalizeSubcategoryName(category, task.subcategory);
+    const candidate = raw || (typeof task.subcategory === 'string' ? task.subcategory.trim() : '');
+    return candidate === normalizedName;
+}
+
 // Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
-    const hasActive = tasks.some(t => t.category === category && t.subcategory === subName && t.active);
-    const newActive = !hasActive;
-    tasks = tasks.map(t => (t.category === category && t.subcategory === subName)
-        ? { ...t, active: newActive, statusChangedAt: Date.now() }
-        : t
-    );
+    const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
+    if (!normalizedName) return;
+
+    const store = loadSubcategoryActiveSnapshots();
+    const key = getSubcategorySnapshotKey(category, normalizedName);
+    const relevantTasks = tasks.filter(t => taskMatchesSubcategory(t, category, normalizedName) && !t.completed);
+
+    if (relevantTasks.length === 0) {
+        if (store[key]) {
+            delete store[key];
+            saveSubcategoryActiveSnapshots(store);
+        }
+        return;
+    }
+
+    const now = Date.now();
+    const hasActive = relevantTasks.some(t => t.active);
+
+    if (hasActive) {
+        store[key] = relevantTasks.filter(t => t.active).map(t => t.id);
+        tasks = tasks.map(t => {
+            if (!taskMatchesSubcategory(t, category, normalizedName) || t.completed || !t.active) {
+                return t;
+            }
+            return { ...t, active: false, statusChangedAt: now };
+        });
+    } else {
+        const savedIds = Array.isArray(store[key]) ? store[key].filter(id => relevantTasks.some(t => t.id === id)) : [];
+        const fallbackIds = savedIds.length ? savedIds : relevantTasks.map(t => t.id);
+        const restoreSet = new Set(fallbackIds);
+        store[key] = Array.from(restoreSet);
+        tasks = tasks.map(t => {
+            if (!taskMatchesSubcategory(t, category, normalizedName) || t.completed) {
+                return t;
+            }
+            const shouldBeActive = restoreSet.has(t.id);
+            if (t.active === shouldBeActive) {
+                return t;
+            }
+            return { ...t, active: shouldBeActive, statusChangedAt: now };
+        });
+    }
+
+    saveSubcategoryActiveSnapshots(store);
     saveTasks();
     displayTasks();
 }
@@ -1803,7 +1869,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
