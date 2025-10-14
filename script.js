@@ -302,7 +302,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ��ия отображения сех заач
+// Функ����ия отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе пользо��ат��льске подкатегории
+    // Загружаем сохранённе польз����ат��льске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -1132,7 +1132,7 @@ function updateTimerDisplay() {
 function showNotification(message) {
     const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
-    playBeep();
+    playWindChime();
 
     if ("Notification" in window) {
         if (Notification.permission === "granted") {
@@ -1258,7 +1258,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дос��ь' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1305,7 +1305,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Простые радости</button>
-            <button class="add-category-option" data-category="4">Эго-радости</button>
+            <button class="add-category-option" data-category="4">Эго-��адости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1505,22 +1505,50 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// З��уковой сигна�� по завершении
-function playBeep() {
+// Звуковой сигнал по завершении таймера в стиле Wind Chime
+function playWindChime() {
     if (!timerSoundEnabled) return;
+
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.setValueAtTime(880, ctx.currentTime);
-        g.gain.setValueAtTime(0.001, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
-        o.connect(g).connect(ctx.destination);
-        o.start();
-        o.stop(ctx.currentTime + 0.6);
-    } catch (_) {}
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+
+        const ctx = new AudioCtor();
+        const masterGain = ctx.createGain();
+
+        masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
+        masterGain.gain.exponentialRampToValueAtTime(0.5, ctx.currentTime + 0.1);
+        masterGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3.0);
+        masterGain.connect(ctx.destination);
+
+        const tones = [
+            { frequency: 659, start: 0, length: 1.5, type: 'sine', volume: 0.3 },
+            { frequency: 784, start: 0.1, length: 1.3, type: 'sine', volume: 0.25 },
+            { frequency: 880, start: 0.2, length: 1.1, type: 'sine', volume: 0.2 },
+            { frequency: 1047, start: 0.3, length: 0.9, type: 'sine', volume: 0.15 },
+            { frequency: 1175, start: 0.4, length: 0.7, type: 'sine', volume: 0.1 }
+        ];
+
+        tones.forEach(({ frequency, start, length, type, volume = 0.3 }) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(frequency, ctx.currentTime + start);
+
+            gain.gain.setValueAtTime(0.001, ctx.currentTime + start);
+            gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + start + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + length);
+
+            osc.connect(gain).connect(masterGain);
+            osc.start(ctx.currentTime + start);
+            osc.stop(ctx.currentTime + start + length + 0.1);
+        });
+
+        setTimeout(() => ctx.close(), 3500);
+    } catch (error) {
+        console.error('Error playing Wind Chime:', error);
+    }
 }
 
 // Функция для запуска ��аймера
@@ -1856,7 +1884,7 @@ function openConfirmModal({ title='Подтверждение', message='', conf
     };
     const onClose = () => { cleanup(); };
     const onOk = () => { cleanup(); if (typeof onConfirm === 'function') onConfirm(); };
-    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отмена';
+    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отм��на';
     cancelBtn.style.display = hideCancel ? 'none' : 'inline-flex';
     okBtn.addEventListener('click', onOk);
     cancelBtn.addEventListener('click', onClose);
@@ -1991,7 +2019,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('��ельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
