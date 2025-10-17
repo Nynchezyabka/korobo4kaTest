@@ -280,7 +280,7 @@ function getCategoryName(category) {
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[Number(category)] ?? "Категория не ��пределена";
+    return categories[Number(category)] ?? "Категория не ��пр��делена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -307,7 +307,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны��' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны����' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -419,7 +419,7 @@ function displayTasks() {
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
             // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
-            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-��а-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
             // collapse multiple spaces
@@ -452,6 +452,9 @@ function displayTasks() {
                     </div>
                 </div>
                 <div class=\"task-controls\">
+                    <button class=\"task-control-btn start-timer-btn\" data-id=\"${task.id}\" title=\"Запустить таймер\">
+                        <i class=\"fas fa-play\"></i>
+                    </button>
                     <button class=\"task-control-btn toggle-active-btn\" data-id=\"${task.id}\">
                         <i class=\"fas ${task.active ? 'fa-eye-slash' : 'fa-eye'}\"></i>
                     </button>
@@ -523,7 +526,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по по��категориям для текущей кате��ории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для тек��щей кате��ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1008,7 +1011,7 @@ function setQuickAddVisible(visible) {
 
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в масив чисел
+    // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
 
     // Получаем все активные задачи из указанных категорий, исключая выполненные
@@ -1505,7 +1508,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершении таймера в стиле Wind Chime
+// Звуковой сигнал по завершен��и таймера в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
