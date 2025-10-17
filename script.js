@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный обработчик для за��рыт��я откытого выпадащег�� меню категорий
+// Глоб��льный об��аботчик для за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -280,7 +280,7 @@ function getCategoryName(category) {
         4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[Number(category)] ?? "Категория не ��пределена";
+    return categories[Number(category)] ?? "Категория не ��пр��делена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -307,7 +307,7 @@ function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны��' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны����' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -419,7 +419,7 @@ function displayTasks() {
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
             // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
-            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-��а-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
             // collapse multiple spaces
@@ -440,7 +440,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без кате��ории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -452,6 +452,9 @@ function displayTasks() {
                     </div>
                 </div>
                 <div class=\"task-controls\">
+                    <button class=\"task-control-btn start-timer-btn\" data-id=\"${task.id}\" title=\"Запустить таймер\">
+                        <i class=\"fas fa-play\"></i>
+                    </button>
                     <button class=\"task-control-btn toggle-active-btn\" data-id=\"${task.id}\">
                         <i class=\"fas ${task.active ? 'fa-eye-slash' : 'fa-eye'}\"></i>
                     </button>
@@ -468,7 +471,8 @@ function displayTasks() {
                 // remove dropdown caret if present
                 const caret = taskElement.querySelector('.category-badge .fa-caret-down');
                 if (caret) caret.remove();
-                // remove complete and toggle buttons
+                // remove start-timer, complete and toggle buttons
+                const timerBtn = taskElement.querySelector('.start-timer-btn'); if (timerBtn) timerBtn.remove();
                 const completeBtn = taskElement.querySelector('.complete-task-btn'); if (completeBtn) completeBtn.remove();
                 const toggleBtn = taskElement.querySelector('.toggle-active-btn'); if (toggleBtn) toggleBtn.remove();
                 // ensure delete button remains available for completed tasks and add return button
@@ -523,7 +527,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по по��категориям для текущей кате��ории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -719,6 +723,17 @@ function displayTasks() {
         btn.addEventListener('click', (e) => {
             const id = parseInt(e.target.closest('.delete-task-btn').dataset.id);
             deleteTask(id);
+        });
+    });
+
+    document.querySelectorAll('.start-timer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const task = tasks.find(t => t.id === id);
+            if (task && !task.completed) {
+                showTimer(task);
+            }
         });
     });
 
@@ -958,7 +973,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-зад��чи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -1008,7 +1023,7 @@ function setQuickAddVisible(visible) {
 
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в масив чисел
+    // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
 
     // Получаем все активные задачи из указанных категорий, исключая выполненные
@@ -1031,7 +1046,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом таймере звук включён
+    // по ум��лчанию пр��� н��вом т��ймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1392,7 +1407,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добавить подкатегорию');
+    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -1505,7 +1520,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершении таймера в стиле Wind Chime
+// Звуковой сигнал по завершен��и таймера в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
@@ -1594,7 +1609,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчно��о отсета времени в ��оне
+    // Использем Web Worker для тчно��о отсета времен�� в ��оне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -2176,7 +2191,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         saveTasks();
         closePasteModal();
         displayTasks();
-        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
+        showToastNotification('Задачи добав��ены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
         // Close the paste modal first so confirm modal is fully visible and clickable
