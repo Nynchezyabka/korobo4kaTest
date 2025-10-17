@@ -440,7 +440,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без кате��ории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -722,6 +722,17 @@ function displayTasks() {
         btn.addEventListener('click', (e) => {
             const id = parseInt(e.target.closest('.delete-task-btn').dataset.id);
             deleteTask(id);
+        });
+    });
+
+    document.querySelectorAll('.start-timer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(e.currentTarget.dataset.id);
+            const task = tasks.find(t => t.id === id);
+            if (task && !task.completed) {
+                showTimer(task);
+            }
         });
     });
 
@@ -1395,7 +1406,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добавить подкатегорию');
+    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -1597,7 +1608,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчно��о отсета времени в ��оне
+    // Использем Web Worker для тчно��о отсета времен�� в ��оне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
