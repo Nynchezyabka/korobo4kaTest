@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный обработчик для за��рыт��я откытого выпадащег�� меню категорий
+// Глоб��льный об��аботчик для за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -471,7 +471,8 @@ function displayTasks() {
                 // remove dropdown caret if present
                 const caret = taskElement.querySelector('.category-badge .fa-caret-down');
                 if (caret) caret.remove();
-                // remove complete and toggle buttons
+                // remove start-timer, complete and toggle buttons
+                const timerBtn = taskElement.querySelector('.start-timer-btn'); if (timerBtn) timerBtn.remove();
                 const completeBtn = taskElement.querySelector('.complete-task-btn'); if (completeBtn) completeBtn.remove();
                 const toggleBtn = taskElement.querySelector('.toggle-active-btn'); if (toggleBtn) toggleBtn.remove();
                 // ensure delete button remains available for completed tasks and add return button
@@ -526,7 +527,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по по��категориям для тек��щей кате��ории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -972,7 +973,7 @@ function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = 'коробочка-задачи.json';
+    const exportFileDefaultName = 'коробочка-зад��чи.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -1045,7 +1046,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом таймере звук включён
+    // по ум��лчанию пр��� н��вом т��ймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -2190,7 +2191,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         saveTasks();
         closePasteModal();
         displayTasks();
-        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
+        showToastNotification('Задачи добав��ены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
         // Close the paste modal first so confirm modal is fully visible and clickable
