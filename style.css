@@ -114,7 +114,7 @@ h1 {
 .section h2 {
     font-family: 'Caveat', cursive;
     margin-bottom: 8px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-align: center;
     line-height: 1.2;
     display: flex;
@@ -209,7 +209,7 @@ button:active {
 .task-list h2 {
     font-family: 'Caveat', cursive;
     margin-bottom: 12px;
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #5d4037;
     text-align: center;
 }
@@ -1345,7 +1345,7 @@ textarea {
 .add-category-badge[data-category="4"] { background-color: #ffcdd2; border-left: 2px solid #E57373; }
 .add-category-badge[data-category="5"] { background-color: #d1c4e9; border-left: 2px solid #9575CD; }
 
-/* Кн��пка активаии/деактивации всей категории в зголовке группы */
+/* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
 /* ��нопки на секциях главного экрана */
