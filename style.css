@@ -114,7 +114,7 @@ h1 {
 .section h2 {
     font-family: 'Caveat', cursive;
     margin-bottom: 8px;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     text-align: center;
     line-height: 1.2;
     display: flex;
@@ -229,7 +229,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветная индикация катгории при добавлении задачи */
+/* Цветная индикация катгории при добавле��ии задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -682,7 +682,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* оранжевы */
+    background-color: #ff9800; /* оранже��ы */
 }
 
 #pauseTimerBtn:active {
@@ -783,6 +783,18 @@ textarea {
 
 /* Мобильная весия — ��омпактное отображение */
 @media (max-width: 480px) {
+    .section h2 {
+        font-size: 1.8rem;
+    }
+
+    .task-list h2 {
+        font-size: 2.1rem;
+    }
+
+    .category-heading {
+        font-size: 1.5rem;
+    }
+
     .task {
         position: relative;
         align-items: start;
@@ -1345,7 +1357,7 @@ textarea {
 .add-category-badge[data-category="4"] { background-color: #ffcdd2; border-left: 2px solid #E57373; }
 .add-category-badge[data-category="5"] { background-color: #d1c4e9; border-left: 2px solid #9575CD; }
 
-/* Кн��пка активаии/деактивации всей категории в зголовке группы */
+/* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
 /* ��нопки на секциях главного экрана */
@@ -1497,7 +1509,7 @@ textarea {
 .category-title { display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: nowrap; }
 .category-title-left { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; }
 .category-title .category-heading { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; overflow-wrap: anywhere; }
-.category-heading { font-family: 'Caveat', cursive; font-size: 1.2rem; }
+.category-heading { font-family: 'Caveat', cursive; font-size: 1.5rem; }
 
 /* Make add-category options readable; allow wrapping of long labels */
 .add-category-option, .add-category-badge, .add-category-badge button { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; font-size: 0.95rem; }
@@ -1670,7 +1682,7 @@ textarea {
     white-space: normal !important;
 }
 
-/* Адаптивность д��я мобильных устройств */
+/* Адаптивность д��я мобильных устро��ств */
 @media (max-width: 480px) {
     .task {
         position: relative;
