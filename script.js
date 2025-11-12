@@ -972,9 +972,18 @@ function deleteTask(taskId) {
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = 'коробочка-зад��чи.json';
-    
+
+    // Генерируем имя файла с датой и временем
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const exportFileDefaultName = `коробочка-задачи-${year}-${month}-${day}-${hours}-${minutes}-${seconds}.json`;
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -1364,7 +1373,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже существующих задач выбранной категории
+    // 0) взять подкатегории из уже существующих задач выбранной кате��ории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -2034,7 +2043,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('��ельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
