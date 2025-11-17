@@ -942,7 +942,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* позволяет дочерним участв��вать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1820,8 +1820,6 @@ textarea {
 
 /* Медиа-зпрос для дес��топов */
 @media (min-width: 1024px) {
-    /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
-    .section { display: flex; flex-direction: column; }
     /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
