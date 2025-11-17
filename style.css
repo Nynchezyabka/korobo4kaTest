@@ -125,11 +125,17 @@ h1 {
 
 .section-task-count {
     text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
     color: #5d4037;
     margin-bottom: 10px;
-    opacity: 0.85;
+    padding: 4px 12px;
+    display: inline-block;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .section p {
@@ -146,7 +152,7 @@ h1 {
 }
 
 .joys {
-    background-color: #c8e6c9; /* зеленый */
+    background-color: #c8e6c9; /* ��еленый */
 }
 
 .controls {
@@ -251,7 +257,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Сры��аем наивный select и используем кастомный цветной дропдаун */
+/* Сры��аем наивный select и используем кастомный цветной др��пдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -1261,7 +1267,7 @@ textarea {
     .tasks.sticker-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Группы задч по категории с фоновым боком */
+/* Группы задч по ��атегории с фоновым боком */
 .category-group {
     border-radius: 10px;
     padding: 8px;
@@ -1789,7 +1795,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/пл��ншет: тот же компактный макет с двумя ряд��ми иконок справа */
+    /* Десктоп/пл��ншет: тот же компактный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
