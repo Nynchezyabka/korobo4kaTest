@@ -92,6 +92,7 @@ h1 {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .section::before {
@@ -928,7 +929,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху кат��гория, снизу под ней кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа сверху кат��гория, сни��у под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1355,7 +1356,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыт�� з��дач при ��вёрнутой группе */
+/* Скрыт�� з��дач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1384,7 +1385,7 @@ textarea {
 /* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* ���нопки на секциях главного экрана */
+/* ���нопки на секциях ��лавного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
@@ -1966,7 +1967,7 @@ textarea {
 }
 
 
-/* Адаптивность для мобильных устройств */
+/* ��даптивность для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
