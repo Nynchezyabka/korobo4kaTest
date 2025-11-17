@@ -126,19 +126,23 @@ h1 {
 }
 
 .section-task-count {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
     text-align: center;
     font-size: 0.95rem;
     font-weight: 600;
     color: #5d4037;
     padding: 0;
-    margin: 2px 0 8px 0;
+    margin: 0;
     background: none;
     box-shadow: none;
     border: none;
     cursor: default;
     opacity: 0.8;
     line-height: 1.2;
+    min-height: 20px;
 }
 
 @media (max-width: 480px) {
@@ -326,7 +330,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в н��сколько столбцов на широих экранах */
+/* Компактный пре��ью-список в несколько столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -938,7 +942,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочер��им участвовать в сетке родителя */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1223,7 +1227,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для план��етов и десктопо�� */
+/* Сикерная сетка для план��етов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1347,7 +1351,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопределяем сару десктопную раскладку ����утри групп */
+/* ��ереопределяем сару десктопную ра��кладку ����утри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -2002,7 +2006,7 @@ textarea {
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный режим "стиеров" для мобильных */
+/* Компактный реж��м "стиеров" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
