@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе польз����ат��льске подкатегории
+    // Загр��жаем сохранённе польз����ат��льске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -818,6 +818,8 @@ function displayTasks() {
             input.addEventListener('blur', onBlur);
         });
     });
+
+    updateSectionTaskCounts();
 }
 
 // Функция для изеения кат��гории задачи
@@ -1030,6 +1032,34 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
+// Функция д��я подсчёта активных задач по категориям
+function countActiveTasks(categories) {
+    const categoryArray = categories.split(',').map(Number);
+    return tasks.filter(task =>
+        categoryArray.includes(task.category) && task.active && !task.completed
+    ).length;
+}
+
+// Функция для обновления количества активных задач на стикерах
+function updateSectionTaskCounts() {
+    document.querySelectorAll('.section').forEach(section => {
+        const categories = section.dataset.category;
+        const count = countActiveTasks(categories);
+        let countBadge = section.querySelector('.section-task-count');
+
+        if (!countBadge) {
+            countBadge = document.createElement('div');
+            countBadge.className = 'section-task-count';
+            const h2 = section.querySelector('h2');
+            if (h2) {
+                h2.insertAdjacentElement('afterend', countBadge);
+            }
+        }
+
+        countBadge.textContent = 'Активных: ' + count;
+    });
+}
+
 // Функция для выбора случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
@@ -1055,7 +1085,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включён
+    // по ум��лчанию пр��� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1204,7 +1234,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке страницы
+// Добавляем запрос разрешения при загрузке стр��ницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1373,7 +1403,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже существующих задач выбранной кате��ории
+    // 0) взять подкатегории из уже суще��твующих задач выбранной кате��ории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1425,7 +1455,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безоп��сности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1483,6 +1513,7 @@ window.addEventListener('load', async () => {
 
     applyCategoryVisualToSelect();
     updateNotifyToggle();
+    updateSectionTaskCounts();
 
     if (navigator.permissions && navigator.permissions.query) {
         try {
@@ -2393,7 +2424,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
