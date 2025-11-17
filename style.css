@@ -123,6 +123,15 @@ h1 {
     min-height: calc(1.2em * 2);
 }
 
+.section-task-count {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #5d4037;
+    margin-bottom: 10px;
+    opacity: 0.85;
+}
+
 .section p {
     text-align: center;
     font-size: 1rem;
@@ -1780,7 +1789,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/пл��ншет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/пл��ншет: тот же компактный макет с двумя ряд��ми иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
