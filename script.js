@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -818,6 +818,8 @@ function displayTasks() {
             input.addEventListener('blur', onBlur);
         });
     });
+
+    updateSectionTaskCounts();
 }
 
 // Функция для изеения кат��гории задачи
@@ -1030,7 +1032,7 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
-// Функция для подсчёта активных задач по категориям
+// Функция д��я подсчёта активных задач по категориям
 function countActiveTasks(categories) {
     const categoryArray = categories.split(',').map(Number);
     return tasks.filter(task =>
@@ -1401,7 +1403,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже существующих задач выбранной кате��ории
+    // 0) взять подкатегории из уже суще��твующих задач выбранной кате��ории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
