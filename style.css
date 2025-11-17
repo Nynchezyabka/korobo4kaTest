@@ -92,6 +92,7 @@ h1 {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     gap: 8px;
 }
 
@@ -942,7 +943,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участв��вать в сет��е родителя */
+        display: contents; /* позволяет дочерним участв��вать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1227,7 +1228,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для план��етов и десктопов */
+/* Сикерная сетка для план��е��ов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
