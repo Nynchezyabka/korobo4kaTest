@@ -127,27 +127,22 @@ h1 {
 }
 
 .section-task-count {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 0.95rem;
     font-weight: 600;
     color: #5d4037;
     padding: 0;
-    margin: auto 0;
+    margin: 0;
     background: none;
     box-shadow: none;
     border: none;
     cursor: default;
     opacity: 0.8;
     line-height: 1.2;
-    order: 2;
-}
-
-.section h2 {
-    order: 1;
-}
-
-.section-actions {
-    order: 3;
 }
 
 @media (max-width: 480px) {
@@ -947,7 +942,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участв��вать в сетке родителя */
+        display: contents; /* позволяет дочерним участв��вать в сет��е родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1825,7 +1820,7 @@ textarea {
 
 /* Медиа-зпрос для дес��топов */
 @media (min-width: 1024px) {
-    /* Выронять элемен��ы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -2003,7 +1998,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем подзаг��ловки на вех экранах */
+/* Показываем подзаголовки на вех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
