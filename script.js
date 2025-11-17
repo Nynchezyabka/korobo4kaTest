@@ -302,12 +302,12 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ����ия отображения сех заач
+// Функ������ия отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны����' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполне��ны����' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -1028,6 +1028,14 @@ function importTasks(file) {
 function setQuickAddVisible(visible) {
     if (!timerQuickAdd) return;
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
+}
+
+// Функция для подсчёта активных задач по категориям
+function countActiveTasks(categories) {
+    const categoryArray = categories.split(',').map(Number);
+    return tasks.filter(task =>
+        categoryArray.includes(task.category) && task.active && !task.completed
+    ).length;
 }
 
 // Функция для выбора случайной адачи из категории
