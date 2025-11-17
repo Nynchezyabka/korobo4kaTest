@@ -302,12 +302,12 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ������ия отображения сех заач
+// Функ����ия отображения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполне��ны����' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны����' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач по��категории т��лько в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -1036,6 +1036,26 @@ function countActiveTasks(categories) {
     return tasks.filter(task =>
         categoryArray.includes(task.category) && task.active && !task.completed
     ).length;
+}
+
+// Функция для обновления количества активных задач на стикерах
+function updateSectionTaskCounts() {
+    document.querySelectorAll('.section').forEach(section => {
+        const categories = section.dataset.category;
+        const count = countActiveTasks(categories);
+        let countBadge = section.querySelector('.section-task-count');
+
+        if (!countBadge) {
+            countBadge = document.createElement('div');
+            countBadge.className = 'section-task-count';
+            const h2 = section.querySelector('h2');
+            if (h2) {
+                h2.insertAdjacentElement('afterend', countBadge);
+            }
+        }
+
+        countBadge.textContent = count;
+    });
 }
 
 // Функция для выбора случайной адачи из категории
@@ -1602,7 +1622,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомлен��я
+    // Сообщае серв��ру о распсании пуш-уведомлен��я
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
