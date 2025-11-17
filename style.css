@@ -90,6 +90,8 @@ h1 {
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .section::before {
@@ -324,7 +326,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбцов на широих экранах */
+/* Компактный пре��ью-список в н��сколько столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -936,7 +938,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвовать в сетке родителя */
+        display: contents; /* позволяет дочер��им участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1221,7 +1223,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для план��етов и десктопов */
+/* Сикерная сетка для план��етов и десктопо�� */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
