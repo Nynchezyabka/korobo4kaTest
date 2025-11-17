@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загружаем сохранённе польз����ат��льске подкатегории
+    // Загр��жаем сохранённе польз����ат��льске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач по��категории т��лько в категории "Обязательные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -1232,7 +1232,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке страницы
+// Добавляем запрос разрешения при загрузке стр��ницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1453,7 +1453,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безоп��сности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1511,6 +1511,7 @@ window.addEventListener('load', async () => {
 
     applyCategoryVisualToSelect();
     updateNotifyToggle();
+    updateSectionTaskCounts();
 
     if (navigator.permissions && navigator.permissions.query) {
         try {
@@ -1622,7 +1623,7 @@ function startTimer() {
     }
     timerStartTime = Date.now();
 
-    // Сообщае серв��ру о распсании пуш-уведомлен��я
+    // Сообщае серверу о распсании пуш-уведомлен��я
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -2421,7 +2422,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
