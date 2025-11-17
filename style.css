@@ -125,15 +125,13 @@ h1 {
 
 .section-task-count {
     text-align: center;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #5d4037;
-    margin-bottom: 10px;
-    padding: 4px 12px;
-    display: inline-block;
+    margin: 0 auto 10px;
+    padding: 4px 14px;
+    width: fit-content;
     border-radius: 20px;
-    margin-left: auto;
-    margin-right: auto;
     background-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -152,7 +150,7 @@ h1 {
 }
 
 .joys {
-    background-color: #c8e6c9; /* ��еленый */
+    background-color: #c8e6c9; /* зеленый */
 }
 
 .controls {
@@ -257,7 +255,7 @@ textarea, select, input {
 #taskCategory.category-4 { border-left-color: #E57373; background-color: #ffcdd2; }
 #taskCategory.category-5 { border-left-color: #9575CD; background-color: #d1c4e9; }
 
-/* Сры��аем наивный select и используем кастомный цветной др��пдаун */
+/* Сры��аем наивный select и используем кастомный цветной дропдаун */
 .task-form #taskCategory { display: none; }
 .add-category-selector { position: relative; display: inline-block; width: 100%; z-index: 2000; }
 .add-category-badge {
@@ -919,7 +917,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху кат��гория, снизу под ней кнопки */
+    /* Выровнять элементы задачи �� сетку: текст слева, справа сверху кат��гория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1153,7 +1151,7 @@ textarea {
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный р��жим "стиеров" для мобильных */
+/* Компактный р��жим "стиеров" дл�� мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
@@ -1267,7 +1265,7 @@ textarea {
     .tasks.sticker-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Группы задч по ��атегории с фоновым боком */
+/* Группы задч по категории с фоновым боком */
 .category-group {
     border-radius: 10px;
     padding: 8px;
@@ -1337,7 +1335,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопределяем сару десктопную раскладку в��утри групп */
+/* ��ер��определяем сару десктопную раскладку в��утри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1391,7 +1389,7 @@ textarea {
 .joys .section-action-btn { background-color: rgba(129,199,132,0.18); }
 .joys .section-action-btn:hover { background-color: rgba(129,199,132,0.28); }
 
-/* Специальный стиль для к��углой кнопки "+" */
+/* Специальный ст��ль для к��углой кнопки "+" */
 .section-action-btn.section-add-btn { padding: 8px; width: 40px; height: 40px; border-radius: 10px; }
 
 .section-add-subcat-btn { padding: 6px 8px; border-radius: 8px; border: none; cursor: pointer; background: rgba(0,0,0,0.06); color: #5d4037; font-weight: 700; min-width: 36px; }
@@ -1808,7 +1806,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под не�� кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
