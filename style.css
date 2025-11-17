@@ -126,16 +126,24 @@ h1 {
 .section-task-count {
     display: block;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: #5d4037;
-    padding: 4px 0;
-    margin: 6px 0 10px 0;
+    padding: 0;
+    margin: 2px 0 8px 0;
     background: none;
     box-shadow: none;
     border: none;
     cursor: default;
-    opacity: 0.85;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+@media (max-width: 480px) {
+    .section-task-count {
+        font-size: 0.9rem;
+        margin: 2px 0 6px 0;
+    }
 }
 
 .section p {
@@ -689,7 +697,7 @@ textarea {
 
 /* ��вые цвета для кнопок таймера */
 #startTimerBtn {
-    background-color: #9CCC65; /* желто-зеленый */
+    background-color: #9CCC65; /* желто-��еленый */
 }
 
 #startTimerBtn:active {
@@ -1337,7 +1345,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопределяем сару десктопную раскладку в��утри групп */
+/* ��ереопределяем сару десктопную раскладку ����утри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1375,7 +1383,7 @@ textarea {
 /* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* ��нопки на секциях главного экрана */
+/* ���нопки на секциях главного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
