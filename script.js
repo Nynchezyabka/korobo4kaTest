@@ -1056,7 +1056,7 @@ function updateSectionTaskCounts() {
             }
         }
 
-        countBadge.textContent = count;
+        countBadge.textContent = 'Активных: ' + count;
     });
 }
 
@@ -1085,7 +1085,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включён
+    // по ум��лчанию пр��� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
