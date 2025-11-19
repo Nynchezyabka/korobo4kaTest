@@ -115,8 +115,8 @@ h1 {
 
 .section h2 {
     font-family: 'Caveat', cursive;
-    margin-bottom: 8px;
     margin-top: 0;
+    margin-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
     font-size: 1.6rem;
@@ -125,12 +125,12 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 23px;
+    min-height: 31px;
     flex-shrink: 0;
 }
 
 .section.security h2 {
-    min-height: 50px;
+    min-height: 61px;
 }
 
 .section-task-count {
@@ -138,8 +138,8 @@ h1 {
     font-size: 0.95rem;
     font-weight: 600;
     color: #5d4037;
-    padding: 0;
-    margin: auto 0;
+    padding: 2px 0;
+    margin: 8px 0;
     background: none;
     box-shadow: none;
     border: none;
@@ -936,7 +936,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа ��верху кат��гория, с��изу под ней кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа ��верху кат��гория, с����зу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
