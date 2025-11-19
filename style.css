@@ -125,7 +125,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(1.2em * 2);
+    min-height: auto;
     flex-shrink: 0;
 }
 
@@ -257,7 +257,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветна�� индикация катгории при добав��е��ии задачи */
+/* Цветна�� индикация катгории при добавле��ии задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -710,7 +710,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* ��ранже��ы */
+    background-color: #ff9800; /* оранже��ы */
 }
 
 #pauseTimerBtn:active {
@@ -1350,7 +1350,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопределяем сару десктопную ра����кладку ����утри групп */
+/* ��ереопределяем сару десктопную ра����кладку ����утри гр��пп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1388,7 +1388,7 @@ textarea {
 /* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* ���нопки на секциях главного э��рана */
+/* ���нопки н�� секциях главного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
@@ -1828,7 +1828,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участвов��ть в сетке родителя */
+        display: contents; /* позволяет дочерним участвовать в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
