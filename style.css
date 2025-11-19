@@ -125,8 +125,12 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: auto;
+    min-height: 23px;
     flex-shrink: 0;
+}
+
+.section.security h2 {
+    min-height: 50px;
 }
 
 .section-task-count {
@@ -702,7 +706,7 @@ textarea {
 
 /* ��вые цвета для кнопок таймера */
 #startTimerBtn {
-    background-color: #9CCC65; /* желто-��еленый */
+    background-color: #9CCC65; /* желто-��еле��ый */
 }
 
 #startTimerBtn:active {
@@ -932,7 +936,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа сверху кат��гория, с��изу под ней кнопки */
+    /* Выровнять элементы задачи в сетку: текст слева, справа ��верху кат��гория, с��изу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1350,7 +1354,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопределяем сару десктопную ра����кладку ����утри гр��пп */
+/* ��ереопреде��яем сару десктопную ра����кладку ����утри групп */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1388,7 +1392,7 @@ textarea {
 /* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* ���нопки н�� секциях главного экрана */
+/* ���нопки на секциях главного экрана */
 .section-actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
 .section-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-weight: 600; color: #5d4037; box-shadow: none; border: none; cursor: pointer; transition: background-color 0.18s, transform 0.06s; }
 .section-action-btn i { font-size: 1.2rem; }
