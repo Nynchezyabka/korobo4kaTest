@@ -580,6 +580,45 @@ textarea {
     display: inline-block;
     width: calc(50% - 8px);
     border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s;
+    color: #333;
+}
+
+.dropdown-category-btn:active {
+    transform: scale(0.98);
+}
+
+.dropdown-category-btn.cat-0 {
+    background-color: #f5f5f5;
+    border-left: 2px solid #9E9E9E;
+}
+
+.dropdown-category-btn.cat-1 {
+    background-color: #fff9c4;
+    border-left: 2px solid #FFD54F;
+}
+
+.dropdown-category-btn.cat-2 {
+    background-color: #bbdefb;
+    border-left: 2px solid #64B5F6;
+}
+
+.dropdown-category-btn.cat-3 {
+    background-color: #c8e6c9;
+    border-left: 2px solid #81C784;
+}
+
+.dropdown-category-btn.cat-4 {
+    background-color: #ffcdd2;
+    border-left: 2px solid #E57373;
+}
+
+.dropdown-category-btn.cat-5 {
+    background-color: #d1c4e9;
+    border-left: 2px solid #9575CD;
 }
 
 .dropdown-category-btn.selected {
@@ -1198,13 +1237,13 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго����овки на всех экран����х */
+/* Показыв����м подзаго����овки на всех экран����х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный р��жим "стиеров" для мобильных */
+/* Компактный р��жим "стие��ов" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
