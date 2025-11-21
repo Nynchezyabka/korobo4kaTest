@@ -1,4 +1,4 @@
-// Переменная для хранения задач
+// Пер��менная для хранения задач
 let tasks = [];
 
 // Функции для работы с localStorage
@@ -106,7 +106,7 @@ function getSubcategoryLabel(category, key) {
     if (String(category) === '1') {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
-        if (key.toLowerCase() === 'работа') return 'Работа';
+        if (key.toLowerCase() === 'ра��ота') return 'Работа';
         if (key.toLowerCase() === 'дом') return 'Дом';
     }
     return key;
@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -482,7 +482,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'Удалить задачу';
+                    del.title = 'У��алить задачу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -597,7 +597,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноы�� элементов
+    // Добавяем обработчики событий для ноы�� ��лементов
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -1085,7 +1085,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включё��
+    // по ум��лчанию пр����� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
