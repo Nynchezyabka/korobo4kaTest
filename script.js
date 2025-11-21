@@ -165,7 +165,7 @@ let timerSoundEnabled = true;
 let showArchive = false;
 let quickAddContext = { active: false, resumeTimer: false };
 
-// Элем��ты DOM
+// Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
 // Глоб��льный об��аботчик для за��рыт��я откытого выпадащег�� меню категорий
@@ -527,7 +527,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка ��адач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -903,7 +903,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Пер��клю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -1247,44 +1247,6 @@ function populateTaskSubcategoryDropdown(task) {
     } else {
         dd.classList.remove('no-scroll');
     }
-
-    // Add category selector section at the top
-    const categorySection = document.createElement('div');
-    categorySection.className = 'category-selector-section';
-    const categoryLabel = document.createElement('div');
-    categoryLabel.className = 'category-selector-label';
-    categoryLabel.textContent = 'Категория:';
-    categorySection.appendChild(categoryLabel);
-
-    const cats = [0, 1, 2, 5, 3, 4];
-    const labels = { 0: 'Без категории', 1: 'Обязательные', 2: 'Безопасность', 3: 'Простые радости', 4: 'Эго-радости', 5: 'Доступность простых радостей' };
-
-    cats.forEach(c => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `category-option dropdown-category-btn cat-${c}`;
-        btn.dataset.category = String(c);
-        btn.textContent = labels[c];
-        if (c === task.category) {
-            btn.classList.add('selected');
-        }
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (c === task.category) return;
-            changeTaskCategory(task.id, c, null);
-            dd.classList.remove('show');
-            activeDropdown = null;
-        });
-        categorySection.appendChild(btn);
-    });
-
-    dd.appendChild(categorySection);
-
-    // Add separator
-    const separator = document.createElement('div');
-    separator.className = 'dropdown-separator';
-    dd.appendChild(separator);
-
     // option: none
     const noneBtn = document.createElement('button');
     noneBtn.type = 'button';
@@ -1350,7 +1312,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дос��ь' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
