@@ -559,6 +559,40 @@ textarea {
     border-left: 2px solid #9575CD;
 }
 
+.category-selector-section {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.category-selector-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    padding: 6px 10px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dropdown-category-btn {
+    font-size: 0.9rem;
+    padding: 6px 8px;
+    margin: 2px 4px;
+    display: inline-block;
+    width: calc(50% - 8px);
+    border-radius: 4px;
+}
+
+.dropdown-category-btn.selected {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 2px #333;
+}
+
+.dropdown-separator {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    margin: 8px 0;
+}
+
 .timer-screen {
     position: fixed;
     top: 0;
