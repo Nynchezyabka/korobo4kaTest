@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный об��аботчик для за��рыт��я откытого выпадащег�� меню категорий
+// Глоб��льный об��аботчик дл�� за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -302,7 +302,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ����ия отображения сех заач
+// Функ����ия от��бражения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -598,6 +598,14 @@ function displayTasks() {
     });
 
     // Добавяем обработчики событий для ноы�� элементов
+    document.querySelectorAll('.move-task-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const taskId = parseInt(icon.getAttribute('data-id'));
+            openMoveTaskModal(taskId);
+        });
+    });
+
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -1060,7 +1068,7 @@ function updateSectionTaskCounts() {
     });
 }
 
-// Функция для выбора случайной адачи из категории
+// Функция для выбор�� случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
@@ -1184,7 +1192,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playWindChime();
 
@@ -1413,7 +1421,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
             if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
          });
 
-    // 1) добавить сохранённые пользователем подкатегории
+    // 1) добавить сохранённые пользователем по��категории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
@@ -1427,7 +1435,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Сущест��ующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
@@ -2175,6 +2183,135 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     }
     addLinesAsTasks(lines, category, selectedSub);
 });
+
+// Move Task Modal
+let currentMoveTaskContext = null;
+const moveTaskModal = document.getElementById('moveTaskModal');
+const moveTaskBackdrop = document.getElementById('moveTaskBackdrop');
+const moveTaskClose = document.getElementById('moveTaskClose');
+const moveCategoryOptions = document.getElementById('moveCategoryOptions');
+const moveSubcategories = document.getElementById('moveSubcategories');
+const moveTaskOk = document.getElementById('moveTaskOk');
+const moveTaskCancel = document.getElementById('moveTaskCancel');
+
+function openMoveTaskModal(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    currentMoveTaskContext = { taskId };
+
+    if (!moveTaskModal) return;
+    moveTaskModal.setAttribute('aria-hidden', 'false');
+    moveTaskModal.style.display = 'flex';
+
+    // Render category options
+    renderMoveCategoryOptions();
+
+    // Clear subcategories until a category is selected
+    if (moveSubcategories) {
+        moveSubcategories.innerHTML = '';
+        moveSubcategories.style.display = 'none';
+    }
+
+    // Apply neutral background
+    const modalContent = moveTaskModal.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.style.backgroundColor = '#fffaf0';
+        modalContent.style.color = '#333';
+    }
+}
+
+function closeMoveTaskModal() {
+    if (!moveTaskModal) return;
+    moveTaskModal.setAttribute('aria-hidden', 'true');
+    moveTaskModal.style.display = 'none';
+    if (moveSubcategories) {
+        moveSubcategories.classList.remove('show');
+        moveSubcategories.style.display = 'none';
+    }
+    currentMoveTaskContext = null;
+}
+
+function renderMoveCategoryOptions() {
+    if (!moveCategoryOptions) return;
+    moveCategoryOptions.innerHTML = '';
+    const cats = [0, 1, 2, 5, 3, 4];
+    const labels = {
+        0: 'Категория не определена',
+        1: 'Обязательные',
+        2: 'Система безопасности',
+        3: 'Простые радости',
+        4: 'Эго-радости',
+        5: 'Доступность простых радостей'
+    };
+
+    cats.forEach(c => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `modal-category-btn cat-${c}`;
+        btn.dataset.category = String(c);
+        btn.textContent = labels[c] || String(c);
+        btn.addEventListener('click', () => {
+            moveCategoryOptions.querySelectorAll('.modal-category-btn').forEach(x => x.classList.remove('selected'));
+            btn.classList.add('selected');
+            moveCategoryOptions.dataset.selected = btn.dataset.category;
+            // Show subcategories for selected category
+            showAddSubcategoriesFor(parseInt(btn.dataset.category), moveSubcategories);
+            // Apply background color
+            const modalContent = moveTaskModal.querySelector('.modal-content');
+            if (modalContent) {
+                const color = getCategoryGroupBg(parseInt(btn.dataset.category));
+                modalContent.style.backgroundColor = color;
+            }
+        });
+        moveCategoryOptions.appendChild(btn);
+    });
+}
+
+// Event listeners for move task modal
+if (moveTaskBackdrop) moveTaskBackdrop.addEventListener('click', closeMoveTaskModal);
+if (moveTaskClose) moveTaskClose.addEventListener('click', closeMoveTaskModal);
+if (moveTaskCancel) moveTaskCancel.addEventListener('click', closeMoveTaskModal);
+
+if (moveTaskOk) {
+    moveTaskOk.addEventListener('click', () => {
+        if (!currentMoveTaskContext) return;
+
+        const selectedCatBtn = moveCategoryOptions ? moveCategoryOptions.querySelector('.modal-category-btn.selected') : null;
+        if (!selectedCatBtn) {
+            openInfoModal('Пожалуйста, выберите категорию');
+            return;
+        }
+
+        const targetCategory = parseInt(selectedCatBtn.dataset.category);
+        const selectedSubBtn = moveSubcategories ? moveSubcategories.querySelector('.add-subcategory-btn.selected') : null;
+        const targetSubcategory = selectedSubBtn ? (selectedSubBtn.dataset.sub || null) : null;
+
+        // Move the task
+        const taskIndex = tasks.findIndex(t => t.id === currentMoveTaskContext.taskId);
+        if (taskIndex !== -1) {
+            const updated = { ...tasks[taskIndex], category: targetCategory };
+            if (targetSubcategory) {
+                updated.subcategory = targetSubcategory;
+            } else {
+                delete updated.subcategory;
+            }
+            tasks[taskIndex] = updated;
+
+            // If moving from category 0 (undefined) to a defined category, activate it
+            if (tasks[taskIndex].category === 0 && targetCategory !== 0 && !tasks[taskIndex].active) {
+                tasks[taskIndex].active = true;
+                tasks[taskIndex].statusChangedAt = Date.now();
+            }
+
+            saveTasks();
+            displayTasks();
+            closeMoveTaskModal();
+            const categoryName = getCategoryName(targetCategory);
+            showToastNotification('Задача перенесена', `Задача перемещена в ${categoryName}`);
+        }
+    });
+}
 
 if (typeof addMultipleBtn !== 'undefined' && addMultipleBtn) {
     addMultipleBtn.style.display = 'none';
