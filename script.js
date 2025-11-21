@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный об��аботчик для за��рыт��я откытого выпадащег�� меню категорий
+// Глоб��льный об��аботчик дл�� за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -297,7 +297,7 @@ function fixOrphans(text) {
     const afterSingleRegex = /(^|\s)([A-Za-zА-Яа-яЁё])\s+/g;
     let res = text.replace(afterSingleRegex, function(m, p1, p2) { return p1 + p2 + '\u00A0'; });
     // Also ensure that occurrences of ' space single-letter space ' are normalized (rare)
-    const isolatedSingle = /\s([A-Za-zА-Яа-я��ё])\s/g;
+    const isolatedSingle = /\s([A-Za-zА-Яа-яЁё])\s/g;
     res = res.replace(isolatedSingle, function(m,p1){ return '\u00A0' + p1 + ' '; });
     return res;
 }
@@ -853,7 +853,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для пер��ключ��ния активности задачи
+// ункция для переключ��ния активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -992,7 +992,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция дл импо��та задач из файла
+// Функция дл импорта задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -1413,7 +1413,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
             if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
          });
 
-    // 1) добавить сохранённые пользователем подкатегории
+    // 1) добавить сохранённые пользователем по��категории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
@@ -1427,7 +1427,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // ��уществующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
@@ -2299,7 +2299,8 @@ if (moveTaskOk) {
             saveTasks();
             displayTasks();
             closeMoveTaskModal();
-            showToastNotification('Задача перенесена', `Задача перемещена в ${labels[targetCategory] || targetCategory}`);
+            const categoryName = getCategoryName(targetCategory);
+            showToastNotification('Задача перенесена', `Задача перемещена в ${categoryName}`);
         }
     });
 }
