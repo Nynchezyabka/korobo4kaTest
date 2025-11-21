@@ -1,4 +1,4 @@
-// Пер��менная для хранения задач
+// Переменная для хранения задач
 let tasks = [];
 
 // Функции для работы с localStorage
@@ -106,7 +106,7 @@ function getSubcategoryLabel(category, key) {
     if (String(category) === '1') {
         if (key === 'work') return 'Работа';
         if (key === 'home') return 'Дом';
-        if (key.toLowerCase() === 'ра��ота') return 'Работа';
+        if (key.toLowerCase() === 'работа') return 'Работа';
         if (key.toLowerCase() === 'дом') return 'Дом';
     }
     return key;
@@ -302,7 +302,7 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ����ия отображения сех заач
+// Функ����ия от��бражения сех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
@@ -482,7 +482,7 @@ function displayTasks() {
                     const del = document.createElement('button');
                     del.className = 'task-control-btn delete-task-btn';
                     del.dataset.id = String(task.id);
-                    del.title = 'У��алить задачу';
+                    del.title = 'Удалить задачу';
                     del.innerHTML = '<i class="fas fa-trash"></i>';
                     controls.appendChild(del);
 
@@ -597,7 +597,15 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноы�� ��лементов
+    // Добавяем обработчики событий для ноы�� элементов
+    document.querySelectorAll('.move-task-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const taskId = parseInt(icon.getAttribute('data-id'));
+            openMoveTaskModal(taskId);
+        });
+    });
+
     document.querySelectorAll('.category-badge').forEach(badge => {
         // category-name inside task badge should not prompt for subcategory anymore
         const nameEl = badge.querySelector('.category-name');
@@ -1060,7 +1068,7 @@ function updateSectionTaskCounts() {
     });
 }
 
-// Функция для выбора случайной адачи из категории
+// Функция для выбор�� случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
@@ -1085,7 +1093,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр����� н��вом т��ймере звук включё��
+    // по ум��лчанию пр��� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1184,7 +1192,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playWindChime();
 
@@ -1427,7 +1435,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Сущест��ующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
