@@ -1068,7 +1068,7 @@ function updateSectionTaskCounts() {
     });
 }
 
-// Функция для выбор�� случайной адачи из категории
+// Функция для в��бор�� случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
@@ -1098,7 +1098,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос состояния таймера перед новым ��апуском
+    // Полный сбос сост��яния таймера перед новым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1454,7 +1454,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
+    plusBtn.setAttribute('aria-label', 'Добави��ь подк��тегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -1905,7 +1905,9 @@ function applyMoveTaskModalButtonStyles(cat) {
     if (!moveCancelBtn.classList.contains('modal-btn')) moveCancelBtn.classList.add('modal-btn');
     // apply category class only to move button (primary action)
     moveOkBtn.classList.add(`cat-${cat}`);
-    // cancel button stays gray (secondary action) - no category class
+    // cancel button stays gray (secondary action) - enforce gray color with inline styles
+    moveCancelBtn.style.backgroundColor = '#9E9E9E';
+    moveCancelBtn.style.color = '#fff';
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
