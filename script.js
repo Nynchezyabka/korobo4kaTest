@@ -277,7 +277,7 @@ function getCategoryName(category) {
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
-        4: "Эго-радости",
+        4: "Эго-ра��ости",
         5: "Доступность простых радостей"
     };
     return categories[Number(category)] ?? "Категория не ��пр��делена";
@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загр��жаем сохранённе польз����ат��льске подкатегории
+    // Загр��жаем сохранённе польз����ат��льске подкатегор��и
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -1068,7 +1068,7 @@ function updateSectionTaskCounts() {
     });
 }
 
-// Функция для в��бор�� случайной адачи из категории
+// Функция для выбор�� случайной адачи из категории
 function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
@@ -1098,7 +1098,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос сост��яния таймера перед новым ��апуском
+    // Полный сбос состояния таймера перед но��ым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1192,7 +1192,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! З��дача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playWindChime();
 
@@ -1435,7 +1435,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // Сущест��ующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Сущест��ующие ��одкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
@@ -1454,7 +1454,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добави��ь подк��тегорию');
+    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -2242,9 +2242,13 @@ function openMoveTaskModal(taskId) {
     const moveCancelBtn = document.getElementById('moveTaskCancel');
     if (moveOkBtn) {
         moveOkBtn.className = 'modal-btn cat-0';
+        moveOkBtn.style.backgroundColor = '';
+        moveOkBtn.style.color = '';
     }
     if (moveCancelBtn) {
         moveCancelBtn.className = 'modal-btn';
+        moveCancelBtn.style.backgroundColor = '#9E9E9E';
+        moveCancelBtn.style.color = '#fff';
     }
 }
 
