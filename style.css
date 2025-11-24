@@ -1651,6 +1651,10 @@ textarea {
 #modalCancelBtn.modal-btn { opacity: 0.95; box-shadow: none; }
 #modalCancelBtn.modal-btn:hover { opacity: 1; }
 
+/* Move task modal cancel button - same muted style as add task modal */
+#moveTaskCancel.modal-btn { opacity: 0.95; box-shadow: none; }
+#moveTaskCancel.modal-btn:hover { opacity: 1; }
+
 /* Responsive subcategory controls — compact, grouped, no scroll */
 .add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
 .add-subcategory-controls.show { max-height: none; overflow: visible; padding-right: 0; }
