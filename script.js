@@ -270,14 +270,14 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п��лучения названия категории по номеру
+// Функция ��ля п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
         1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
-        4: "Эго-радости",
+        4: "Эго-ра��ости",
         5: "Доступность простых радостей"
     };
     return categories[Number(category)] ?? "Категория не ��пр��делена";
@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загр��жаем сохранённе польз����ат��льске подкатегории
+    // Загр��жаем сохранённе польз����ат��льске подкатегор��и
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сво��ачивание/развора��ивание гру��пы
+        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��ругую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -498,7 +498,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты дл�� моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -1073,7 +1073,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
 
-    // Получаем все активные задачи из указанных категорий, исключая выполненные
+    // Получаем все активные задачи из указанных катег��рий, исключая выполненные
     const filteredTasks = tasks.filter(task =>
         categoryArray.includes(task.category) && task.active && !task.completed
     );
@@ -1098,7 +1098,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос состояния таймера перед новым ��апуском
+    // Полный сбос состояния таймера перед но��ым ��апуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1192,7 +1192,7 @@ function updateTimerDisplay() {
 
 // Функция для показа уведо��ления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! Задача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! З��дача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playWindChime();
 
@@ -1366,7 +1366,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="3">Просты�� радости</button>
             <button class="add-category-option" data-category="4">Эго-��адости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -1435,7 +1435,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // Сущест��ующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Сущест��ующие ��одкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
@@ -1568,7 +1568,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершен��и таймера в стиле Wind Chime
+// Звуковой сигнал по завершен��и тайм��ра в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
@@ -1892,6 +1892,24 @@ function applyModalButtonStyles(cat) {
     cancelBtn.classList.add(`cat-${cat}`);
 }
 
+function applyMoveTaskModalButtonStyles(cat) {
+    const moveOkBtn = document.getElementById('moveTaskOk');
+    const moveCancelBtn = document.getElementById('moveTaskCancel');
+    if (!moveOkBtn || !moveCancelBtn) return;
+    // remove existing category classes from move button
+    moveOkBtn.className = moveOkBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // remove existing category classes from cancel button
+    moveCancelBtn.className = moveCancelBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // ensure base class
+    if (!moveOkBtn.classList.contains('modal-btn')) moveOkBtn.classList.add('modal-btn');
+    if (!moveCancelBtn.classList.contains('modal-btn')) moveCancelBtn.classList.add('modal-btn');
+    // apply category class only to move button (primary action)
+    moveOkBtn.classList.add(`cat-${cat}`);
+    // cancel button stays gray (secondary action) - enforce gray color with inline styles
+    moveCancelBtn.style.backgroundColor = '#9E9E9E';
+    moveCancelBtn.style.color = '#fff';
+}
+
 function renderModalCategoryOptions(allowedCategories = null) {
     const container = modalCategoryOptions;
     if (!container) return;
@@ -2082,7 +2100,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в ��писке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2213,11 +2231,24 @@ function openMoveTaskModal(taskId) {
         moveSubcategories.style.display = 'none';
     }
 
-    // Apply neutral background
+    // Apply neutral background and button styles
     const modalContent = moveTaskModal.querySelector('.modal-content');
     if (modalContent) {
         modalContent.style.backgroundColor = '#fffaf0';
         modalContent.style.color = '#333';
+    }
+    // Apply initial button styles
+    const moveOkBtn = document.getElementById('moveTaskOk');
+    const moveCancelBtn = document.getElementById('moveTaskCancel');
+    if (moveOkBtn) {
+        moveOkBtn.className = 'modal-btn cat-0';
+        moveOkBtn.style.backgroundColor = '';
+        moveOkBtn.style.color = '';
+    }
+    if (moveCancelBtn) {
+        moveCancelBtn.className = 'modal-btn';
+        moveCancelBtn.style.backgroundColor = '#9E9E9E';
+        moveCancelBtn.style.color = '#fff';
     }
 }
 
@@ -2257,12 +2288,14 @@ function renderMoveCategoryOptions() {
             moveCategoryOptions.dataset.selected = btn.dataset.category;
             // Show subcategories for selected category
             showAddSubcategoriesFor(parseInt(btn.dataset.category), moveSubcategories);
-            // Apply background color
+            // Apply background color and button styles
             const modalContent = moveTaskModal.querySelector('.modal-content');
             if (modalContent) {
                 const color = getCategoryGroupBg(parseInt(btn.dataset.category));
                 modalContent.style.backgroundColor = color;
             }
+            // Apply category-specific button styles
+            applyMoveTaskModalButtonStyles(parseInt(btn.dataset.category));
         });
         moveCategoryOptions.appendChild(btn);
     });
