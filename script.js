@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��ругую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��руг��ю категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -898,6 +898,27 @@ function loadSubcategoryActiveSnapshots() {
     }
 }
 
+function getCollapsedSubcategoriesKey(category, subName) {
+    return `cat:${category}|sub:${subName}`;
+}
+
+function loadCollapsedSubcategories() {
+    try {
+        const raw = localStorage.getItem('collapsedSubcategories');
+        if (!raw) return new Set();
+        const parsed = JSON.parse(raw);
+        return new Set(Array.isArray(parsed) ? parsed : []);
+    } catch (_) {
+        return new Set();
+    }
+}
+
+function saveCollapsedSubcategories(set) {
+    try {
+        localStorage.setItem('collapsedSubcategories', JSON.stringify(Array.from(set)));
+    } catch (_) {}
+}
+
 function saveSubcategoryActiveSnapshots(store) {
     try {
         localStorage.setItem('subcategoryActiveSnapshots', JSON.stringify(store));
@@ -1242,7 +1263,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке стр��ницы
+// Добавляем з��прос разрешения при загрузке стр��ницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -2186,7 +2207,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     }
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'Подтверждение',
+            title: 'Под��верждение',
             message: `Д��бавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
@@ -2592,7 +2613,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите з��прос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
