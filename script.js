@@ -1064,7 +1064,7 @@ function updateSectionTaskCounts() {
             }
         }
 
-        countBadge.textContent = 'Активных: ' + count;
+        countBadge.textContent = 'Активн��х: ' + count;
     });
 }
 
@@ -1454,7 +1454,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
+    plusBtn.setAttribute('aria-label', '��обави��ь подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -1890,6 +1890,21 @@ function applyModalButtonStyles(cat) {
     addBtn.classList.add(`cat-${cat}`);
     // cancel is a secondary variant: use cat-{cat}-alt if desired, but for simplicity use same with muted style
     cancelBtn.classList.add(`cat-${cat}`);
+}
+
+function applyMoveTaskModalButtonStyles(cat) {
+    const moveOkBtn = document.getElementById('moveTaskOk');
+    const moveCancelBtn = document.getElementById('moveTaskCancel');
+    if (!moveOkBtn || !moveCancelBtn) return;
+    // remove existing category classes
+    moveOkBtn.className = moveOkBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    moveCancelBtn.className = moveCancelBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // ensure base class
+    if (!moveOkBtn.classList.contains('modal-btn')) moveOkBtn.classList.add('modal-btn');
+    if (!moveCancelBtn.classList.contains('modal-btn')) moveCancelBtn.classList.add('modal-btn');
+    // apply category class
+    moveOkBtn.classList.add(`cat-${cat}`);
+    moveCancelBtn.classList.add(`cat-${cat}`);
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
