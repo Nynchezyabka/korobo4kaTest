@@ -1651,9 +1651,9 @@ textarea {
 #modalCancelBtn.modal-btn { opacity: 0.95; box-shadow: none; }
 #modalCancelBtn.modal-btn:hover { opacity: 1; }
 
-/* Move task modal cancel button - same muted style as add task modal */
-#moveTaskCancel.modal-btn { opacity: 0.95; box-shadow: none; }
-#moveTaskCancel.modal-btn:hover { opacity: 1; }
+/* Move task modal cancel button - secondary style (gray, not category color) */
+#moveTaskCancel.modal-btn { background-color: #9E9E9E !important; color: #fff !important; opacity: 1; box-shadow: none; }
+#moveTaskCancel.modal-btn:hover { filter: brightness(0.95); }
 
 /* Responsive subcategory controls — compact, grouped, no scroll */
 .add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
@@ -1825,7 +1825,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос для дес��топов */
+/* Медиа-зпрос для дес���топов */
 @media (min-width: 1024px) {
     /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
