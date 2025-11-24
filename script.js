@@ -152,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
 
-// Новые переменные для точного айме��а
+// Новые переменные для точного айме����а
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��руг��ю категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��ругую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -529,6 +529,7 @@ function displayTasks() {
 
         // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
+            const collapsedSubcats = loadCollapsedSubcategories();
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
             const bySub = new Map();
@@ -553,13 +554,41 @@ function displayTasks() {
             subNames.forEach(normKey => {
                 const display = getSubcategoryLabel(cat, normKey);
                 const titleEl = document.createElement('div');
-                titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(display)}</span>`;
+                titleEl.className = 'category-title subcategory-title';
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
-                const headingSpan = titleEl.querySelector('.category-heading');
-                if (headingSpan) leftWrap.appendChild(headingSpan);
+                const headingSpan = document.createElement('span');
+                headingSpan.className = 'category-heading';
+                headingSpan.textContent = display;
+                leftWrap.appendChild(headingSpan);
+
+                // Add collapse toggle button
+                const collapseBtn = document.createElement('button');
+                collapseBtn.className = 'subcategory-collapse-btn';
+                collapseBtn.type = 'button';
+                collapseBtn.setAttribute('aria-label', 'Свернуть/развернуть подкатегорию');
+                collapseBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+                const subKey = getCollapsedSubcategoriesKey(cat, normKey);
+                const isCollapsed = collapsedSubcats.has(subKey);
+                if (isCollapsed) {
+                    collapseBtn.classList.add('collapsed');
+                }
+
+                collapseBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    collapseBtn.classList.toggle('collapsed');
+                    if (collapseBtn.classList.contains('collapsed')) {
+                        collapsedSubcats.add(subKey);
+                    } else {
+                        collapsedSubcats.delete(subKey);
+                    }
+                    saveCollapsedSubcategories(collapsedSubcats);
+                    displayTasks();
+                });
+                leftWrap.insertBefore(collapseBtn, headingSpan);
                 titleEl.appendChild(leftWrap);
+
                 // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
@@ -580,7 +609,12 @@ function displayTasks() {
                 titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(normMap.get(normKey)) || [];
-                arr.forEach(el => frag.appendChild(el));
+                arr.forEach(el => {
+                    if (isCollapsed) {
+                        el.style.display = 'none';
+                    }
+                    frag.appendChild(el);
+                });
             });
             grid.innerHTML = '';
             grid.appendChild(frag);
@@ -1263,7 +1297,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем з��прос разрешения при загрузке стр��ницы
+// Добавляем запрос разрешения при загрузке стр��ницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1558,7 +1592,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа���� во врея тайме��а
 async function requestWakeLock() {
@@ -1665,7 +1699,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локальный fallback
+    // ланируем ��окальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
@@ -2207,7 +2241,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     }
     if (lines.length > 1) {
         openConfirmModal({
-            title: 'Под��верждение',
+            title: 'Подтверждение',
             message: `Д��бавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
@@ -2613,7 +2647,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите з��прос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
