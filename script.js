@@ -498,7 +498,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты для моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Перес��авяем элменты дл�� моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -874,7 +874,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри ка��егории
+// Пееклю��ение активности всех задач внтри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -911,7 +911,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Переклю��ние ��кти��ности подка��егоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -1073,7 +1073,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
 
-    // Получаем все активные задачи из указанных категорий, исключая выполненные
+    // Получаем все активные задачи из указанных катег��рий, исключая выполненные
     const filteredTasks = tasks.filter(task =>
         categoryArray.includes(task.category) && task.active && !task.completed
     );
@@ -1568,7 +1568,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершен��и таймера в стиле Wind Chime
+// Звуковой сигнал по завершен��и тайм��ра в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
@@ -2235,8 +2235,15 @@ function openMoveTaskModal(taskId) {
         modalContent.style.backgroundColor = '#fffaf0';
         modalContent.style.color = '#333';
     }
-    // Apply neutral button style initially
-    applyMoveTaskModalButtonStyles(0);
+    // Apply initial button styles
+    const moveOkBtn = document.getElementById('moveTaskOk');
+    const moveCancelBtn = document.getElementById('moveTaskCancel');
+    if (moveOkBtn) {
+        moveOkBtn.className = 'modal-btn cat-0';
+    }
+    if (moveCancelBtn) {
+        moveCancelBtn.className = 'modal-btn';
+    }
 }
 
 function closeMoveTaskModal() {
