@@ -874,7 +874,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри категории
+// Пееклю��ение активности всех задач внтри ка��егории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -911,7 +911,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подка��егоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -1896,15 +1896,16 @@ function applyMoveTaskModalButtonStyles(cat) {
     const moveOkBtn = document.getElementById('moveTaskOk');
     const moveCancelBtn = document.getElementById('moveTaskCancel');
     if (!moveOkBtn || !moveCancelBtn) return;
-    // remove existing category classes
+    // remove existing category classes from move button
     moveOkBtn.className = moveOkBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
+    // remove existing category classes from cancel button
     moveCancelBtn.className = moveCancelBtn.className.split(' ').filter(c => !c.startsWith('cat-')).join(' ').trim();
     // ensure base class
     if (!moveOkBtn.classList.contains('modal-btn')) moveOkBtn.classList.add('modal-btn');
     if (!moveCancelBtn.classList.contains('modal-btn')) moveCancelBtn.classList.add('modal-btn');
-    // apply category class
+    // apply category class only to move button (primary action)
     moveOkBtn.classList.add(`cat-${cat}`);
-    moveCancelBtn.classList.add(`cat-${cat}`);
+    // cancel button stays gray (secondary action) - no category class
 }
 
 function renderModalCategoryOptions(allowedCategories = null) {
