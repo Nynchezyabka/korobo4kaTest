@@ -270,7 +270,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п��лучения назван��я категории по номеру
+// Функция ��ля п��лучения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сво����ачивание/развора��ивание гру��пы
+        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -410,7 +410,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��ругую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // ��обавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
+                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -1366,7 +1366,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="3">Просты�� радости</button>
             <button class="add-category-option" data-category="4">Эго-��адости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
@@ -2097,7 +2097,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в ��писке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2228,12 +2228,14 @@ function openMoveTaskModal(taskId) {
         moveSubcategories.style.display = 'none';
     }
 
-    // Apply neutral background
+    // Apply neutral background and button styles
     const modalContent = moveTaskModal.querySelector('.modal-content');
     if (modalContent) {
         modalContent.style.backgroundColor = '#fffaf0';
         modalContent.style.color = '#333';
     }
+    // Apply neutral button style initially
+    applyMoveTaskModalButtonStyles(0);
 }
 
 function closeMoveTaskModal() {
