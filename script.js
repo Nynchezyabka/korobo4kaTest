@@ -270,7 +270,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для п��лучения названия категории по номеру
+// Функция для п��лучения назван��я категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по названию категории — сво��ачивание/развора��ивание гру��пы
+        // Клик по названию категории — сво����ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -560,7 +560,7 @@ function displayTasks() {
                 const headingSpan = titleEl.querySelector('.category-heading');
                 if (headingSpan) leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
+                // ��обавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -1064,7 +1064,7 @@ function updateSectionTaskCounts() {
             }
         }
 
-        countBadge.textContent = 'Активн��х: ' + count;
+        countBadge.textContent = 'Активных: ' + count;
     });
 }
 
@@ -1454,7 +1454,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', '��обави��ь подкатегорию');
+    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
@@ -2272,12 +2272,14 @@ function renderMoveCategoryOptions() {
             moveCategoryOptions.dataset.selected = btn.dataset.category;
             // Show subcategories for selected category
             showAddSubcategoriesFor(parseInt(btn.dataset.category), moveSubcategories);
-            // Apply background color
+            // Apply background color and button styles
             const modalContent = moveTaskModal.querySelector('.modal-content');
             if (modalContent) {
                 const color = getCategoryGroupBg(parseInt(btn.dataset.category));
                 modalContent.style.backgroundColor = color;
             }
+            // Apply category-specific button styles
+            applyMoveTaskModalButtonStyles(parseInt(btn.dataset.category));
         });
         moveCategoryOptions.appendChild(btn);
     });
