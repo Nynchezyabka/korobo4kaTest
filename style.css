@@ -333,7 +333,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбцов на широих экранах */
+/* Компактный пре��ью-список в несколько столбц��в на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -945,7 +945,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет доче��ним участв��ват�� в сетке родителя */
+        display: contents; /* позволяет доче����ним участв��ват�� в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1398,7 +1398,7 @@ textarea {
     .category-title.subcategory-title {
         flex-wrap: nowrap;
         gap: 0;
-        padding: 4px 6px;
+        padding: 0;
     }
 
     .subcategory-title-left {
