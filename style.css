@@ -1417,12 +1417,6 @@ textarea {
         flex-shrink: 1;
     }
 
-    .subcategory-title-left .subcategory-collapse-btn {
-        width: 20px;
-        height: 20px;
-        font-size: 0.85rem;
-    }
-
     .subcategory-title-left .subcategory-toggle-all {
         flex-shrink: 0;
         padding: 4px;
@@ -1915,7 +1909,7 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Медиа-зпрос для дес���топов */
+/* Мед��а-зпрос для дес���топов */
 @media (min-width: 1024px) {
     /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
     .task {
