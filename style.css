@@ -1392,26 +1392,6 @@ textarea {
 /* Кн��пка акти��аии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
-/* Subcategory collapse button */
-.subcategory-collapse-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    min-height: auto;
-    color: #5d4037;
-    font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    transition: transform 0.3s ease, background-color 0.2s ease;
-    margin-right: 6px;
-    box-shadow: none;
-    flex-shrink: 0;
-}
 
 /* Mobile compact subcategory title */
 @media (max-width: 480px) {
