@@ -945,7 +945,7 @@ textarea {
         align-items: start;
     }
     .task-content {
-        display: contents; /* позволяет дочерним участв��ват�� в сетке родителя */
+        display: contents; /* позволяет доче��ним участв��ват�� в сетке родителя */
     }
     .task-text {
         grid-column: 1 / 2;
@@ -1137,7 +1137,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность для мобильных устр��йств */
+/* Адаптивность д��я мобильных устр��йств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1429,23 +1429,6 @@ textarea {
         margin-left: 4px;
         font-size: 0.9rem;
     }
-}
-
-.subcategory-collapse-btn:hover {
-    background-color: rgba(0, 0, 0, 0.06);
-}
-
-.subcategory-collapse-btn:active {
-    transform: scale(0.9);
-}
-
-.subcategory-collapse-btn i {
-    font-size: 0.9rem;
-    transition: transform 0.3s ease;
-}
-
-.subcategory-collapse-btn.collapsed i {
-    transform: rotate(-90deg);
 }
 
 /* Subcategory title styling */
@@ -1909,9 +1892,9 @@ textarea {
     .group-grid .category-dropdown { right: 0; left: auto; }
 }
 
-/* Мед��а-зпрос для дес���топов */
+/* Медиа-зпрос для дес���топов */
 @media (min-width: 1024px) {
-    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх категория, снизу под ней кнопки */
+    /* Выронять элементы задачи в сетку: ����кст сле��а, справа сверх кат��гория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
