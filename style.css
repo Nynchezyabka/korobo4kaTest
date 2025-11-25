@@ -936,7 +936,7 @@ textarea {
 @media (min-width: 1024px) {
     /* Make sections flex columns so .section-actions with margin-top:auto aligns to bottom */
     .section { display: flex; flex-direction: column; }
-    /* Выровнять элементы задачи в сетку: текст слева, справа ��верху кат��гория, с������у под ней кнопки */
+    /* Выровнять элементы з��дачи в сетку: текст слева, справа ��верху кат��гория, с������у под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1170,7 +1170,7 @@ textarea {
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный р��жим "стиеров" для мобильных */
+/* Компактный р���жим "стиеров" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
@@ -1354,7 +1354,7 @@ textarea {
 .group-grid .category-badge .category-name { display: none; }
 .group-grid .category-title { grid-column: 1 / -1; }
 
-/* ��ереопреде��яем сару десктопную ра����кладку ����утри груп�� */
+/* ���ереопреде��яем сару десктопную ра����кладку ����утри груп�� */
 @media (min-width: 1024px) {
     .group-grid .task { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; column-gap: 10px; align-items: start; }
     .group-grid .task-content { display: contents; }
@@ -1428,7 +1428,7 @@ textarea {
         flex-shrink: 1;
     }
 
-    .category-heading {
+    .subcategory-title-left .category-heading {
         font-size: 0.95rem;
         white-space: nowrap;
         overflow: hidden;
@@ -1437,28 +1437,23 @@ textarea {
         flex-shrink: 1;
     }
 
-    .subcategory-collapse-btn {
+    .subcategory-title-left .subcategory-collapse-btn {
         width: 20px;
         height: 20px;
         font-size: 0.85rem;
     }
 
-    .subcategory-toggle-all {
+    .subcategory-title-left .subcategory-toggle-all {
         flex-shrink: 0;
         padding: 4px;
         font-size: 0.9rem;
     }
 
-    .subcategory-menu-btn {
+    .category-title .subcategory-menu-btn {
         flex-shrink: 0;
-        background: none;
-        border: none;
-        cursor: pointer;
         padding: 4px;
-        min-height: auto;
-        color: #5d4037;
-        font-size: 0.9rem;
         margin-left: 4px;
+        font-size: 0.9rem;
     }
 }
 
