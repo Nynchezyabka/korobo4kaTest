@@ -1436,10 +1436,9 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 8px;
-    margin: 8px 0 6px;
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.02);
+    padding: 0;
+    margin: 0;
+    background: transparent;
 }
 
 .subcategory-title-left {
