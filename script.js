@@ -280,7 +280,7 @@ function getCategoryName(category) {
         4: "Эго-ра��ости",
         5: "Доступность простых радостей"
     };
-    return categories[Number(category)] ?? "Категория не ��пр��делена";
+    return categories[Number(category)] ?? "Категория не ���пр��делена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -529,7 +529,6 @@ function displayTasks() {
 
         // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
-            const collapsedSubcats = loadCollapsedSubcategories();
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
             const bySub = new Map();
@@ -561,32 +560,6 @@ function displayTasks() {
                 headingSpan.className = 'category-heading';
                 headingSpan.textContent = display;
                 leftWrap.appendChild(headingSpan);
-
-                // Add collapse toggle button
-                const collapseBtn = document.createElement('button');
-                collapseBtn.className = 'subcategory-collapse-btn';
-                collapseBtn.type = 'button';
-                collapseBtn.setAttribute('aria-label', 'Свернуть/развернуть подкатегорию');
-                collapseBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-
-                const subKey = getCollapsedSubcategoriesKey(cat, normKey);
-                const isCollapsed = collapsedSubcats.has(subKey);
-                if (isCollapsed) {
-                    collapseBtn.classList.add('collapsed');
-                }
-
-                collapseBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    collapseBtn.classList.toggle('collapsed');
-                    if (collapseBtn.classList.contains('collapsed')) {
-                        collapsedSubcats.add(subKey);
-                    } else {
-                        collapsedSubcats.delete(subKey);
-                    }
-                    saveCollapsedSubcategories(collapsedSubcats);
-                    displayTasks();
-                });
-                leftWrap.insertBefore(collapseBtn, headingSpan);
                 titleEl.appendChild(leftWrap);
 
                 // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
@@ -610,9 +583,6 @@ function displayTasks() {
                 frag.appendChild(titleEl);
                 const arr = bySub.get(normMap.get(normKey)) || [];
                 arr.forEach(el => {
-                    if (isCollapsed) {
-                        el.style.display = 'none';
-                    }
                     frag.appendChild(el);
                 });
             });
@@ -932,26 +902,6 @@ function loadSubcategoryActiveSnapshots() {
     }
 }
 
-function getCollapsedSubcategoriesKey(category, subName) {
-    return `cat:${category}|sub:${subName}`;
-}
-
-function loadCollapsedSubcategories() {
-    try {
-        const raw = localStorage.getItem('collapsedSubcategories');
-        if (!raw) return new Set();
-        const parsed = JSON.parse(raw);
-        return new Set(Array.isArray(parsed) ? parsed : []);
-    } catch (_) {
-        return new Set();
-    }
-}
-
-function saveCollapsedSubcategories(set) {
-    try {
-        localStorage.setItem('collapsedSubcategories', JSON.stringify(Array.from(set)));
-    } catch (_) {}
-}
 
 function saveSubcategoryActiveSnapshots(store) {
     try {
@@ -2102,7 +2052,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Зада��и останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
