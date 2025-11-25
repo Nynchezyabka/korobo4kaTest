@@ -704,7 +704,7 @@ textarea {
     transition: all 0.3s;
 }
 
-/* ��вые цвета для кнопок таймера */
+/* ��вы�� цвета для кнопок таймера */
 #startTimerBtn {
     background-color: #9CCC65; /* желто-��еле��ый */
 }
@@ -1389,7 +1389,7 @@ textarea {
 .add-category-badge[data-category="4"] { background-color: #ffcdd2; border-left: 2px solid #E57373; }
 .add-category-badge[data-category="5"] { background-color: #d1c4e9; border-left: 2px solid #9575CD; }
 
-/* Кн��пка активаии/деактивации всей ��атегории в зголовке группы */
+/* Кн��пка акти��аии/деактивации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
 /* Subcategory collapse button */
@@ -1410,6 +1410,56 @@ textarea {
     transition: transform 0.3s ease, background-color 0.2s ease;
     margin-right: 6px;
     box-shadow: none;
+    flex-shrink: 0;
+}
+
+/* Mobile compact subcategory title */
+@media (max-width: 480px) {
+    .category-title.subcategory-title {
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 4px 6px;
+    }
+
+    .subcategory-title-left {
+        flex-wrap: nowrap;
+        gap: 2px;
+        min-width: 0;
+        flex-shrink: 1;
+    }
+
+    .category-heading {
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+        flex-shrink: 1;
+    }
+
+    .subcategory-collapse-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 0.85rem;
+    }
+
+    .subcategory-toggle-all {
+        flex-shrink: 0;
+        padding: 4px;
+        font-size: 0.9rem;
+    }
+
+    .subcategory-menu-btn {
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        min-height: auto;
+        color: #5d4037;
+        font-size: 0.9rem;
+        margin-left: 4px;
+    }
 }
 
 .subcategory-collapse-btn:hover {
