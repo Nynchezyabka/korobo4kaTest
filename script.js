@@ -152,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
 
-// Новые переменные для точного айме��а
+// Новые переменные для точного айме����а
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -529,6 +529,7 @@ function displayTasks() {
 
         // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
+            const collapsedSubcats = loadCollapsedSubcategories();
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
             const bySub = new Map();
@@ -553,13 +554,41 @@ function displayTasks() {
             subNames.forEach(normKey => {
                 const display = getSubcategoryLabel(cat, normKey);
                 const titleEl = document.createElement('div');
-                titleEl.className = 'category-title';
-                titleEl.innerHTML = `<span class=\"category-heading\">${escapeHtml(display)}</span>`;
+                titleEl.className = 'category-title subcategory-title';
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
-                const headingSpan = titleEl.querySelector('.category-heading');
-                if (headingSpan) leftWrap.appendChild(headingSpan);
+                const headingSpan = document.createElement('span');
+                headingSpan.className = 'category-heading';
+                headingSpan.textContent = display;
+                leftWrap.appendChild(headingSpan);
+
+                // Add collapse toggle button
+                const collapseBtn = document.createElement('button');
+                collapseBtn.className = 'subcategory-collapse-btn';
+                collapseBtn.type = 'button';
+                collapseBtn.setAttribute('aria-label', 'Свернуть/развернуть подкатегорию');
+                collapseBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+
+                const subKey = getCollapsedSubcategoriesKey(cat, normKey);
+                const isCollapsed = collapsedSubcats.has(subKey);
+                if (isCollapsed) {
+                    collapseBtn.classList.add('collapsed');
+                }
+
+                collapseBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    collapseBtn.classList.toggle('collapsed');
+                    if (collapseBtn.classList.contains('collapsed')) {
+                        collapsedSubcats.add(subKey);
+                    } else {
+                        collapsedSubcats.delete(subKey);
+                    }
+                    saveCollapsedSubcategories(collapsedSubcats);
+                    displayTasks();
+                });
+                leftWrap.insertBefore(collapseBtn, headingSpan);
                 titleEl.appendChild(leftWrap);
+
                 // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
@@ -580,7 +609,12 @@ function displayTasks() {
                 titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(normMap.get(normKey)) || [];
-                arr.forEach(el => frag.appendChild(el));
+                arr.forEach(el => {
+                    if (isCollapsed) {
+                        el.style.display = 'none';
+                    }
+                    frag.appendChild(el);
+                });
             });
             grid.innerHTML = '';
             grid.appendChild(frag);
@@ -896,6 +930,27 @@ function loadSubcategoryActiveSnapshots() {
     } catch (_) {
         return {};
     }
+}
+
+function getCollapsedSubcategoriesKey(category, subName) {
+    return `cat:${category}|sub:${subName}`;
+}
+
+function loadCollapsedSubcategories() {
+    try {
+        const raw = localStorage.getItem('collapsedSubcategories');
+        if (!raw) return new Set();
+        const parsed = JSON.parse(raw);
+        return new Set(Array.isArray(parsed) ? parsed : []);
+    } catch (_) {
+        return new Set();
+    }
+}
+
+function saveCollapsedSubcategories(set) {
+    try {
+        localStorage.setItem('collapsedSubcategories', JSON.stringify(Array.from(set)));
+    } catch (_) {}
 }
 
 function saveSubcategoryActiveSnapshots(store) {
@@ -1537,7 +1592,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
 // П��ддержка Wake Lock API, чтобы экран не засыпа���� во врея тайме��а
 async function requestWakeLock() {
@@ -1644,7 +1699,7 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем локальный fallback
+    // ланируем ��окальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
