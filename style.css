@@ -1164,7 +1164,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго����овки на всех экран����х */
+/* Показыв��ем подзаго����овки ��а всех экран����х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1708,6 +1708,15 @@ textarea {
 /* Move task modal cancel button - secondary style (gray, not category color) */
 #moveTaskCancel.modal-btn { background-color: #9E9E9E !important; color: #fff !important; opacity: 1; box-shadow: none; }
 #moveTaskCancel.modal-btn:hover { filter: brightness(0.95); }
+
+/* Cancel buttons in various modals - grey styling */
+#pasteTasksCancelBtn,
+#confirmCancelBtn,
+#renameSubcatCancel,
+#subcatActionsCancel {
+    background-color: #9E9E9E;
+    color: #fff;
+}
 
 /* Responsive subcategory controls — compact, grouped, no scroll */
 .add-subcategory-controls { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; justify-content: flex-start; }
