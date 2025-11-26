@@ -261,7 +261,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветна�� индикация катгории при добавле��ии задачи */
+/* Цветна�� индикация катгории при доба��ле��ии задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -714,7 +714,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* оранже��ы */
+    background-color: #ff9800; /* оранже����ы */
 }
 
 #pauseTimerBtn:active {
@@ -1565,9 +1565,17 @@ textarea {
 
 /* Subcategory actions modal — nicer layout and spacing */
 .subcat-actions { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
-.subcat-action-btn { padding: 10px 12px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; }
-.subcat-action-btn:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
-.subcat-action-btn.destructive { background: #ffcdd2; color: #8B0000; }
+.subcat-action-btn { padding: 12px 14px; border-radius: 8px; border: none; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; text-align: left; color: #333; font-weight: 600; transition: all 0.2s ease; font-size: 0.95rem; }
+.subcat-action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.subcat-action-btn:active { transform: translateY(0); }
+
+/* Different styles for different actions */
+.subcat-action-btn[data-action="rename"] { background: #E3F2FD; color: #1565C0; }
+.subcat-action-btn[data-action="rename"]:hover { background: #BBDEFB; }
+.subcat-action-btn[data-action="move"] { background: #F3E5F5; color: #6A1B9A; }
+.subcat-action-btn[data-action="move"]:hover { background: #E1BEE7; }
+.subcat-action-btn.destructive { background: #FFEBEE; color: #C62828; }
+.subcat-action-btn.destructive:hover { background: #FFCDD2; }
 #subcatActionsModal .modal-content { max-width: 640px; padding: 20px; max-height: none; overflow: visible; }
 #subcatActionsModal .modal-actions { justify-content: center; }
 @media (min-width:481px) {
