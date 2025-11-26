@@ -150,7 +150,7 @@ let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экр��ны н�� засыают во время таймера (��де поддержвается)
+let wakeLock = null; // экр��ны н�� засыают во время таймера (��де поддержва��тся)
 
 // Новые переменные для точного айме����а
 let timerStartTime = 0;
@@ -331,7 +331,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загр��жаем сохранённе польз����ат��льске подкатегор��и
+    // Загр��жаем сохранённе польз�����ат��льске подкатегор��и
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -556,6 +556,15 @@ function displayTasks() {
                 titleEl.className = 'category-title subcategory-title';
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
+
+                const menuBtn = document.createElement('button');
+                menuBtn.className = 'subcategory-menu-btn';
+                menuBtn.type = 'button';
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
+                leftWrap.appendChild(menuBtn);
+
                 const headingSpan = document.createElement('span');
                 headingSpan.className = 'category-heading';
                 headingSpan.textContent = display;
@@ -1044,7 +1053,7 @@ function importTasks(file) {
             // Добавлям за��ачи в бзу данных
             tasks = importedTasks;
             saveTasks();
-            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
+            openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завер��ён');
             displayTasks();
             
         } catch (error) {
@@ -1788,7 +1797,7 @@ async function cancelServerSchedule() {
 
 // Ф��нкци для сброса тайме��а
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс ��ы�� явным
+    // отменяе тольк локальный таймр, серверый не тргаем, ��тобы пауза/сброс ��ы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
