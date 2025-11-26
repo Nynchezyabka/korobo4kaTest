@@ -261,7 +261,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветна�� индикация катгории при доба��ле��ии задачи */
+/* Цветна�� индикация катгории при добавле��ии задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -714,7 +714,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* оранже����ы */
+    background-color: #ff9800; /* оранже��ы */
 }
 
 #pauseTimerBtn:active {
@@ -1578,6 +1578,7 @@ textarea {
 .subcat-action-btn.destructive:hover { background: #FFCDD2; }
 #subcatActionsModal .modal-content { max-width: 640px; padding: 20px; max-height: none; overflow: visible; }
 #subcatActionsModal .modal-actions { justify-content: center; }
+#moveTasksModal .modal-content { max-width: 640px; padding: 20px; max-height: none; overflow: visible; }
 @media (min-width:481px) {
     #subcatActionsModal .subcat-actions { flex-direction: row; flex-wrap: wrap; gap: 12px; }
     #subcatActionsModal .subcat-action-btn { flex: 1; }
