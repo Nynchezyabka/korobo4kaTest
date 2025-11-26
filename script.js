@@ -588,7 +588,6 @@ function displayTasks() {
                 menuBtn.setAttribute('aria-label','Меню ��одкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
                 menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
-                titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(normMap.get(normKey)) || [];
                 arr.forEach(el => {
@@ -1057,7 +1056,7 @@ function importTasks(file) {
             displayTasks();
             
         } catch (error) {
-            openInfoModal('Ошибка при чтении файла: ' + error.message);
+            openInfoModal('��шибка при чтении файла: ' + error.message);
         }
     };
     
@@ -1159,7 +1158,7 @@ function showTimer(task) {
 function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
-    soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
+    soundToggleBtn.title = timerSoundEnabled ? 'Звук включё��' : 'Звук выключен';
     soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
@@ -1748,7 +1747,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм����
+// Функция для аузы тайм�����
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1959,7 +1958,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые ��адости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
