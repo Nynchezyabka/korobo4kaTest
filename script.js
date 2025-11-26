@@ -355,7 +355,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру��пы
+        // Клик по на��ванию категории — с��о��ачивание/развора��ивание гру��пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -583,7 +583,7 @@ function displayTasks() {
                     leftWrap.appendChild(eyeBtn);
                 }
                 const menuBtn = document.createElement('button');
-                menuBtn.className = 'subcategory-menu-btn';
+                menuBtn.className = 'MARKED_FOR_DELETION_subcategory-menu-btn';
                 menuBtn.type = 'button';
                 menuBtn.setAttribute('aria-label','Меню ��одкатегории');
                 menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
@@ -1056,7 +1056,7 @@ function importTasks(file) {
             displayTasks();
             
         } catch (error) {
-            openInfoModal('��шибка при чтении файла: ' + error.message);
+            openInfoModal('Ошибка при чтении файла: ' + error.message);
         }
     };
     
@@ -1121,7 +1121,7 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включё��
+    // по ��м��лчанию пр��� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1158,7 +1158,7 @@ function showTimer(task) {
 function updateSoundToggleUI() {
     if (!soundToggleBtn) return;
     soundToggleBtn.setAttribute('aria-pressed', String(timerSoundEnabled));
-    soundToggleBtn.title = timerSoundEnabled ? 'Звук включё��' : 'Звук выключен';
+    soundToggleBtn.title = timerSoundEnabled ? 'Звук включён' : 'Звук выключен';
     soundToggleBtn.setAttribute('aria-label', timerSoundEnabled ? 'Звук включён' : 'Звук выключен');
     soundToggleBtn.innerHTML = timerSoundEnabled ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-xmark"></i>';
     if (timerSoundEnabled) {
@@ -1285,7 +1285,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке стр��ницы
+// Добавляем запрос разрешения при загрузке с��р��ницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1747,7 +1747,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм�����
+// Функция для аузы тайм����
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1794,7 +1794,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сброса тайме��а
+// Ф����кци для сброса тайме��а
 function resetTimer() {
     // отменяе тольк локальный таймр, серверый не тргаем, ��тобы пауза/сброс ��ы�� явным
     stopTimer();
@@ -1958,7 +1958,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые ��адости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2021,7 +2021,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не ��предел��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2090,7 +2090,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Зада��и останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Зада��и останутся без подкате��ории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
