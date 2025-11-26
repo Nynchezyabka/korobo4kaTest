@@ -333,7 +333,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбц��в на широих экранах */
+/* Компактный пре��ью-��писок в несколько столбц��в на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -722,7 +722,7 @@ textarea {
 }
 
 #resetTimerBtn {
-    background-color: #f44336; /* красный */
+    background-color: #f44336; /* крас��ый */
 }
 
 #resetTimerBtn:active {
@@ -923,7 +923,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя ряда��и иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1332,7 +1332,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатег��ри�� внутри "Обязательные" */
+/* Сетка колонок подкатег��ри�� в��утри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1378,7 +1378,7 @@ textarea {
 .add-category-dropdown .category-subrow .add-category-option,
 .category-dropdown .category-subrow .category-option { display: none !important; }
 
-/* Редактор текста задачи */
+/* Редактор тек��та задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
 /* Цветизация вбранной кат��гории при доба��лении задачи */
@@ -1680,7 +1680,7 @@ textarea {
 @media (max-width:480px) { .category-title .subcategory-menu-btn { margin-left: 8px; padding: 4px; } }
 
 /* Compact wrapper for subcategory title and eye button to avoid overflow */
-.subcategory-title-left { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; }
+.subcategory-title-left { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; }
 
 /* Prevent horizontal scroll inside main grids */
 .tasks, .group-grid { overflow-x: hidden; }
@@ -1824,7 +1824,7 @@ textarea {
     white-space: normal !important;
 }
 
-/* Адаптивность д��я мобильных устро��ств */
+/* Адаптивность д��я мобильных устро��ст�� */
 @media (max-width: 480px) {
     .task {
         position: relative;
