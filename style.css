@@ -1164,7 +1164,7 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показыв��ем подзаго����овки на всех экран����х */
+/* Показыв��ем подзаго����овки на всех экра������х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1464,12 +1464,18 @@ textarea {
     padding: 0;
     margin: 0;
     background: transparent;
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 
 .subcategory-title-left {
     display: flex;
     align-items: center;
     gap: 4px;
+    min-width: 0;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 /* ���нопки на секциях главного экрана */
@@ -2092,7 +2098,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Поза���оловки ка��егорий для мобильной группировки */
+/* Поза���оловки ка��егорий для мобильн��й группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
