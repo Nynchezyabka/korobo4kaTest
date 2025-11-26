@@ -527,7 +527,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по по��категориям для тек��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
+        // Д��намическая группировка задач по по��категориям для т��к��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1193,7 +1193,22 @@ function updateTimerControlsForViewport() {
     }
 }
 
+function checkSubcategoryMarquee() {
+    const isMobile = window.matchMedia('(max-width: 480px)').matches;
+    if (isMobile) {
+        document.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
+            const container = heading.closest('.subcategory-title-left');
+            if (container && heading.scrollWidth > container.offsetWidth) {
+                heading.classList.add('marquee');
+            } else {
+                heading.classList.remove('marquee');
+            }
+        });
+    }
+}
+
 window.addEventListener('resize', updateTimerControlsForViewport);
+window.addEventListener('resize', checkSubcategoryMarquee);
 
 // Функция для скрытия таймер��
 function hideTimer() {
@@ -2634,7 +2649,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте сн��ва.');
         }
         updateNotifyToggle();
     });
