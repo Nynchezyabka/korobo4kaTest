@@ -261,7 +261,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветна�� индикация катго��ии при добавле��ии задачи */
+/* Цветна�� индикация катгории при добавле��ии задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -1417,7 +1417,6 @@ textarea {
     }
 
     .subcategory-title-left .category-heading {
-        font-size: 1.5rem;
         font-family: 'Caveat', cursive;
         white-space: nowrap;
         min-width: 0;
