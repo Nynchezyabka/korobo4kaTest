@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный об��аботчик дл�� за��рыт��я откытого выпадащег�� меню категорий
+// Глоб��льный об��аботчик дл���� за��рыт��я откытого выпадащег�� меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -556,13 +556,22 @@ function displayTasks() {
                 titleEl.className = 'category-title subcategory-title';
                 const leftWrap = document.createElement('div');
                 leftWrap.className = 'subcategory-title-left';
+
+                const menuBtn = document.createElement('button');
+                menuBtn.className = 'subcategory-menu-btn';
+                menuBtn.type = 'button';
+                menuBtn.setAttribute('aria-label','Меню подкатегории');
+                menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
+                leftWrap.appendChild(menuBtn);
+
                 const headingSpan = document.createElement('span');
                 headingSpan.className = 'category-heading';
                 headingSpan.textContent = display;
                 leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
 
-                // Добавляем кнопку-глаз для массово��о скрытия/показа задач подкатегории т��лько в категории "Обяза��ельные"
+                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -571,15 +580,8 @@ function displayTasks() {
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
-                    leftWrap.appendChild(eyeBtn);
+                    titleEl.appendChild(eyeBtn);
                 }
-                const menuBtn = document.createElement('button');
-                menuBtn.className = 'subcategory-menu-btn';
-                menuBtn.type = 'button';
-                menuBtn.setAttribute('aria-label','Меню ��одкатегории');
-                menuBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
-                menuBtn.addEventListener('click', (e) => { e.stopPropagation(); openSubcategoryActions(cat, normKey); });
-                titleEl.appendChild(menuBtn);
                 frag.appendChild(titleEl);
                 const arr = bySub.get(normMap.get(normKey)) || [];
                 arr.forEach(el => {
@@ -1446,7 +1448,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже суще��твующих задач выбранной кате��ории
+    // 0) взять подкатегории из уже суще��твующих задач выбранн��й кате��ории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1603,7 +1605,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершен��и тайм��ра в стиле Wind Chime
+// Звуковой сигнал по завершен��и тайм����ра в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
@@ -1786,7 +1788,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сброса тайме��а
+// Ф��нкци для сбро��а тайме��а
 function resetTimer() {
     // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс ��ы�� явным
     stopTimer();
@@ -2649,7 +2651,7 @@ if (notifyToggleBtn) {
                 openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте сн��ва.');
+            openInfoModal('Не удалось запрос��ть разрешение на уведомления. Откройте сайт напрямую и попробуйте сн��ва.');
         }
         updateNotifyToggle();
     });
