@@ -189,6 +189,7 @@ const addTaskBtn = document.getElementById('addTaskBtn');
 const hideTasksBtn = document.getElementById('hideTasksBtn');
 const timerScreen = document.getElementById('timerScreen');
 const timerTaskText = document.getElementById('timerTaskText');
+const timerCategoryInfo = document.getElementById('timerCategoryInfo');
 const timerDisplay = document.getElementById('timerDisplay');
 const timerMinutes = document.getElementById('timerMinutes');
 const startTimerBtn = document.getElementById('startTimerBtn');
@@ -1184,7 +1185,7 @@ function updateTimerControlsForViewport() {
         pauseTimerBtn.title = 'Пауза';
         resetTimerBtn.innerHTML = '<i class="fas fa-rotate-left"></i>';
         resetTimerBtn.setAttribute('aria-label','Сброс');
-        resetTimerBtn.title = 'Сброс';
+        resetTimerBtn.title = 'С��рос';
     } else {
         startTimerBtn.classList.remove('icon-only');
         pauseTimerBtn.classList.remove('icon-only');
@@ -1576,7 +1577,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран н�� засыпа���� во врея тайме��а
+// П��ддержка Wake Lock API, чтобы экран н��� засыпа���� во врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
