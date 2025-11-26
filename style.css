@@ -923,7 +923,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компа��тный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1147,7 +1147,10 @@ textarea {
     }
 }
 
-.category-heading { font-family: inherit; }
+.category-heading {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+}
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
@@ -1158,10 +1161,6 @@ textarea {
     font-weight: 700;
     padding: 6px 10px;
     border-radius: 8px;
-}
-.category-heading {
-    font-family: 'Caveat', cursive;
-    font-size: 1.4rem;
 }
 
 /* Показыв��ем подзаго����овки на всех экран����х */
@@ -1332,7 +1331,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатег��ри�� внутри "Обязательные" */
+/* Сетка колонок подкатег��ри�� внутри "��бязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1378,7 +1377,7 @@ textarea {
 .add-category-dropdown .category-subrow .add-category-option,
 .category-dropdown .category-subrow .category-option { display: none !important; }
 
-/* Редактор текста задачи */
+/* Редактор текста з��дачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
 /* Цветизация вбранной кат��гории при доба��лении задачи */
