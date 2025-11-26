@@ -588,6 +588,21 @@ function displayTasks() {
             });
             grid.innerHTML = '';
             grid.appendChild(frag);
+
+            // Check for text overflow and apply marquee animation
+            setTimeout(() => {
+                const isMobile = window.matchMedia('(max-width: 480px)').matches;
+                if (isMobile) {
+                    grid.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
+                        const container = heading.closest('.subcategory-title-left');
+                        if (container && heading.scrollWidth > container.offsetWidth) {
+                            heading.classList.add('marquee');
+                        } else {
+                            heading.classList.remove('marquee');
+                        }
+                    });
+                }
+            }, 0);
         }
 
         // Обработчик сворачивания перен��сён на иконку папки выше
@@ -1021,7 +1036,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат файла');
+                    openInfoModal('Ошибка: неправильный формат фа��ла');
                     return;
                 }
             }
@@ -1184,7 +1199,7 @@ window.addEventListener('resize', updateTimerControlsForViewport);
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
-    stopTimer(); // Останавливем таймр при закр��ти
+    stopTimer(); // Останавливем таймр при закр���ти
     releaseWakeLock();
 }
 
@@ -1367,7 +1382,7 @@ function setupAddCategorySelector() {
         const dropdown = document.createElement('div');
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
-            <button class="add-category-option" data-category="0">Категория не определена</button>
+            <button class="add-category-option" data-category="0">Категория не опре��елена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
@@ -1426,7 +1441,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
             if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
          });
 
-    // 1) добавить сохранённые пользователем по��категории
+    // 1) добав��ть сохранённые пользователем по��категории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
@@ -1544,7 +1559,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран не засыпа���� во врея тайме��а
+// П��ддержка Wake Lock API, чтобы экран н�� засыпа���� во врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
