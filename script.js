@@ -150,7 +150,7 @@ let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экраны н�� засыают во время таймера (��де поддержвается)
+let wakeLock = null; // экр��ны н�� засыают во время таймера (��де поддержвается)
 
 // Новые переменные для точного айме����а
 let timerStartTime = 0;
@@ -274,7 +274,7 @@ function updateNotifyToggle() {
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "Обязательные",
+        1: "Обязат��льные",
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-ра��ости",
@@ -373,7 +373,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по ик��нк папки — в��рачивание/разво��ачи��ание
+        // Клик по ик��нк папки — в��рачивание/разворачи��ание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -442,7 +442,7 @@ function displayTasks() {
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без кате��ории</button>
                             <div class=\"category-option-group\">
-                                <button class=\"category-option\" data-category=\"1\">��бязательные</button>
+                                <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
@@ -916,7 +916,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��т��грии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -1325,7 +1325,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера ��езопасности' : (task.category === 5) ? 'Новая сложная р��дос��ь' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера ���езопасности' : (task.category === 5) ? 'Новая сложная р��дос��ь' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1455,7 +1455,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    // 3) Кнопка «+» для добавления новой подкатегории
+    // 3) Кнопка «+» для добавления н��вой подкатегории
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
@@ -1468,7 +1468,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безоп��сности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : '��овая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безоп��сности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1920,7 +1920,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасно��ти',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -1983,7 +1983,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радост��',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2086,9 +2086,11 @@ try {
                 if (cancel) cancel.onclick = closeMove; if (closeBtn) closeBtn.addEventListener('click', closeMove); if (backdrop2) backdrop2.addEventListener('click', closeMove);
 
                 // Handle category selection
-                catCont.querySelectorAll('.modal-category-btn').forEach(btn => {
-                    btn.onclick = () => {
-                        catCont.querySelectorAll('.modal-category-btn').forEach(b => b.classList.remove('selected'));
+                const catBtns = catCont.querySelectorAll('.modal-category-btn');
+                catBtns.forEach(btn => {
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        catBtns.forEach(b => b.classList.remove('selected'));
                         btn.classList.add('selected');
                         const cat = parseInt(btn.dataset.category);
                         showAddSubcategoriesFor(cat, subCont);
