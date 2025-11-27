@@ -189,6 +189,7 @@ const addTaskBtn = document.getElementById('addTaskBtn');
 const hideTasksBtn = document.getElementById('hideTasksBtn');
 const timerScreen = document.getElementById('timerScreen');
 const timerTaskText = document.getElementById('timerTaskText');
+const timerCategoryInfo = document.getElementById('timerCategoryInfo');
 const timerDisplay = document.getElementById('timerDisplay');
 const timerMinutes = document.getElementById('timerMinutes');
 const startTimerBtn = document.getElementById('startTimerBtn');
@@ -1115,6 +1116,37 @@ function showTimer(task) {
     timerTaskText.textContent = task.text;
     try { timerTaskText.style.backgroundColor = getCategoryColor(task.category); } catch (e) {}
 
+    // Display category and subcategory
+    if (timerCategoryInfo) {
+        timerCategoryInfo.innerHTML = '';
+        const categoryName = getCategoryName(task.category);
+        if (categoryName) {
+            const categoryBadge = document.createElement('div');
+            categoryBadge.className = 'timer-category-badge';
+            categoryBadge.textContent = categoryName;
+            categoryBadge.style.backgroundColor = getCategoryColor(task.category);
+            categoryBadge.style.color = '#333';
+            timerCategoryInfo.appendChild(categoryBadge);
+        }
+
+        if (task.subcategory && task.subcategory.trim()) {
+            const subcategoryBadge = document.createElement('div');
+            subcategoryBadge.className = 'timer-subcategory-badge';
+            subcategoryBadge.textContent = getSubcategoryLabel(task.category, task.subcategory);
+            subcategoryBadge.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.7);
+            subcategoryBadge.style.color = '#333';
+            timerCategoryInfo.appendChild(subcategoryBadge);
+        }
+    }
+
+    // Set timer-content background to match category
+    const timerContent = document.querySelector('.timer-content');
+    if (timerContent) {
+        const bgColor = getCategoryGroupBg(task.category);
+        timerContent.style.backgroundColor = bgColor;
+        timerContent.style.color = '#333';
+    }
+
     // по ум��лчанию пр��� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
@@ -1212,7 +1244,7 @@ function checkSubcategoryMarquee() {
 window.addEventListener('resize', updateTimerControlsForViewport);
 window.addEventListener('resize', checkSubcategoryMarquee);
 
-// Функция для скрытия таймер��
+// Функция для скрытия таймер���
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
@@ -1790,7 +1822,7 @@ async function cancelServerSchedule() {
 
 // Ф��нкци для сбро��а тайме��а
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чтобы пауза/сброс ��ы�� явным
+    // отменяе тольк локальный таймр, серверый не тргаем, чт��бы пауза/сброс ��ы�� явным
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -2015,7 +2047,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радо��тей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2644,14 +2676,14 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Уведомления вкл��чены');
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запрос��ть разрешение на уведомления. Откройте сайт напрямую и попробуйте сн��ва.');
+            openInfoModal('Не удалось запрос��ть разрешение на уведомления. Откройте сайт напрямую и попробуйт�� сн��ва.');
         }
         updateNotifyToggle();
     });
