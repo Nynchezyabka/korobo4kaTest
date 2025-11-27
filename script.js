@@ -31,7 +31,7 @@ async function loadTasks() {
 
     // sanitize stored texts
     tasks = tasks.map(t => ({ ...t, text: sanitizeStoredText(t.text) }));
-    // sanitize categories: force invalid/missing to 0 (Категория не определена)
+    // sanitize categories: force invalid/missing to 0 (Кате��ория не определена)
     const valid = new Set([0,1,2,3,4,5]);
     tasks = tasks.map(t => {
         const n = parseInt(t.category);
@@ -1145,7 +1145,7 @@ function showTimer(task) {
         timerContent.style.color = '#333';
     }
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включё��
+    // по ум��лчанию пр����� н��вом т��ймере звук включё��
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
@@ -1242,8 +1242,8 @@ window.addEventListener('resize', checkSubcategoryMarquee);
 // Функция для скрытия таймер���
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
-    stopTimer(); // Останавливем таймр при закр���ти
+    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    stopTimer(); // Останавливаем таймер при закрытии
     releaseWakeLock();
 }
 
@@ -1273,7 +1273,7 @@ function showNotification(message) {
     }
 }
 
-// Сздан�� браузерного уведомления
+// Сздан�� браузерного уведо��ления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1427,7 +1427,7 @@ function setupAddCategorySelector() {
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
             <button class="add-category-option" data-category="0">Категория не опре��елена</button>
-            <button class="add-category-option" data-category="1">Обязательные</button>
+            <button class="add-category-option" data-category="1">Обязательны��</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
             <button class="add-category-option" data-category="3">Просты�� радости</button>
@@ -1768,7 +1768,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм����
+// Функция для аузы тай������
 function pauseTimer() {
     if (!timerRunning) return;
 
