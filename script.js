@@ -1132,7 +1132,7 @@ function showTimer(task) {
         if (task.subcategory && task.subcategory.trim()) {
             const subcategoryBadge = document.createElement('div');
             subcategoryBadge.className = 'timer-subcategory-badge';
-            subcategoryBadge.textContent = task.subcategory;
+            subcategoryBadge.textContent = getSubcategoryLabel(task.category, task.subcategory);
             subcategoryBadge.style.backgroundColor = lightenHex(getCategoryColor(task.category), 0.7);
             subcategoryBadge.style.color = '#333';
             timerCategoryInfo.appendChild(subcategoryBadge);
@@ -2676,7 +2676,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Уведомления вкл��чены');
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
