@@ -279,7 +279,7 @@ function getCategoryName(category) {
         2: "Безопасность",
         3: "Простые радости",
         4: "Эго-ра��ости",
-        5: "Доступность простых радостей"
+        5: "Доступн��сть простых радостей"
     };
     return categories[Number(category)] ?? "Категория не ���пр��делена";
 }
@@ -436,7 +436,7 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отме��ить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"От��е��ить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
@@ -594,17 +594,14 @@ function displayTasks() {
 
             // Check for text overflow and apply marquee animation
             setTimeout(() => {
-                const isMobile = window.matchMedia('(max-width: 480px)').matches;
-                if (isMobile) {
-                    grid.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
-                        const container = heading.closest('.subcategory-title-left');
-                        if (container && heading.scrollWidth > container.offsetWidth) {
-                            heading.classList.add('marquee');
-                        } else {
-                            heading.classList.remove('marquee');
-                        }
-                    });
-                }
+                grid.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
+                    const container = heading.closest('.subcategory-title-left');
+                    if (container && heading.scrollWidth > container.offsetWidth) {
+                        heading.classList.add('marquee');
+                    } else {
+                        heading.classList.remove('marquee');
+                    }
+                });
             }, 0);
         }
 
@@ -934,7 +931,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переклю��ние ��кти��ности подкатегоии по им��ни для ука��анной к��тегрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -1039,7 +1036,7 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат фа��ла');
+                    openInfoModal('Ошибка: неправильный ��ормат фа��ла');
                     return;
                 }
             }
@@ -2351,7 +2348,7 @@ function renderMoveCategoryOptions() {
     moveCategoryOptions.innerHTML = '';
     const cats = [0, 1, 2, 5, 3, 4];
     const labels = {
-        0: 'Категория не определена',
+        0: 'Категори�� не определена',
         1: 'Обязательные',
         2: 'Система безопасности',
         3: 'Простые радости',
