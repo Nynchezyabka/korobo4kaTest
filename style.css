@@ -1406,7 +1406,7 @@ textarea {
 /* Редактор текста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
-/* Цв��тизация вбранной кат��гории при доба��лении задачи */
+/* Цв��тизация вбранной кат��гории при доба���лении задачи */
 .add-category-badge[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-badge[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-badge[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -1622,7 +1622,7 @@ textarea {
 }
 #modalTaskText { width: 100%; min-height: 120px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
 .modal-category-options { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
-.modal-category-options .modal-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); cursor: pointer; font-weight: 700; color: #333; min-width: 0; max-width: 100%; white-space: nowrap; text-align: center; font-size: 0.95rem; box-shadow: none; }
+.modal-category-options .modal-category-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); cursor: pointer; font-weight: 700; color: #333; min-width: 0; max-width: 100%; white-space: nowrap; text-align: center; font-size: 1.1rem; box-shadow: none; }
 .modal-category-options .modal-category-btn:hover { transform: translateY(-1px); }
 .modal-category-options .modal-category-btn.selected { box-shadow: none; outline: 2px solid rgba(0,0,0,0.08); }
 
