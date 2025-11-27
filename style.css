@@ -849,6 +849,10 @@ textarea {
         font-size: 2.1rem;
     }
 
+    .section-action-btn .action-text {
+        font-size: 0.9rem;
+    }
+
     .task {
         position: relative;
         align-items: start;
