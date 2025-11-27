@@ -528,7 +528,7 @@ textarea {
     margin-bottom: 0;
 }
 
-/* Цвета для опций категорий */
+/* Ц��ета для опций категорий */
 .category-option[data-category="0"] {
     background-color: #f5f5f5;
     border-left: 2px solid #9E9E9E;
@@ -1185,7 +1185,7 @@ textarea {
     border-radius: 8px;
 }
 
-/* Показыв��ем подзаго����овки на всех экран����х */
+/* Показыв��ем подзаго����овки на всех экран�����х */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
@@ -1474,22 +1474,6 @@ textarea {
 
 /* Mobile compact subcategory title */
 @media (max-width: 480px) {
-}
-
-/* Subcategory title styling */
-.category-title.subcategory-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0;
-    margin: 0;
-    background: transparent;
-}
-
-.subcategory-title-left {
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }
 
 /* ���нопки на секциях главного экрана */
