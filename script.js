@@ -420,7 +420,7 @@ function displayTasks() {
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
             // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
-            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-��а-яЁё])/g, '$1$2');
+            raw = raw.replace(/([A-Za-zА-Я��-яЁё])\s*[\r\n]+\s*([A-Za-zА-��а-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
             // collapse multiple spaces
@@ -572,7 +572,7 @@ function displayTasks() {
                 leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
 
-                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массового скрытия/показа зад��ч подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -1228,17 +1228,14 @@ function updateTimerControlsForViewport() {
 }
 
 function checkSubcategoryMarquee() {
-    const isMobile = window.matchMedia('(max-width: 480px)').matches;
-    if (isMobile) {
-        document.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
-            const container = heading.closest('.subcategory-title-left');
-            if (container && heading.scrollWidth > container.offsetWidth) {
-                heading.classList.add('marquee');
-            } else {
-                heading.classList.remove('marquee');
-            }
-        });
-    }
+    document.querySelectorAll('.subcategory-title-left .category-heading').forEach(heading => {
+        const container = heading.closest('.subcategory-title-left');
+        if (container && heading.scrollWidth > container.offsetWidth) {
+            heading.classList.add('marquee');
+        } else {
+            heading.classList.remove('marquee');
+        }
+    });
 }
 
 window.addEventListener('resize', updateTimerControlsForViewport);
@@ -1480,7 +1477,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже суще��твующих задач выбранн��й кате��ории
+    // 0) взять подкатегории из уже суще��твующих задач выб��анн��й кате��ории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1820,7 +1817,7 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сбро��а тайме��а
+// Ф��нкц�� для сбро��а тайме��а
 function resetTimer() {
     // отменяе тольк локальный таймр, серверый не тргаем, чт��бы пауза/сброс ��ы�� явным
     stopTimer();
