@@ -1474,58 +1474,6 @@ textarea {
 
 /* Mobile compact subcategory title */
 @media (max-width: 480px) {
-    .category-title.subcategory-title {
-        flex-wrap: nowrap;
-        gap: 0;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 32px;
-    }
-
-    .subcategory-title-left {
-        flex-wrap: nowrap;
-        gap: 2px;
-        min-width: 0;
-        flex-shrink: 1;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        height: 32px;
-    }
-
-    .subcategory-title-left .category-heading {
-        font-family: 'Caveat', cursive;
-        white-space: nowrap;
-        min-width: 0;
-        flex-shrink: 1;
-        display: inline-block;
-    }
-
-    .subcategory-title-left .category-heading.marquee {
-        animation: marquee-scroll 3s linear infinite;
-        padding-right: 20px;
-    }
-
-    .subcategory-title-left .subcategory-toggle-all {
-        flex-shrink: 0;
-        padding: 4px;
-        font-size: 0.9rem;
-        margin-left: 4px;
-    }
-
-    .subcategory-title-left .subcategory-menu-btn {
-        flex-shrink: 0;
-        padding: 4px;
-        margin-right: 4px;
-        font-size: 0.9rem;
-        min-width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 }
 
 /* Subcategory title styling */
