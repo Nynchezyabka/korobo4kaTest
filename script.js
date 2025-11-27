@@ -146,7 +146,7 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
 // Переме��ные состояния
 let currentTask = null;
 let timerInterval = null;
-let timerTime = 15 * 60; // 15 мину в секундах
+let timerTime = 15 * 60; // 15 ��ину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
@@ -343,7 +343,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категории\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в кат��гории\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -577,7 +577,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задач�� подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -1150,7 +1150,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сброс состояния таймера перед новым запуском
+    // Полный сброс с��стояния таймера перед новым запуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1247,7 +1247,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления ��ображения та��мера
+// Функция ��ля обновления ��ображения та��мера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1429,7 +1429,7 @@ function setupAddCategorySelector() {
             <button class="add-category-option" data-category="0">Категория не опре��елена</button>
             <button class="add-category-option" data-category="1">Обязательны��</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
-            <button class="add-category-option" data-category="5">Доступность простых радостей</button>
+            <button class="add-category-option" data-category="5">До��тупность простых радостей</button>
             <button class="add-category-option" data-category="3">Просты�� радости</button>
             <button class="add-category-option" data-category="4">Эго-��адости</button>
         `;
@@ -1485,7 +1485,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
             if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
          });
 
-    // 1) добав��ть сохранённые пользователем по��категории
+    // 1) добав��ть сохранённые по��ьзователем по��категории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
@@ -1603,7 +1603,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран н�� засыпа���� во врея тайме��а
+// П��ддержка Wake Lock API, чтобы экран н�� засыпа���� в�� врея тайме��а
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1829,7 +1829,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обраотчки об��тий
+// Обраот��ки об��тий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -2181,7 +2181,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в ��писке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2451,7 +2451,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в спис��е выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
