@@ -1038,7 +1038,7 @@ textarea {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 
-    /* Кноки действий вырав��иваем п етке (3 колонки) */
+    /* Кноки действий вырав��иваем �� етке (3 колонки) */
     .controls {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1305,7 +1305,7 @@ textarea {
     .tasks.sticker-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Группы задч по категории с фоновым боком */
+/* Группы задч по кате��ории с фоновым боком */
 .category-group {
     border-radius: 10px;
     padding: 8px;
@@ -1413,6 +1413,59 @@ textarea {
 /* Кн��пка акти��аии/д��активации всей ��атегории в зголовке группы */
 .category-title .subcategory-toggle-all { margin-left: 6px; }
 
+/* Subcategory title styles with marquee support for all viewports */
+.category-title.subcategory-title {
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+}
+
+.subcategory-title-left {
+    flex-wrap: nowrap;
+    gap: 2px;
+    min-width: 0;
+    flex-shrink: 1;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 32px;
+}
+
+.subcategory-title-left .category-heading {
+    font-family: 'Caveat', cursive;
+    white-space: nowrap;
+    min-width: 0;
+    flex-shrink: 1;
+    display: inline-block;
+}
+
+.subcategory-title-left .category-heading.marquee {
+    animation: marquee-scroll 3s linear infinite;
+    padding-right: 20px;
+}
+
+.subcategory-title-left .subcategory-toggle-all {
+    flex-shrink: 0;
+    padding: 4px;
+    font-size: 0.9rem;
+    margin-left: 4px;
+}
+
+.subcategory-title-left .subcategory-menu-btn {
+    flex-shrink: 0;
+    padding: 4px;
+    margin-right: 4px;
+    font-size: 0.9rem;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @keyframes marquee-scroll {
     0% { transform: translateX(100%); }
@@ -2110,7 +2163,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Поза���оловки ка��егорий для мобильной группировки */
+/* Поза���оловки ка��егорий для мобильной группиров��и */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
