@@ -986,7 +986,7 @@ function toggleSubcategoryActiveByName(category, subName) {
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
-        message: 'Удалить эту задачу?',
+        message: 'У��алить эту задачу?',
         confirmText: 'Удалить',
         cancelText: 'Отмена',
         requireCheck: false,
@@ -1061,7 +1061,7 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
-// Функция ����я подсчёта активных задач по категориям
+// Функция ������я подсчёта активных задач по категориям
 function countActiveTasks(categories) {
     const categoryArray = categories.split(',').map(Number);
     return tasks.filter(task =>
@@ -1150,7 +1150,7 @@ function showTimer(task) {
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос состояния таймера перед но��ым ��апуском
+    // Полный сброс состояния таймера перед новым запуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1780,7 +1780,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функция для ��становки таймра
 function stopTimer() {
     timerRunning = false;
     setQuickAddVisible(false);
@@ -2482,7 +2482,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         saveTasks();
         closePasteModal();
         displayTasks();
-        showToastNotification('Задачи добав��ены', `Добавлено ${lines.length} задач`);
+        showToastNotification('Задачи добав����ены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
         // Close the paste modal first so confirm modal is fully visible and clickable
