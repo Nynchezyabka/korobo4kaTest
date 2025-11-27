@@ -143,16 +143,16 @@ function addLinesAsTasks(lines, category = 0, selectedSub = null) {
     return added;
 }
 
-// Переме��ные состояния
+// Переменнные состояния
 let currentTask = null;
 let timerInterval = null;
 let timerTime = 15 * 60; // 15 мину в секундах
 let timerRunning = false;
 let selectedTaskId = null;
 let activeDropdown = null;
-let wakeLock = null; // экр��ны н�� засыают во время таймера (��де поддержвается)
+let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
 
-// Новые переменные для точного айме����а
+// Новые переменные для точного таймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -168,7 +168,7 @@ let quickAddContext = { active: false, resumeTimer: false };
 // Элемнты DOM
 const sections = document.querySelectorAll('.section');
 
-// Глоб��льный об��аботчик дл���� за��рыт��я откытого выпадащег�� меню категорий
+// Глобальный обработчик для закрытия откытого выпадающего меню категорий
 document.addEventListener('click', function(e) {
     if (activeDropdown && !e.target.closest('.category-selector') && !e.target.closest('.add-category-selector')) {
         activeDropdown.classList.remove('show');
@@ -271,17 +271,17 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция ��ля п��лучения названия категории по номеру
+// Функция для получения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
-        1: "Обязат��льные",
+        1: "Обязательные",
         2: "Безопасность",
         3: "Простые радости",
-        4: "Эго-ра��ости",
+        4: "Эго-радости",
         5: "Доступность простых радостей"
     };
-    return categories[Number(category)] ?? "Категория не ���пр��делена";
+    return categories[Number(category)] ?? "Категория не определена";
 }
 
 // Escape HTML to avoid injection when inserting task text into innerHTML
@@ -303,12 +303,12 @@ function fixOrphans(text) {
     return res;
 }
 
-// Функ����ия от��бражения сех заач
+// Функция отображения всех заач
 function displayTasks() {
     tasksContainer.innerHTML = '';
 
     const titleEl = taskList.querySelector('h2');
-    if (titleEl) titleEl.textContent = showArchive ? 'Выполненны����' : 'Все задачи';
+    if (titleEl) titleEl.textContent = showArchive ? 'Выполненные' : 'Все задачи';
 
     // hide import/export controls when viewing archive
     const importExportEl = document.querySelector('.import-export');
@@ -332,7 +332,7 @@ function displayTasks() {
     const collapsedRaw = localStorage.getItem('collapsedCategories');
     const collapsedCategories = new Set(collapsedRaw ? JSON.parse(collapsedRaw) : []);
 
-    // Загр��жаем сохранённе польз����ат��льске подкатегор��и
+    // Загружаем сохранённе пользовательске подкатегории
     const customSubsRaw = localStorage.getItem('customSubcategories');
     const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
 
@@ -356,7 +356,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру��пы
+        // Клик по названию категории — сворачивание/разворачивание группы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -374,7 +374,7 @@ function displayTasks() {
             });
         }
 
-        // Клик по ик��нк папки — в��рачивание/разворачи��ание
+        // Клик по иконке папки — сврачивание/разворачивание
         const folderIcon = title.querySelector('.folder-before-title');
         if (folderIcon) {
             folderIcon.style.cursor = 'pointer';
@@ -411,7 +411,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в ��ругую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -419,8 +419,8 @@ function displayTasks() {
             // remove soft hyphens and common HTML soft-hyphen entities
             raw = raw.replace(/&shy;|&#173;|\u00AD/g, '');
             raw = raw.replace(/\u200B/g, '');
-            // merge letters split by explicit newlines (e.g. 'Разобра��\nь' -> 'Ра��обрать')
-            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-��а-яЁё])/g, '$1$2');
+            // merge letters split by explicit newlines (e.g. 'Разобрат\nь' -> 'Разобрать')
+            raw = raw.replace(/([A-Za-zА-Яа-яЁё])\s*[\r\n]+\s*([A-Za-zА-Яа-яЁё])/g, '$1$2');
             // Replace remaining explicit newlines with spaces (users may paste multi-line text)
             raw = raw.replace(/[\r\n]+/g, ' ');
             // collapse multiple spaces
@@ -436,12 +436,12 @@ function displayTasks() {
                                 ${categoryDisplay}
                                 <i class=\"fas fa-caret-down\"></i>
                             </div>
-                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отме��ить выполненной\">
+                            <button class=\"task-control-btn complete-task-btn\" data-id=\"${task.id}\" title=\"Отметить выполненной\">
                                 <i class=\"fas fa-check\"></i>
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без кате��ории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -499,7 +499,7 @@ function displayTasks() {
                 if (folderIcon) folderIcon.remove();
             }
 
-            // Перес��авяем элменты дл�� моби��ьного: папка се��ху спраа, ниже сразу глаз и ур��а
+            // Переставяем элменты для мобильного: папка сверху справа, ниже сразу глаз и урна
             const contentWrap = taskElement.querySelector('.task-content');
             if (contentWrap) {
                 const txt = contentWrap.querySelector('.task-text');
@@ -528,7 +528,7 @@ function displayTasks() {
             }
         });
 
-        // Д��намическая группировка задач по по��категориям для т��к��щей кате���ории (у��итываем сохра��ё��ные подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -608,7 +608,7 @@ function displayTasks() {
             }, 0);
         }
 
-        // Обработчик сворачивания перен��сён на иконку папки выше
+        // Обработчик сворачивания переннсён на иконку папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -619,7 +619,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ноы�� элементов
+    // Добавяем обработчики событий для новых элементов
     document.querySelectorAll('.move-task-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -852,7 +852,7 @@ function displayTasks() {
     updateSectionTaskCounts();
 }
 
-// Функция для изеения кат��гории задачи
+// Функция для изеения категории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -883,7 +883,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для переключ��ния активности задачи
+// Функция для переключения активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -896,7 +896,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Пееклю��ение активности всех задач внтри категории
+// Переключение активности всех задач внутри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -934,7 +934,7 @@ function taskMatchesSubcategory(task, category, normalizedName) {
     return candidate === normalizedName;
 }
 
-// Переклю��ние ��кти��ности подкатегоии по им��ни для указанной к��тегрии
+// Переключние активности подкатегоии по имени для указанной категрии
 function toggleSubcategoryActiveByName(category, subName) {
     const normalizedName = normalizeSubcategoryName(category, subName) || (typeof subName === 'string' ? subName.trim() : '');
     if (!normalizedName) return;
@@ -984,7 +984,7 @@ function toggleSubcategoryActiveByName(category, subName) {
     displayTasks();
 }
 
-// Фу��кця для удаления задачи
+// Функця для удаления задачи
 function deleteTask(taskId) {
     openConfirmModal({
         title: 'Удаление задачи',
@@ -1001,7 +1001,7 @@ function deleteTask(taskId) {
     });
 }
 
-// Ф����кия для экспорта задач в фйл
+// Функция для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -1039,12 +1039,12 @@ function importTasks(file) {
             // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
-                    openInfoModal('Ошибка: неправильный формат фа��ла');
+                    openInfoModal('Ошибка: неправильный формат файла');
                     return;
                 }
             }
             
-            // Добавлям за��ачи в бзу данных
+            // Добавлям задачи в базу данных
             tasks = importedTasks;
             saveTasks();
             openInfoModal(`Успешно импортировано ${importedTasks.length} задач`, 'Импорт завершён');
@@ -1063,7 +1063,7 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
-// Функция д��я подсчёта активных задач по категориям
+// Функция для подсчёта активных задач по категориям
 function countActiveTasks(categories) {
     const categoryArray = categories.split(',').map(Number);
     return tasks.filter(task =>
@@ -1091,18 +1091,18 @@ function updateSectionTaskCounts() {
     });
 }
 
-// Функция для выбор�� случайной адачи из категории
+// Функция для выбора случайной задачи из категории
 function getRandomTask(categories) {
-    // Преоразуем строку категорий в масив чи��ел
+    // Преоразуем строку категорий в масив чисел
     const categoryArray = categories.split(',').map(Number);
 
-    // Получаем все активные задачи из указанных катег��рий, исключая выполненные
+    // Получаем все активные задачи из указанных категорий, исключая выполненные
     const filteredTasks = tasks.filter(task =>
         categoryArray.includes(task.category) && task.active && !task.completed
     );
 
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных задач в этой категор��и!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
 
@@ -1147,12 +1147,12 @@ function showTimer(task) {
         timerContent.style.color = '#333';
     }
 
-    // по ум��лчанию пр��� н��вом т��ймере звук включё��
+    // по умолчанию при новом таймере звук включён
     timerSoundEnabled = true;
     updateSoundToggleUI();
     updateTimerControlsForViewport();
 
-    // Полный сбос состояния таймера перед но��ым ��апуском
+    // Полный сбос состояния таймера перед новым запуском
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
         timerEndTimeoutId = null;
@@ -1176,7 +1176,7 @@ function showTimer(task) {
         }
     } catch (_) {}
 
-    // Скрывае�� опции завершения и показыва��м управлени аймером
+    // Скрываем опции завершения и показываем управление аймером
     timerCompleteOptions.style.display = 'none';
     document.querySelector('.timer-controls').style.display = 'flex';
 }
@@ -1244,24 +1244,24 @@ function checkSubcategoryMarquee() {
 window.addEventListener('resize', updateTimerControlsForViewport);
 window.addEventListener('resize', checkSubcategoryMarquee);
 
-// Функция для скрытия таймер���
+// Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Восста��авливам прокрутку
-    stopTimer(); // Останавливем таймр при закр���ти
+    document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+    stopTimer(); // Останавливем таймр при закрытии
     releaseWakeLock();
 }
 
-// Функция для обновления ��ображения та��мера
+// Функция для обновления изображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Функция для показа уведо��ления
+// Функция для показа уведомления
 function showNotification(message) {
-    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Вр��мя вышло! З��дача завершена.");
+    const body = message || (currentTask ? `Задача: ${currentTask.text}` : "Время вышло! Задача завершена.");
     showToastNotification("🎁 КОРОБОЧКА", body, 5000);
     playWindChime();
 
@@ -1278,7 +1278,7 @@ function showNotification(message) {
     }
 }
 
-// Сздан�� браузерного уведомления
+// Создание браузерного уведомления
 function createBrowserNotification(message) {
     const title = "🎁 КОРОБОЧКА";
     const options = {
@@ -1311,7 +1311,7 @@ function createBrowserNotification(message) {
     }
 }
 
-// Добавляем запрос разрешения при загрузке стр��ницы
+// Добавляем запрос разрешения при загрузке страницы
 function populateTaskSubcategoryDropdown(task) {
     const dd = document.getElementById(`dropdown-${task.id}`);
     if (!dd) return;
@@ -1389,7 +1389,7 @@ function populateTaskSubcategoryDropdown(task) {
         inline.className = 'inline-add-form';
         const input = document.createElement('input');
         input.type = 'text';
-        input.placeholder = (task.category === 2) ? 'новая сфера ���езопасности' : (task.category === 5) ? 'Новая сложная р��дос��ь' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольстви��' : 'Новая подкатегория');
+        input.placeholder = (task.category === 2) ? 'новая сфера безопасности' : (task.category === 5) ? 'Новая сложная радость' : ((task.category === 3 || task.category === 4) ? 'новая сфера удовольствия' : 'Новая подкатегория');
         const save = document.createElement('button');
         save.type = 'button';
         save.className = 'inline-save-btn';
@@ -1431,12 +1431,12 @@ function setupAddCategorySelector() {
         const dropdown = document.createElement('div');
         dropdown.className = 'add-category-dropdown';
         dropdown.innerHTML = `
-            <button class="add-category-option" data-category="0">Категория не опре��елена</button>
+            <button class="add-category-option" data-category="0">Категория не определена</button>
             <button class="add-category-option" data-category="1">Обязательные</button>
             <button class="add-category-option" data-category="2">Безопасность</button>
             <button class="add-category-option" data-category="5">Доступность простых радостей</button>
-            <button class="add-category-option" data-category="3">Просты�� радости</button>
-            <button class="add-category-option" data-category="4">Эго-��адости</button>
+            <button class="add-category-option" data-category="3">Простые радости</button>
+            <button class="add-category-option" data-category="4">Эго-радости</button>
         `;
         dropdown.querySelectorAll('.add-category-option').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1480,7 +1480,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     const list = [];
     const present = new Set();
 
-    // 0) взять подкатегории из уже суще��твующих задач выбранн��й кате��ории
+    // 0) взять подкатегории из уже существующих задач выбранной категории
     const catNum = Number(cat);
     tasks.filter(t => t.category === catNum && typeof t.subcategory === 'string' && t.subcategory.trim())
          .forEach(t => {
@@ -1490,7 +1490,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
             if (!present.has(tag)) { present.add(tag); list.push({ key, label: key }); }
          });
 
-    // 1) добав��ть сохранённые пользователем по��категории
+    // 1) добавить сохранённые пользователем подкатегории
     const saved = Array.isArray(customSubs[cat]) ? customSubs[cat] : [];
     saved.forEach(s => {
         const norm = normalizeSubcategoryName(cat, s);
@@ -1504,7 +1504,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 
     controls.innerHTML = '';
 
-    // Сущест��ующие ��одкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
+    // Существующие подкатегории в виде чипсов; состояние "без подкатегории" — по умолчанию (ничего не выбрано)
     list.forEach(item => {
         const b = document.createElement('button');
         b.className = 'add-subcategory-btn modal-subcat-chip cat-' + String(cat);
@@ -1519,20 +1519,20 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    // 3) Кнопка «+» для добавления н��вой подкатегории
+    // 3) Кнопка «+» для добавления новой подкатегории
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
-    plusBtn.setAttribute('aria-label', 'Добави��ь подкатегорию');
+    plusBtn.setAttribute('aria-label', 'Добавить подкатегорию');
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
-    // 4) Скрытый инлайн-редактор, показывает��я по клику на «+»
+    // 4) Скрытый инлайн-редактор, показывается по клику на «+»
     const editor = document.createElement('div');
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = (String(cat) === '2') ? 'новая сфера безоп��сности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
+    inp.placeholder = (String(cat) === '2') ? 'новая сфера безопасности' : (String(cat) === '5' ? 'Новая сложная радость' : ((String(cat) === '3' || String(cat) === '4') ? 'новая сфера удовольствия' : 'Новая подкатегория'));
     const actions = document.createElement('div');
     actions.className = 'subcat-editor-actions';
     const cancelBtn = document.createElement('button');
@@ -1606,9 +1606,9 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕА��ИЗАЦИЯ ТАЙЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
 
-// П��ддержка Wake Lock API, чтобы экран н�� засыпа���� во врея тайме��а
+// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1618,7 +1618,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибк��
+        // игнорируем ошибку
     }
 }
 
@@ -1637,7 +1637,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Звуковой сигнал по завершен��и тайм����ра в стиле Wind Chime
+// Звуковой сигнал по завершении таймера в стиле Wind Chime
 function playWindChime() {
     if (!timerSoundEnabled) return;
 
@@ -1683,7 +1683,7 @@ function playWindChime() {
     }
 }
 
-// Функция для запуска ��аймера
+// Функция для запуска таймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
@@ -1695,14 +1695,14 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // ��ри перво зауске
+    // при перво зауске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
     }
     timerStartTime = Date.now();
 
-    // Сообщае серверу о распсании пуш-уведомлен��я
+    // Сообщае серверу о распсании пуш-уведомления
     try {
         ensurePushSubscribed().then(() => {
             fetch('/api/timer/schedule', {
@@ -1713,12 +1713,12 @@ function startTimer() {
         }).catch(() => {});
     } catch (_) {}
 
-    // ланируем ��окальный fallback
+    // Планируем локальный fallback
     if (timerEndTimeoutId) clearTimeout(timerEndTimeoutId);
     const delay = Math.max(0, timerEndAt - Date.now());
     timerEndTimeoutId = setTimeout(() => {
         if (!timerRunning) return;
-        const msg = currentTask ? `За��ача: ${currentTask.text}` : undefined;
+        const msg = currentTask ? `Задача: ${currentTask.text}` : undefined;
         stopTimer();
         showNotification(msg);
         timerCompleteOptions.style.display = 'flex';
@@ -1726,7 +1726,7 @@ function startTimer() {
         if (controls) controls.style.display = 'none';
     }, delay);
     
-    // Использем Web Worker для тчно��о отсета времен�� в ��оне
+    // Использем Web Worker для точного отсчета времени в фоне
     if (typeof(Worker) !== "undefined") {
         if (timerWorker === null) {
             timerWorker = new Worker(URL.createObjectURL(new Blob([`
@@ -1773,7 +1773,7 @@ function startTimer() {
     }
 }
 
-// Функция для аузы тайм����
+// Функция для паузы таймера
 function pauseTimer() {
     if (!timerRunning) return;
 
@@ -1820,9 +1820,9 @@ async function cancelServerSchedule() {
     } catch (_) {}
 }
 
-// Ф��нкци для сбро��а тайме��а
+// Функции для сброра таймера
 function resetTimer() {
-    // отменяе тольк локальный таймр, серверый не тргаем, чт��бы пауза/сброс ��ы�� явным
+    // отменяем только локальный таймер, серверый не трогаем, чтобы пауза/сброс были явными
     stopTimer();
     if (timerEndTimeoutId) {
         clearTimeout(timerEndTimeoutId);
@@ -1834,7 +1834,7 @@ function resetTimer() {
     updateTimerDisplay();
 }
 
-// Обраотчки об��тий
+// Обраотчки событий
 sections.forEach(section => {
     section.addEventListener('click', () => {
         const categories = section.dataset.category;
@@ -2034,7 +2034,7 @@ function openConfirmModal({ title='Подтверждение', message='', conf
     };
     const onClose = () => { cleanup(); };
     const onOk = () => { cleanup(); if (typeof onConfirm === 'function') onConfirm(); };
-    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отм��на';
+    okBtn.textContent = confirmText || 'Ок'; cancelBtn.textContent = cancelText || 'Отмена';
     cancelBtn.style.display = hideCancel ? 'none' : 'inline-flex';
     okBtn.addEventListener('click', onOk);
     cancelBtn.addEventListener('click', onClose);
@@ -2047,7 +2047,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определ��на',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радос��и',5: 'Доступность простых радо��тей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2116,7 +2116,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Зада��и останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2186,7 +2186,7 @@ function openAddModal(initialCategory, options = {}) {
             quickAddContext.resumeTimer = !!options.reopenTimer;
         }
     }
-    if (showArchive) { openInfoModal('��е��ьзя добавлять задачи в ��писке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!addTaskModal) return;
     addTaskModal.setAttribute('aria-hidden', 'false');
     addTaskModal.style.display = 'flex';
@@ -2273,7 +2273,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
     if (lines.length > 1) {
         openConfirmModal({
             title: 'Подтверждение',
-            message: `Д��бавить ${lines.length} задач?`,
+            message: `Добавить ${lines.length} задач?`,
             confirmText: 'Добавить',
             cancelText: 'Отмена',
             requireCheck: false,
@@ -2441,7 +2441,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбра��ываем значение input
+        e.target.value = ''; // Сбрасываем значение input
     }
 });
 
@@ -2487,7 +2487,7 @@ if (pasteTasksAddBtn) pasteTasksAddBtn.addEventListener('click', () => {
         saveTasks();
         closePasteModal();
         displayTasks();
-        showToastNotification('Задачи добав��ены', `Добавлено ${lines.length} задач`);
+        showToastNotification('Задачи добавлены', `Добавлено ${lines.length} задач`);
     };
     if (lines.length > 1) {
         // Close the paste modal first so confirm modal is fully visible and clickable
@@ -2613,7 +2613,7 @@ window.addEventListener('focus', () => {
     }
 });
 
-// Функ��ия для показа toast-уведомле��ия
+// Функция для показа toast-уведомления
 function showToastNotification(title, message, duration = 5000) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
@@ -2676,14 +2676,14 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления вкл��чены');
+                createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления забл��кированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
-            openInfoModal('Не удалось запрос��ть разрешение на уведомления. Откройте сайт напрямую и попробуйт�� сн��ва.');
+            openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
         }
         updateNotifyToggle();
     });
