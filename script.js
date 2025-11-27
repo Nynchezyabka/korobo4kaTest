@@ -152,7 +152,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экр��ны н�� засыают во время таймера (��де поддержвается)
 
-// Новые переменные для точного айме����а
+// Новые переменные для точно��о айме����а
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -356,7 +356,7 @@ function displayTasks() {
         group.appendChild(grid);
         tasksContainer.appendChild(group);
 
-        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру��пы
+        // Клик по на��ванию категории — сво��ачивание/развора��ивание гру����пы
         const headSpan = title.querySelector('.category-heading');
         if (headSpan) {
             headSpan.style.cursor = 'pointer';
@@ -1030,7 +1030,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать массив задач');
+                openInfoModal('Ошибка: файл должен содерж��ть массив задач');
                 return;
             }
             
@@ -1690,7 +1690,7 @@ function startTimer() {
         timerEndAt = Date.now() + (timerPausedTime * 1000);
         timerPausedTime = 0;
     }
-    // ��ри перво зауске
+    // При первом запуске
     if (!timerEndAt) {
         const total = Math.max(1, parseInt(timerMinutes.value)) * 60;
         timerEndAt = Date.now() + total * 1000;
