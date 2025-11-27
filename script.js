@@ -446,7 +446,7 @@ function displayTasks() {
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
-                            <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
+                            <button class=\"category-option\" data-category=\"5\">Доступ��ость простых радостей</button>
                             <button class=\"category-option\" data-category=\"3\">Простые радости</button>
                             <button class=\"category-option\" data-category=\"4\">Эго-радости</button>
                         </div>
@@ -881,7 +881,7 @@ function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     displayTasks();
 }
 
-// ункция для переключ��ния активности задачи
+// ункция для переклю����ния активности задачи
 function toggleTaskActive(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -1021,7 +1021,7 @@ function exportTasks() {
     linkElement.click();
 }
 
-// Функция дл импорта задач из файла
+// Функция дл импор��а задач из файла
 function importTasks(file) {
     const reader = new FileReader();
     
@@ -1094,7 +1094,7 @@ function getRandomTask(categories) {
     // Преоразуем строку категорий в масив чи��ел
     const categoryArray = categories.split(',').map(Number);
 
-    // Получаем все активные задачи из указанных катег��рий, исключая выполненные
+    // Получаем все активные задачи из указанных категорий, исключая выполненные
     const filteredTasks = tasks.filter(task =>
         categoryArray.includes(task.category) && task.active && !task.completed
     );
@@ -1678,7 +1678,7 @@ function playWindChime() {
     }
 }
 
-// Функция для запуска ��аймера
+// Функция для запуска ����аймера
 function startTimer() {
     if (timerRunning) return;
     requestWakeLock();
