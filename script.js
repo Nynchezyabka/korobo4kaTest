@@ -847,9 +847,10 @@ function displayTasks() {
     });
 
     updateSectionTaskCounts();
+    checkSubcategoryMarquee();
 }
 
-// Функция для изеения кат��гории задачи
+// Функция для изеения кат���гории задачи
 function changeTaskCategory(taskId, newCategory, newSubcategory = null) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
@@ -2599,7 +2600,7 @@ window.addEventListener('focus', () => {
         updateTimerDisplay();
         if (timerTime <= 0) {
             stopTimer();
-            showNotification(currentTask ? `Задача: ${currentTask.text}` : undefined);
+            showNotification(currentTask ? `Зада��а: ${currentTask.text}` : undefined);
             timerCompleteOptions.style.display = 'flex';
             const controls = document.querySelector('.timer-controls');
             if (controls) controls.style.display = 'none';
