@@ -1388,7 +1388,7 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыт�� з��дач при свёрнутой группе */
+/* Скрыт�� з����дач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
@@ -1593,7 +1593,7 @@ textarea {
     #addTaskModal .modal-actions { flex-direction: column-reverse; width: 100%; padding-top: 8px; }
     #addTaskModal .modal-actions button { width: 100%; }
     .modal-category-options { gap: 6px; }
-    .modal-category-options .modal-category-btn { padding: 6px 10px; font-size: 0.95rem; }
+    .modal-category-options .modal-category-btn { padding: 6px 10px; font-size: 1.0rem; }
 }
 
 /* Subcategory actions modal — nicer layout and spacing */
