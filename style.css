@@ -757,6 +757,8 @@ textarea {
 
 .timer-close-action {
     margin-top: 18px;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-primary-actions {
