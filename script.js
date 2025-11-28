@@ -3,7 +3,12 @@ let tasks = [];
 
 // Security timer background images
 let securityTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800'
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F8fe5c4b357744a83b7924df22040786d?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F4a053805f91a4361ad3e1ca4ffca7236?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F0598b1a294fa47f9bdf2932a02068298?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F6ad698fe7b8e490bb5d42b84b19cfa5d?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
 ];
 
 function getRandomSecurityBackground() {
@@ -539,7 +544,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей к��тегории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -588,7 +593,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задач�� подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -1642,7 +1647,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибку
+        // игнорируем ошибк��
     }
 }
 
@@ -2702,7 +2707,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в нас��ройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
