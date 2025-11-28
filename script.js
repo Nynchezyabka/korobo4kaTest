@@ -11,10 +11,25 @@ let securityTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
 ];
 
+// Mandatory tasks timer background images
+let mandatoryTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F7f8a48d1c6234d89ab4e8927d6734ffe?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fd4c8e0152dfc452f932abdd5d5ab9973?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F57b2decb66554e90ae676dd184b63698?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F811c6987a28a4142b564445cae2e9f9d?format=webp&width=800'
+];
+
 function getRandomSecurityBackground() {
     if (securityTimerBackgrounds.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * securityTimerBackgrounds.length);
     return securityTimerBackgrounds[randomIndex];
+}
+
+function getRandomMandatoryBackground() {
+    if (mandatoryTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * mandatoryTimerBackgrounds.length);
+    return mandatoryTimerBackgrounds[randomIndex];
 }
 
 // Функции для работы с localStorage
@@ -168,7 +183,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
 
-// Новые переменные для точного таймера
+// Новые переменные для т��чного таймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -544,7 +559,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей к��тегории (учитываем сохранённные подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -593,7 +608,7 @@ function displayTasks() {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
                     eyeBtn.type = 'button';
-                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задач�� подкатегории');
+                    eyeBtn.setAttribute('aria-label','Скрыть/показать все задачи подкатегории');
                     const hasActive = tasks.some(t => t.category === cat && (normalizeSubcategoryName(cat, t.subcategory) === normKey) && t.active && !t.completed);
                     eyeBtn.innerHTML = `<i class=\"fas ${hasActive ? 'fa-eye-slash' : 'fa-eye'}\"></i>`;
                     eyeBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSubcategoryActiveByName(cat, normKey); });
@@ -912,7 +927,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Переключение активности всех задач внутри категории
+// Переключение активности всех задач вн��три категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1052,7 +1067,7 @@ function importTasks(file) {
                 return;
             }
             
-            // Проверяем структуру задач
+            // Пров��ряем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
                     openInfoModal('Ошибка: неправильный формат файла');
@@ -1281,7 +1296,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления изображения таймера
+// Функция для обновления изоб��ажения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1635,7 +1650,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работа��щий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
@@ -1647,7 +1662,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибк��
+        // игнорируем ошибку
     }
 }
 
@@ -1814,7 +1829,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймра
+// Функция для остановки таймр��
 function stopTimer() {
     timerRunning = false;
     setQuickAddVisible(false);
@@ -2456,7 +2471,7 @@ if (moveTaskOk) {
             displayTasks();
             closeMoveTaskModal();
             const categoryName = getCategoryName(targetCategory);
-            showToastNotification('Задача перенесена', `Задача перемещена в ${categoryName}`);
+            showToastNotification('Задача перенесена', `Задача перемещена �� ${categoryName}`);
         }
     });
 }
@@ -2485,7 +2500,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в спис��е выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
@@ -2707,7 +2722,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в нас��ройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
