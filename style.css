@@ -606,13 +606,21 @@ textarea {
     position: relative;
     z-index: 2;
 }
-.timer-content h2 { font-family: 'Caveat', cursive; color: #5d4037; font-size: 2rem; }
+.timer-content h2 {
+    font-family: 'Caveat', cursive;
+    color: #5d4037;
+    font-size: 2rem;
+    position: relative;
+    z-index: 2;
+}
 
 .timer-display {
     font-size: 2.5rem;
     margin: 15px 0;
     font-weight: bold;
     color: #5d4037;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-task {
@@ -622,6 +630,8 @@ textarea {
     border-radius: 6px;
     word-break: break-word;
     line-height: 1.3;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-category-info {
@@ -631,6 +641,8 @@ textarea {
     margin-bottom: 15px;
     padding: 8px 0;
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-category-badge {
@@ -1967,7 +1979,7 @@ textarea {
 
 /* Медиа-зпрос для дес���топов */
 @media (min-width: 1024px) {
-    /* Выронять элеме��ты задачи в сетку: ����кст сле��а, справ�� сверх кат��гория, снизу под ней кнопки */
+    /* Выронять элеме��ты задачи в сетку: ����кст сле��а, справа сверх кат��гория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
