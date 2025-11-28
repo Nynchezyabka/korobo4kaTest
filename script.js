@@ -20,6 +20,11 @@ let mandatoryTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F811c6987a28a4142b564445cae2e9f9d?format=webp&width=800'
 ];
 
+// Simple joys timer background images
+let joysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa620ba9d18c14ab4843eb138d79b8f4b?format=webp&width=800'
+];
+
 function getRandomSecurityBackground() {
     if (securityTimerBackgrounds.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * securityTimerBackgrounds.length);
@@ -30,6 +35,12 @@ function getRandomMandatoryBackground() {
     if (mandatoryTimerBackgrounds.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * mandatoryTimerBackgrounds.length);
     return mandatoryTimerBackgrounds[randomIndex];
+}
+
+function getRandomJoysBackground() {
+    if (joysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * joysTimerBackgrounds.length);
+    return joysTimerBackgrounds[randomIndex];
 }
 
 // Функции для работы с localStorage
@@ -603,7 +614,7 @@ function displayTasks() {
                 leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
 
-                // Добавл��ем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -650,7 +661,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработч��ки событий для новых элементов
+    // Добавяем обработчики событий для новых элементов
     document.querySelectorAll('.move-task-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1102,7 +1113,7 @@ function countActiveTasks(categories) {
     ).length;
 }
 
-// Функция для обновления кол��чества активных задач на стикерах
+// Функция для обновления количества активных задач на стикерах
 function updateSectionTaskCounts() {
     document.querySelectorAll('.section').forEach(section => {
         const categories = section.dataset.category;
@@ -1292,7 +1303,7 @@ function checkSubcategoryMarquee() {
 window.addEventListener('resize', updateTimerControlsForViewport);
 window.addEventListener('resize', checkSubcategoryMarquee);
 
-// Функция для скры��ия таймера
+// Функция для скрытия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
@@ -1575,7 +1586,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
-    // 4) Скрытый инлайн-редактор, показывается по клику на «+»
+    // 4) Скрытый инлайн-редактор, показывается п�� клику на «+»
     const editor = document.createElement('div');
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
@@ -2032,7 +2043,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Досту��ность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2446,7 +2457,7 @@ if (moveTaskOk) {
 
         const selectedCatBtn = moveCategoryOptions ? moveCategoryOptions.querySelector('.modal-category-btn.selected') : null;
         if (!selectedCatBtn) {
-            openInfoModal('П��жалуйста, выберите категорию');
+            openInfoModal('Пожалуйста, выберите категорию');
             return;
         }
 
