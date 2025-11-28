@@ -422,7 +422,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую кат��горию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -619,7 +619,7 @@ function displayTasks() {
             }, 0);
         }
 
-        // Обработчик сворачивания переннсён на иконку папки выше
+        // Обработчик сворачивания переннсён на икон��у папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -630,7 +630,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для ��овых элементов
+    // Добавяем обработчики событий для новых элементов
     document.querySelectorAll('.move-task-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1012,12 +1012,12 @@ function deleteTask(taskId) {
     });
 }
 
-// Функция для экспо��та задач в файл
+// Функ��ия для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-    // ��енерируем имя файла с датой и временем
+    // Генерируем имя файла с датой и временем
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -1082,7 +1082,7 @@ function countActiveTasks(categories) {
     ).length;
 }
 
-// Функция для обновления количества активн��х задач на стикерах
+// Функция для обновления количества активных задач на стикерах
 function updateSectionTaskCounts() {
     document.querySelectorAll('.section').forEach(section => {
         const categories = section.dataset.category;
@@ -1113,7 +1113,7 @@ function getRandomTask(categories) {
     );
 
     if (filteredTasks.length === 0) {
-        openInfoModal('Н��т активных задач в этой категории!');
+        openInfoModal('Нет активных задач в этой категории!');
         return null;
     }
 
@@ -1156,6 +1156,19 @@ function showTimer(task) {
         const bgColor = getCategoryGroupBg(task.category);
         timerContent.style.backgroundColor = bgColor;
         timerContent.style.color = '#333';
+
+        // Apply random background image for security category (2, 5)
+        if (task.category === 2 || task.category === 5) {
+            const backgroundImage = getRandomSecurityBackground();
+            if (backgroundImage) {
+                timerContent.style.backgroundImage = `url('${backgroundImage}')`;
+                timerContent.style.backgroundSize = 'cover';
+                timerContent.style.backgroundPosition = 'center';
+                timerContent.style.backgroundAttachment = 'fixed';
+            }
+        } else {
+            timerContent.style.backgroundImage = 'none';
+        }
     }
 
     // по умолчанию при новом таймере звук включён
@@ -1613,7 +1626,7 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибрация не поддерживается на этом устройстве");
+        console.log("Ви��рация не поддерживается на этом устройстве");
     }
 });
 
@@ -1995,7 +2008,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2058,7 +2071,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
@@ -2127,7 +2140,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить п��дкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
