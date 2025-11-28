@@ -49,6 +49,12 @@ function getRandomJoysBackground() {
     return joysTimerBackgrounds[randomIndex];
 }
 
+function getRandomAccessibilityJoysBackground() {
+    if (accessibilityJoysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * accessibilityJoysTimerBackgrounds.length);
+    return accessibilityJoysTimerBackgrounds[randomIndex];
+}
+
 // Функции для работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
@@ -489,7 +495,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Б��з категории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -576,7 +582,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
+        // Динамическая группировка зада�� по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1586,7 +1592,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    // 3) Кнопка «+» для добавления новой подкатегории
+    // 3) Кнопка «+» для добавления нов��й подкатегории
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
@@ -2743,7 +2749,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включены');
+                createBrowserNotification('Уведомления включ��ны');
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
