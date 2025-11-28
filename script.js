@@ -62,6 +62,12 @@ function getRandomAccessibilityJoysBackground() {
     return accessibilityJoysTimerBackgrounds[randomIndex];
 }
 
+function getRandomEgoJoysBackground() {
+    if (egoJoysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * egoJoysTimerBackgrounds.length);
+    return egoJoysTimerBackgrounds[randomIndex];
+}
+
 // Функции для работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
@@ -332,7 +338,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категор��и по номеру
+// Функция для получения названия категории по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -1124,7 +1130,7 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
-// Функция для подсчёта ак��ивных задач по категориям
+// Функция для подсчёта активных задач по категориям
 function countActiveTasks(categories) {
     const categoryArray = categories.split(',').map(Number);
     return tasks.filter(task =>
@@ -2362,7 +2368,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             compact: true,
             onConfirm: () => {
                 const added = addLinesAsTasks(lines, category, selectedSub);
-                if (added > 0) showToastNotification('Задачи добавл��ны', `Добавлено ${added} задач`);
+                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} задач`);
             }
         });
         return;
@@ -2523,7 +2529,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // Сбрасываем значение input
+        e.target.value = ''; // ��брасываем значение input
     }
 });
 
@@ -2760,9 +2766,9 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не вкл��чены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Увед��мления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
