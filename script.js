@@ -183,7 +183,7 @@ let selectedTaskId = null;
 let activeDropdown = null;
 let wakeLock = null; // экраны не засыают во время таймера (где поддержвается)
 
-// Новые переменные для т��чного таймера
+// Новые переменные для точного таймера
 let timerStartTime = 0;
 let timerPausedTime = 0;
 let timerAnimationFrame = null;
@@ -603,7 +603,7 @@ function displayTasks() {
                 leftWrap.appendChild(headingSpan);
                 titleEl.appendChild(leftWrap);
 
-                // Добавляем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
+                // Добавл��ем кнопку-глаз для массового скрытия/показа задач подкатегории только в категории "Обязательные"
                 if (Number(cat) === 1 && !showArchive) {
                     const eyeBtn = document.createElement('button');
                     eyeBtn.className = 'task-control-btn subcategory-toggle-all';
@@ -650,7 +650,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для новых элементов
+    // Добавяем обработч��ки событий для новых элементов
     document.querySelectorAll('.move-task-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -927,7 +927,7 @@ function toggleTaskActive(taskId) {
     displayTasks();
 }
 
-// Переключение активности всех задач вн��три категории
+// Переключение активности всех задач внутри категории
 function toggleCategoryActive(category) {
     const hasActive = tasks.some(t => t.category === category && t.active);
     const newActive = !hasActive;
@@ -1067,7 +1067,7 @@ function importTasks(file) {
                 return;
             }
             
-            // Пров��ряем структуру задач
+            // Проверяем структуру задач
             for (const task of importedTasks) {
                 if (!task.text || typeof task.category === 'undefined') {
                     openInfoModal('Ошибка: неправильный формат файла');
@@ -1102,7 +1102,7 @@ function countActiveTasks(categories) {
     ).length;
 }
 
-// Функция для обновления количества активных задач на стикерах
+// Функция для обновления кол��чества активных задач на стикерах
 function updateSectionTaskCounts() {
     document.querySelectorAll('.section').forEach(section => {
         const categories = section.dataset.category;
@@ -1177,15 +1177,19 @@ function showTimer(task) {
         timerContent.style.backgroundColor = bgColor;
         timerContent.style.color = '#333';
 
-        // Apply random background image for security category (2, 5)
-        if (task.category === 2 || task.category === 5) {
-            const backgroundImage = getRandomSecurityBackground();
-            if (backgroundImage) {
-                timerContent.style.backgroundImage = `url('${backgroundImage}')`;
-                timerContent.style.backgroundSize = 'cover';
-                timerContent.style.backgroundPosition = 'center';
-                timerContent.style.backgroundAttachment = 'fixed';
-            }
+        // Apply random background image based on category
+        let backgroundImage = null;
+        if (task.category === 1) {
+            backgroundImage = getRandomMandatoryBackground();
+        } else if (task.category === 2 || task.category === 5) {
+            backgroundImage = getRandomSecurityBackground();
+        }
+
+        if (backgroundImage) {
+            timerContent.style.backgroundImage = `url('${backgroundImage}')`;
+            timerContent.style.backgroundSize = 'cover';
+            timerContent.style.backgroundPosition = 'center';
+            timerContent.style.backgroundAttachment = 'fixed';
         } else {
             timerContent.style.backgroundImage = 'none';
         }
@@ -1288,7 +1292,7 @@ function checkSubcategoryMarquee() {
 window.addEventListener('resize', updateTimerControlsForViewport);
 window.addEventListener('resize', checkSubcategoryMarquee);
 
-// Функция для скрытия таймера
+// Функция для скры��ия таймера
 function hideTimer() {
     timerScreen.style.display = 'none';
     document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
@@ -1296,7 +1300,7 @@ function hideTimer() {
     releaseWakeLock();
 }
 
-// Функция для обновления изоб��ажения таймера
+// Функция для обновления изображения таймера
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
@@ -1650,7 +1654,7 @@ window.addEventListener('load', async () => {
     }
 });
 
-// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работа��щий в фоне)
+// НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
 
 // Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
@@ -1829,7 +1833,7 @@ function pauseTimer() {
     timerPausedTime = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
 }
 
-// Функция для остановки таймр��
+// Функция для остановки таймра
 function stopTimer() {
     timerRunning = false;
     setQuickAddVisible(false);
@@ -2028,7 +2032,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Досту��ность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2442,7 +2446,7 @@ if (moveTaskOk) {
 
         const selectedCatBtn = moveCategoryOptions ? moveCategoryOptions.querySelector('.modal-category-btn.selected') : null;
         if (!selectedCatBtn) {
-            openInfoModal('Пожалуйста, выберите категорию');
+            openInfoModal('П��жалуйста, выберите категорию');
             return;
         }
 
@@ -2471,7 +2475,7 @@ if (moveTaskOk) {
             displayTasks();
             closeMoveTaskModal();
             const categoryName = getCategoryName(targetCategory);
-            showToastNotification('Задача перенесена', `Задача перемещена �� ${categoryName}`);
+            showToastNotification('Задача перенесена', `Задача перемещена в ${categoryName}`);
         }
     });
 }
@@ -2500,7 +2504,7 @@ const pasteTasksAddBtn = pasteTasksModal ? pasteTasksModal.querySelector('#paste
 const pasteTasksCancelBtnModal = pasteTasksModal ? pasteTasksModal.querySelector('#pasteTasksCancelBtn') : null;
 
 function openPasteModal() {
-    if (showArchive) { openInfoModal('Нельзя добавлять задачи в спис��е выполненных'); return; }
+    if (showArchive) { openInfoModal('Нельзя добавлять задачи в списке выполненных'); return; }
     if (!pasteTasksModal) return;
     pasteTasksModal.setAttribute('aria-hidden','false');
     pasteTasksModal.style.display = 'flex';
