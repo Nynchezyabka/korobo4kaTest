@@ -759,7 +759,13 @@ textarea {
     margin-top: 18px;
 }
 
-.timer-primary-actions { display: flex; justify-content: center; margin-bottom: 10px; }
+.timer-primary-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+}
 
 .timer-btn {
     padding: 10px 15px;
@@ -983,7 +989,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами ик��нок справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1972,7 +1978,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/��л��ншет: тот же компактный макет с двумя ряда��и иконок справа */
+    /* Десктоп/��л��ншет: тот же компактный макет с двумя рядами иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
