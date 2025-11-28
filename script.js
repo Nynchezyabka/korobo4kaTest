@@ -595,7 +595,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
+        // Динамическая группиро��ка задач по под��атегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1177,7 +1177,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отобажения таймера
+// Функ��ия для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1219,10 +1219,12 @@ function showTimer(task) {
             backgroundImage = getRandomMandatoryBackground();
         } else if (task.category === 2) {
             backgroundImage = getRandomSecurityBackground();
+        } else if (task.category === 3) {
+            backgroundImage = getRandomJoysBackground();
+        } else if (task.category === 4) {
+            backgroundImage = getRandomEgoJoysBackground();
         } else if (task.category === 5) {
             backgroundImage = getRandomAccessibilityJoysBackground();
-        } else if (task.category === 3 || task.category === 4) {
-            backgroundImage = getRandomJoysBackground();
         }
 
         if (backgroundImage) {
@@ -1696,7 +1698,7 @@ window.addEventListener('load', async () => {
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
+// Подде��жка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -2529,7 +2531,7 @@ exportTasksBtn.addEventListener('click', exportTasks);
 importFile.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         importTasks(e.target.files[0]);
-        e.target.value = ''; // ��брасываем значение input
+        e.target.value = ''; // Сбрасываем значение input
     }
 });
 
@@ -2766,7 +2768,7 @@ if (notifyToggleBtn) {
                 await ensurePushSubscribed();
                 createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
-                openInfoModal('Уведомления не вкл��чены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
+                openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
                 openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
             }
