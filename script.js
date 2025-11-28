@@ -11,6 +11,12 @@ let securityTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
 ];
 
+// Accessibility of simple joys timer background images
+let accessibilityJoysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa72b300065e1411b9676589bedbbcb64?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F5769f1433ebe4f659dd8ffebdacb1f27?format=webp&width=800'
+];
+
 // Mandatory tasks timer background images
 let mandatoryTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
@@ -385,7 +391,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задач�� в категории\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категории\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -485,7 +491,7 @@ function displayTasks() {
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
-                                <button class=\"category-option\" data-category=\"1\">��бязательные</button>
+                                <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
@@ -1679,7 +1685,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорир��ем ошибку
+        // игнорируем ошибку
     }
 }
 
