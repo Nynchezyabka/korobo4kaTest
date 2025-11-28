@@ -495,7 +495,7 @@ function displayTasks() {
                             </button>
                         </div>
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
-                            <button class=\"category-option\" data-category=\"0\">Б��з категории</button>
+                            <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
                                 <button class=\"category-option\" data-category=\"1\">Обязательные</button>
                             </div>
@@ -582,7 +582,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка зада�� по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
+        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -1086,7 +1086,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: файл должен содержать массив задач');
+                openInfoModal('Ошибка: ф��йл должен содержать массив задач');
                 return;
             }
             
@@ -1204,8 +1204,10 @@ function showTimer(task) {
         let backgroundImage = null;
         if (task.category === 1) {
             backgroundImage = getRandomMandatoryBackground();
-        } else if (task.category === 2 || task.category === 5) {
+        } else if (task.category === 2) {
             backgroundImage = getRandomSecurityBackground();
+        } else if (task.category === 5) {
+            backgroundImage = getRandomAccessibilityJoysBackground();
         } else if (task.category === 3 || task.category === 4) {
             backgroundImage = getRandomJoysBackground();
         }
@@ -1592,7 +1594,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
         controls.appendChild(b);
     });
 
-    // 3) Кнопка «+» для добавления нов��й подкатегории
+    // 3) Кнопка «+» для добавления новой подкатегории
     const plusBtn = document.createElement('button');
     plusBtn.type = 'button';
     plusBtn.className = 'add-subcategory-btn add-subcategory-plus cat-' + String(cat);
@@ -2189,7 +2191,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: '��далить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2353,7 +2355,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             compact: true,
             onConfirm: () => {
                 const added = addLinesAsTasks(lines, category, selectedSub);
-                if (added > 0) showToastNotification('Задачи добавлены', `Добавлено ${added} задач`);
+                if (added > 0) showToastNotification('Задачи доб��влены', `Добавлено ${added} задач`);
             }
         });
         return;
@@ -2749,7 +2751,7 @@ if (notifyToggleBtn) {
             const result = await Notification.requestPermission();
             if (result === 'granted') {
                 await ensurePushSubscribed();
-                createBrowserNotification('Уведомления включ��ны');
+                createBrowserNotification('Уведомления включены');
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
