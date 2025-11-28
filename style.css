@@ -333,7 +333,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбц��в на широих экр��нах */
+/* Компактный пре��ью-список в несколько столбц��в на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -682,6 +682,8 @@ textarea {
     padding-top: 12px;
     border-top: 1px dashed rgba(93, 64, 55, 0.25);
     text-align: center;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-new-task-label {
@@ -981,7 +983,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/планшет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/планшет: тот же компактный макет с двумя рядами ик��нок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -1970,7 +1972,7 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Десктоп/��л��ншет: тот же компактный макет с двумя рядами иконок справа */
+    /* Десктоп/��л��ншет: тот же компактный макет с двумя ряда��и иконок справа */
     .group-grid .task-content { display: contents; }
     .group-grid .task-content::after { content: ""; display: block; clear: both; }
     .group-grid .category-selector { float: none; width: auto; margin: 0 0 6px 0; grid-column: 2 / 3; grid-row: 1 / 2; }
