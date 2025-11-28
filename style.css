@@ -581,8 +581,30 @@ textarea {
     max-width: 350px;
     padding: 20px 15px;
     background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     border-radius: 8px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.timer-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.88);
+    border-radius: 8px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.timer-content > * {
+    position: relative;
+    z-index: 2;
 }
 .timer-content h2 { font-family: 'Caveat', cursive; color: #5d4037; font-size: 2rem; }
 
@@ -1945,7 +1967,7 @@ textarea {
 
 /* Медиа-зпрос для дес���топов */
 @media (min-width: 1024px) {
-    /* Выронять элеме��ты задачи в сетку: ����кст сле��а, справа сверх кат��гория, снизу под ней кнопки */
+    /* Выронять элеме��ты задачи в сетку: ����кст сле��а, справ�� сверх кат��гория, снизу под ней кнопки */
     .task {
         display: grid;
         grid-template-columns: 1fr auto;
