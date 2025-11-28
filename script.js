@@ -17,6 +17,13 @@ let accessibilityJoysTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F5769f1433ebe4f659dd8ffebdacb1f27?format=webp&width=800'
 ];
 
+// Ego joys timer background images
+let egoJoysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ff4503e73a4ac42fb9e7661f9d403a9c1?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F9375f34992c34e42aab8a9874cb78bc7?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ffd217fff456c463bba005662bbbb9a98?format=webp&width=800'
+];
+
 // Mandatory tasks timer background images
 let mandatoryTimerBackgrounds = [
     'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
@@ -325,7 +332,7 @@ function updateNotifyToggle() {
     }
 }
 
-// Функция для получения названия категории по номеру
+// Функция для получения названия категор��и по номеру
 function getCategoryName(category) {
     const categories = {
         0: "Категория не определена",
@@ -1086,7 +1093,7 @@ function importTasks(file) {
             const importedTasks = JSON.parse(e.target.result);
             
             if (!Array.isArray(importedTasks)) {
-                openInfoModal('Ошибка: ф��йл должен содержать массив задач');
+                openInfoModal('Ошибка: файл должен содержать массив задач');
                 return;
             }
             
@@ -1117,7 +1124,7 @@ function setQuickAddVisible(visible) {
     timerQuickAdd.style.display = visible ? 'flex' : 'none';
 }
 
-// Функция для подсчёта активных задач по категориям
+// Функция для подсчёта ак��ивных задач по категориям
 function countActiveTasks(categories) {
     const categoryArray = categories.split(',').map(Number);
     return tasks.filter(task =>
@@ -2191,7 +2198,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: '��далить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
@@ -2355,7 +2362,7 @@ modalAddTaskBtn && modalAddTaskBtn.addEventListener('click', () => {
             compact: true,
             onConfirm: () => {
                 const added = addLinesAsTasks(lines, category, selectedSub);
-                if (added > 0) showToastNotification('Задачи доб��влены', `Добавлено ${added} задач`);
+                if (added > 0) showToastNotification('Задачи добавл��ны', `Добавлено ${added} задач`);
             }
         });
         return;
@@ -2755,7 +2762,7 @@ if (notifyToggleBtn) {
             } else if (result === 'default') {
                 openInfoModal('Уведомления не включены. Подтвердите запрос браузера или разрешите их в настройках сайта.');
             } else if (result === 'denied') {
-                openInfoModal('Уведомления заблокированы в настройках браузера. Разрешите их вручную.');
+                openInfoModal('Увед��мления заблокированы в настройках браузера. Разрешите их вручную.');
             }
         } catch (e) {
             openInfoModal('Не удалось запросить разрешение на уведомления. Откройте сайт напрямую и попробуйте снова.');
