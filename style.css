@@ -803,7 +803,7 @@ textarea {
 #soundToggleBtn.is-muted { opacity: 0.45; }
 
 #completeTaskBtn {
-    background-color: #388E3C; /* темно-з��леный */
+    background-color: #388E3C; /* темн��-з��леный */
 }
 #completeNowBtn { background-color: #388E3C; }
 #completeNowBtn:active { background-color: #2E7D32; }
@@ -881,6 +881,8 @@ textarea {
     flex-direction: column;
     gap: 10px;
     margin-top: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 /* Мобильная весия — ��омпактное отображение */
