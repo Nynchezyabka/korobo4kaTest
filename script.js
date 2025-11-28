@@ -385,7 +385,7 @@ function displayTasks() {
 
         const title = document.createElement('div');
         title.className = 'category-title';
-        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задачу в категории\"><i class=\"fas fa-plus\"></i></button>`;
+        title.innerHTML = `<div class=\"category-title-left\"><i class=\"fas fa-folder folder-before-title\"></i><span class=\"category-heading\">${getCategoryName(cat)}</span></div><button type=\"button\" class=\"category-add-btn\" data-cat=\"${cat}\" title=\"Добавить задач�� в категории\"><i class=\"fas fa-plus\"></i></button>`;
 
         const grid = document.createElement('div');
         grid.className = 'group-grid';
@@ -485,7 +485,7 @@ function displayTasks() {
                         <div class=\"category-dropdown\" id=\"dropdown-${task.id}\">
                             <button class=\"category-option\" data-category=\"0\">Без категории</button>
                             <div class=\"category-option-group\">
-                                <button class=\"category-option\" data-category=\"1\">Обязательные</button>
+                                <button class=\"category-option\" data-category=\"1\">��бязательные</button>
                             </div>
                             <button class=\"category-option\" data-category=\"2\">Безопасность</button>
                             <button class=\"category-option\" data-category=\"5\">Доступность простых радостей</button>
@@ -1194,6 +1194,8 @@ function showTimer(task) {
             backgroundImage = getRandomMandatoryBackground();
         } else if (task.category === 2 || task.category === 5) {
             backgroundImage = getRandomSecurityBackground();
+        } else if (task.category === 3 || task.category === 4) {
+            backgroundImage = getRandomJoysBackground();
         }
 
         if (backgroundImage) {
@@ -1586,7 +1588,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
     plusBtn.innerHTML = '<i class="fas fa-plus"></i>';
     controls.appendChild(plusBtn);
 
-    // 4) Скрытый инлайн-редактор, показывается п�� клику на «+»
+    // 4) Скрытый инлайн-редактор, показывается по клику на «+»
     const editor = document.createElement('div');
     editor.className = 'subcat-inline-editor';
     const inp = document.createElement('input');
@@ -1677,7 +1679,7 @@ async function requestWakeLock() {
             });
         }
     } catch (_) {
-        // игнорируем ошибку
+        // игнорир��ем ошибку
     }
 }
 
