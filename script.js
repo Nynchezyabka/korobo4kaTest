@@ -1,6 +1,17 @@
 // Переменная для хранения задач
 let tasks = [];
 
+// Security timer background images
+let securityTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800'
+];
+
+function getRandomSecurityBackground() {
+    if (securityTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * securityTimerBackgrounds.length);
+    return securityTimerBackgrounds[randomIndex];
+}
+
 // Функции для работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
@@ -619,7 +630,7 @@ function displayTasks() {
         }
     });
 
-    // Добавяем обработчики событий для новых элементов
+    // Добавяем обработчики событий для ��овых элементов
     document.querySelectorAll('.move-task-icon').forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1001,12 +1012,12 @@ function deleteTask(taskId) {
     });
 }
 
-// Функция для экспорта задач в файл
+// Функция для экспо��та задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-    // Генерируем имя файла с датой и временем
+    // ��енерируем имя файла с датой и временем
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -1071,7 +1082,7 @@ function countActiveTasks(categories) {
     ).length;
 }
 
-// Функция для обновления количества активных задач на стикерах
+// Функция для обновления количества активн��х задач на стикерах
 function updateSectionTaskCounts() {
     document.querySelectorAll('.section').forEach(section => {
         const categories = section.dataset.category;
@@ -1102,7 +1113,7 @@ function getRandomTask(categories) {
     );
 
     if (filteredTasks.length === 0) {
-        openInfoModal('Нет активных задач в этой категории!');
+        openInfoModal('Н��т активных задач в этой категории!');
         return null;
     }
 
@@ -2116,7 +2127,7 @@ function openSubcategoryActions(category, subName) {
             if (action === 'rename') {
                 const r = document.getElementById('renameSubcatModal'); if (!r) return; const input = document.getElementById('renameSubcatInput'); input.value = ctx.subName || ''; r.setAttribute('aria-hidden','false'); r.style.display='flex';
             } else if (action === 'delete') {
-                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить подкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
+                openConfirmModal({ title: 'Удалить подкатегорию', message: `Удалить п��дкатегорию "${ctx.subName}"? Задачи останутся без подкатегории.`, confirmText: 'Удалить', cancelText: 'Отмена', requireCheck: false, onConfirm: () => {
                     const raw = localStorage.getItem('customSubcategories'); const cs = raw?JSON.parse(raw):{}; const arr = Array.isArray(cs[ctx.category])?cs[ctx.category]:[]; cs[ctx.category] = arr.filter(n=>n!==ctx.subName); localStorage.setItem('customSubcategories', JSON.stringify(cs)); tasks = tasks.map(t=> (t.category===ctx.category && t.subcategory===ctx.subName) ? ({...t, subcategory: undefined}) : t);
 saveTasks();
 displayTasks();
