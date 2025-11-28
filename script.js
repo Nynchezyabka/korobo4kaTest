@@ -1,6 +1,73 @@
 // Переменная для хранения задач
 let tasks = [];
 
+// Security timer background images
+let securityTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F8fe5c4b357744a83b7924df22040786d?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F4a053805f91a4361ad3e1ca4ffca7236?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F0598b1a294fa47f9bdf2932a02068298?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F6ad698fe7b8e490bb5d42b84b19cfa5d?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
+];
+
+// Accessibility of simple joys timer background images
+let accessibilityJoysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa72b300065e1411b9676589bedbbcb64?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F5769f1433ebe4f659dd8ffebdacb1f27?format=webp&width=800'
+];
+
+// Ego joys timer background images
+let egoJoysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ff4503e73a4ac42fb9e7661f9d403a9c1?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F9375f34992c34e42aab8a9874cb78bc7?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ffd217fff456c463bba005662bbbb9a98?format=webp&width=800'
+];
+
+// Mandatory tasks timer background images
+let mandatoryTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F7f8a48d1c6234d89ab4e8927d6734ffe?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fd4c8e0152dfc452f932abdd5d5ab9973?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F57b2decb66554e90ae676dd184b63698?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F811c6987a28a4142b564445cae2e9f9d?format=webp&width=800'
+];
+
+// Simple joys timer background images
+let joysTimerBackgrounds = [
+    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa620ba9d18c14ab4843eb138d79b8f4b?format=webp&width=800'
+];
+
+function getRandomSecurityBackground() {
+    if (securityTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * securityTimerBackgrounds.length);
+    return securityTimerBackgrounds[randomIndex];
+}
+
+function getRandomMandatoryBackground() {
+    if (mandatoryTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * mandatoryTimerBackgrounds.length);
+    return mandatoryTimerBackgrounds[randomIndex];
+}
+
+function getRandomJoysBackground() {
+    if (joysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * joysTimerBackgrounds.length);
+    return joysTimerBackgrounds[randomIndex];
+}
+
+function getRandomAccessibilityJoysBackground() {
+    if (accessibilityJoysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * accessibilityJoysTimerBackgrounds.length);
+    return accessibilityJoysTimerBackgrounds[randomIndex];
+}
+
+function getRandomEgoJoysBackground() {
+    if (egoJoysTimerBackgrounds.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * egoJoysTimerBackgrounds.length);
+    return egoJoysTimerBackgrounds[randomIndex];
+}
+
 // Функции для работы с localStorage
 function sanitizeStoredText(s) {
     if (typeof s !== 'string') return s;
@@ -411,7 +478,7 @@ function displayTasks() {
                 taskElement.dataset.subcategory = task.subcategory;
             }
 
-            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую категорию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
+            const categoryDisplay = `<i class=\"fas fa-folder move-task-icon\" data-id=\"${task.id}\" style=\"cursor:pointer;\" title=\"Перенести в другую кат��горию\"></i><span class=\"category-name\">${getCategoryName(task.category)}</span>`;
 
             // sanitize raw text: remove replacement chars, soft-hyphens and zero-width spaces
             let raw = String(task.text || '');
@@ -528,7 +595,7 @@ function displayTasks() {
             }
         });
 
-        // Динамическая группировка задач по подкатегориям для текущей категории (учитываем сохранённные подкатегории)
+        // Динамическая группиро��ка задач по под��атегориям для текущей категории (учитываем сохранённные подкатегории)
         {
             const nodes = [...grid.querySelectorAll(':scope > .task')];
             const noneTasks = nodes.filter(el => !el.dataset.subcategory);
@@ -608,7 +675,7 @@ function displayTasks() {
             }, 0);
         }
 
-        // Обработчик сворачивания переннсён на иконку папки выше
+        // Обработчик сворачивания переннсён на икон��у папки выше
     });
 
     // After rendering groups, remove subcategory toggles inside security groups (category 2 and 5)
@@ -1001,7 +1068,7 @@ function deleteTask(taskId) {
     });
 }
 
-// Функция для экспорта задач в файл
+// Функ��ия для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
@@ -1110,7 +1177,7 @@ function getRandomTask(categories) {
     return filteredTasks[randomIndex];
 }
 
-// Функция для отобажения таймера
+// Функ��ия для отобажения таймера
 function showTimer(task) {
     currentTask = task;
     timerTaskText.textContent = task.text;
@@ -1145,6 +1212,29 @@ function showTimer(task) {
         const bgColor = getCategoryGroupBg(task.category);
         timerContent.style.backgroundColor = bgColor;
         timerContent.style.color = '#333';
+
+        // Apply random background image based on category
+        let backgroundImage = null;
+        if (task.category === 1) {
+            backgroundImage = getRandomMandatoryBackground();
+        } else if (task.category === 2) {
+            backgroundImage = getRandomSecurityBackground();
+        } else if (task.category === 3) {
+            backgroundImage = getRandomJoysBackground();
+        } else if (task.category === 4) {
+            backgroundImage = getRandomEgoJoysBackground();
+        } else if (task.category === 5) {
+            backgroundImage = getRandomAccessibilityJoysBackground();
+        }
+
+        if (backgroundImage) {
+            timerContent.style.backgroundImage = `url('${backgroundImage}')`;
+            timerContent.style.backgroundSize = 'cover';
+            timerContent.style.backgroundPosition = 'center';
+            timerContent.style.backgroundAttachment = 'fixed';
+        } else {
+            timerContent.style.backgroundImage = 'none';
+        }
     }
 
     // по умолчанию при новом таймере звук включён
@@ -1602,13 +1692,13 @@ window.addEventListener('load', async () => {
     }
 
     if (!navigator.vibrate) {
-        console.log("Вибрация не поддерживается на этом устройстве");
+        console.log("Ви��рация не поддерживается на этом устройстве");
     }
 });
 
 // НОВАЯ РЕАЛИЗАЦИЯ ТАЙМЕРА (точный и работающий в фоне)
 
-// Поддержка Wake Lock API, чтобы экран не засыпал во врея таймера
+// Подде��жка Wake Lock API, чтобы экран не засыпал во врея таймера
 async function requestWakeLock() {
     try {
         if ('wakeLock' in navigator && !wakeLock) {
@@ -1984,7 +2074,7 @@ function renderModalCategoryOptions(allowedCategories = null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безо��асности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowedCategories && !allowedCategories.map(String).includes(String(c))) return;
         const btn = document.createElement('button');
@@ -2047,7 +2137,7 @@ function renderCategoryButtons(container, allowed=null) {
     if (!container) return;
     container.innerHTML = '';
     const cats = [0,1,2,5,3,4];
-    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радости',4: 'Эго-радости',5: 'Доступность простых радостей'};
+    const labels = {0: 'Категория не определена',1: 'Обязательные',2: 'Система безопасности',3: 'Простые радос��и',4: 'Эго-радости',5: 'Доступность простых радостей'};
     cats.forEach(c => {
         if (allowed && !allowed.map(String).includes(String(c))) return;
         const btn = document.createElement('button'); btn.type='button'; btn.className=`modal-category-btn cat-${c}`; btn.dataset.category=String(c); btn.textContent = labels[c] || String(c);
