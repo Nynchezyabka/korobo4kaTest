@@ -333,7 +333,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбц��в на широих экранах */
+/* Компактный пре��ью-список в несколько столбц��в на широих экр��нах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -668,6 +668,8 @@ textarea {
     flex-direction: column;
     gap: 10px;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 .timer-quick-add {
