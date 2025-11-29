@@ -103,7 +103,7 @@ h1 {
     height: 10px;
     background-color: rgba(0, 0, 0, 0.15);
 }
-/* Цвет полоски секций  соответствии с цветами ка��егорий */
+/* Цвет полоски секций в соответствии с цветами категорий */
 .mandatory::before { background-color: #FFD54F; }
 .security::before { background-color: #64B5F6; }
 .joys::before { background-color: #81C784; }
@@ -261,7 +261,7 @@ textarea, select, input {
     width: 100%;
 }
 
-/* Цветна�� индикация катгории при добавле��ии задачи */
+/* Цветная индикация категории при добавлении задачи */
 #taskCategory {
     border-left-width: 4px;
     border-left-style: solid;
@@ -316,7 +316,7 @@ textarea, select, input {
 .add-category-option:active { transform: scale(0.98); }
 .add-category-option:last-child { margin-bottom: 0; }
 
-/* Цвета для опций категорий (как в списке за��ач) */
+/* Цвета для опций категорий (как в списке задач) */
 .add-category-option[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-option[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-option[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -333,7 +333,7 @@ textarea {
     margin-top: 15px;
 }
 
-/* Компактный пре��ью-список в несколько столбц��в на широих экранах */
+/* Компактный превью-список в несколько столбцов на широих экранах */
 @media (min-width: 768px) {
     .tasks {
         display: grid;
@@ -776,9 +776,9 @@ textarea {
     transition: all 0.3s;
 }
 
-/* ��вы�� цвета для кнопок таймера */
+/* Новые цвета для кнопок таймера */
 #startTimerBtn {
-    background-color: #9CCC65; /* желто-��еле��ый */
+    background-color: #9CCC65; /* желто-зеленый */
 }
 
 #startTimerBtn:active {
@@ -786,7 +786,7 @@ textarea {
 }
 
 #pauseTimerBtn {
-    background-color: #ff9800; /* оранже��ы */
+    background-color: #ff9800; /* оранжевый */
 }
 
 #pauseTimerBtn:active {
@@ -805,7 +805,7 @@ textarea {
 #soundToggleBtn.is-muted { opacity: 0.45; }
 
 #completeTaskBtn {
-    background-color: #388E3C; /* темн��-з��леный */
+    background-color: #388E3C; /* темно-зеленый */
 }
 #completeNowBtn { background-color: #388E3C; }
 #completeNowBtn:active { background-color: #2E7D32; }
@@ -823,7 +823,7 @@ textarea {
 }
 
 #closeTimerBtn {
-    background-color: #9E9E9E; /* ��ерый */
+    background-color: #9E9E9E; /* серый */
 }
 
 #closeTimerBtn:active {
@@ -887,7 +887,7 @@ textarea {
     z-index: 2;
 }
 
-/* Мобильная весия — ��омпактное отображение */
+/* Мобильная весия — компактное отображение */
 @media (max-width: 480px) {
     .section h2 {
         font-size: 1.8rem;
@@ -954,7 +954,7 @@ textarea {
     }
 }
 
-/* Медиа-��апрос ля планшетов и больших телефонов */
+/* Медиа-запрос для планшетов и больших телефонов */
 @media (min-width: 481px) {
     body {
         padding: 15px;
@@ -1207,7 +1207,7 @@ textarea {
     transform: scale(0.9);
 }
 
-/* Адаптивность д��я мобильных устр��йств */
+/* Адаптивность для мобильных устройств */
 @media (max-width: 480px) {
     .toast-notification {
         bottom: 10px;
@@ -1224,7 +1224,7 @@ textarea {
 
 .category-badge .category-name { font-family: 'Caveat', cursive; }
 
-/* Позаголов��и категорий для мобильной группи��овки */
+/* Позаголовки категорий для мобильной группировки */
 .category-title {
     margin: 10px 0 6px;
     color: #5d4037;
@@ -1233,13 +1233,13 @@ textarea {
     border-radius: 8px;
 }
 
-/* Показыв��ем подзаго����овки на всех экран����х */
+/* Показываем подзаголовки на всех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный р���жим "стиеров" для мобильных */
+/* Компактный режим "стикеров" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
@@ -1299,7 +1299,7 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
-/* Сикерная сетка для план��етов и десктопов */
+/* Стикерная сетка для планшетов и десктопов */
 .tasks.sticker-grid {
     display: grid;
     gap: 6px;
@@ -1353,7 +1353,7 @@ textarea {
     .tasks.sticker-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Группы задч по категории с фоновым боком */
+/* Группы задач по категории с фоновым блоком */
 .category-group {
     border-radius: 10px;
     padding: 8px;
@@ -1373,7 +1373,7 @@ textarea {
     cursor: pointer;
 }
 
-/* Сетка стикеров внутр�� группы */
+/* Сетка стикеров внутри группы */
 .group-grid {
     display: grid;
     gap: 6px;
@@ -1401,7 +1401,7 @@ textarea {
     .group-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 
-/* Сетка колонок подкатег��ри�� внутри "Обязательные" */
+/* Сетка колонок подкатегории внутри "Обязательные" */
 .subcategory-columns { display: grid; gap: 6px; grid-auto-flow: dense; }
 @media (max-width: 480px) {
     .subcategory-columns { grid-template-columns: 1fr; gap: 4px; }
@@ -1432,13 +1432,13 @@ textarea {
     .group-grid .task-controls { grid-column: 2 / 3; grid-row: 2 / 3; margin: 0; justify-content: flex-end; }
 }
 
-/* Скрыт�� з��дач при свёрнутой группе */
+/* Скрытие задач при свёрнутой группе */
 .category-group.collapsed .group-grid { display: none; }
 
 /* Цвет и иконка caret на бейдже категории задач */
 .category-badge i { color: #5d4037; }
 
-/* Группиро��к опций в выпадающих списках ��атегорий */
+/* Группировка опций в выпадающих списках категорий */
 .category-option-group { padding-top: 6px; }
 .category-option-group { margin-top: 4px; margin-bottom: 4px; position: relative; }
 .category-option-group > .category-option { width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; padding: 3px 8px; font-size: 0.9rem; line-height: 1.1; min-height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -1450,7 +1450,7 @@ textarea {
 /* Редактор текста задачи */
 .task-edit { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; }
 
-/* Цв��тизация вбранной кат��гории при доба��лении задачи */
+/* Цвет выбранной категории при добавлении задачи */
 .add-category-badge[data-category="0"] { background-color: #f5f5f5; border-left: 2px solid #9E9E9E; }
 .add-category-badge[data-category="1"] { background-color: #fff9c4; border-left: 2px solid #FFD54F; }
 .add-category-badge[data-category="2"] { background-color: #bbdefb; border-left: 2px solid #64B5F6; }
@@ -1555,7 +1555,7 @@ textarea {
 .joys .section-action-btn { background-color: rgba(129,199,132,0.18); }
 .joys .section-action-btn:hover { background-color: rgba(129,199,132,0.28); }
 
-/* Специальный стиль для к��углой кнопки "+" */
+/* Специальный стиль для круглой кнопки "+" */
 .section-action-btn.section-add-btn { padding: 8px; width: 40px; height: 40px; border-radius: 10px; }
 
 .section-add-subcat-btn { padding: 6px 8px; border-radius: 8px; border: none; cursor: pointer; background: rgba(0,0,0,0.06); color: #5d4037; font-weight: 700; min-width: 36px; }
@@ -2171,13 +2171,13 @@ textarea {
     font-size: 1.4rem;
 }
 
-/* Показываем под��аголовки на вех экранах */
+/* Показываем подзаголовки на вех экранах */
 @media (min-width: 481px) {
     .category-title { display: flex; }
 }
 .folder-before-title { color: #5d4037; margin-right: 6px; }
 
-/* Компактный реж��м "стиеров" для мобильных */
+/* Компактный режим "стиеров" для мобильных */
 @media (max-width: 480px) {
     .tasks.mobile-compact {
         display: grid;
