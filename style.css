@@ -581,7 +581,7 @@ textarea {
     max-width: 350px;
     padding: 20px 15px;
     background-color: white;
-    background-size: cover;
+    background-size: auto 100%;
     background-position: center;
     background-attachment: fixed;
     border-radius: 8px;
