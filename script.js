@@ -54,6 +54,50 @@ let joysTimerBackgrounds = ASSET_CONFIG.simple_joys_green.cdnFallback;
 let egoJoysTimerBackgrounds = ASSET_CONFIG.ego_joys_red.cdnFallback;
 let accessibilityJoysTimerBackgrounds = ASSET_CONFIG.accessibility_joys_light_blue.cdnFallback;
 
+// Helper function to load local assets when available
+async function loadLocalAssets() {
+    try {
+        for (const [key, config] of Object.entries(ASSET_CONFIG)) {
+            const localPath = config.local;
+            const response = await fetch(localPath);
+            if (response.ok) {
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const files = Array.from(doc.querySelectorAll('a'))
+                    .map(a => a.getAttribute('href'))
+                    .filter(href => href && /\.(webp|jpg|jpeg|png|gif)$/i.test(href));
+
+                if (files.length > 0) {
+                    const fullPaths = files.map(f => localPath + f);
+                    switch (key) {
+                        case 'mandatory_yellow':
+                            mandatoryTimerBackgrounds = fullPaths;
+                            break;
+                        case 'security_blue':
+                            securityTimerBackgrounds = fullPaths;
+                            break;
+                        case 'simple_joys_green':
+                            joysTimerBackgrounds = fullPaths;
+                            break;
+                        case 'ego_joys_red':
+                            egoJoysTimerBackgrounds = fullPaths;
+                            break;
+                        case 'accessibility_joys_light_blue':
+                            accessibilityJoysTimerBackgrounds = fullPaths;
+                            break;
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Local assets not found, using CDN fallback');
+    }
+}
+
+// Load local assets on startup (non-blocking)
+loadLocalAssets().catch(() => {});
+
 function getRandomSecurityBackground() {
     if (securityTimerBackgrounds.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * securityTimerBackgrounds.length);
