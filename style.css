@@ -581,7 +581,7 @@ textarea {
     max-width: 350px;
     padding: 20px 15px;
     background-color: white;
-    background-size: cover;
+    background-size: auto 100%;
     background-position: center;
     background-attachment: fixed;
     border-radius: 8px;
@@ -596,7 +596,7 @@ textarea {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.88);
+    background-color: rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     z-index: 1;
     pointer-events: none;
