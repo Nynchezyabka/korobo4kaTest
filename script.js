@@ -1,42 +1,58 @@
 // Переменная для хранения задач
 let tasks = [];
 
-// Security timer background images
-let securityTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F8fe5c4b357744a83b7924df22040786d?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F4a053805f91a4361ad3e1ca4ffca7236?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F0598b1a294fa47f9bdf2932a02068298?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F6ad698fe7b8e490bb5d42b84b19cfa5d?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
-];
+// Asset paths configuration - supports both local (Assets folder) and CDN URLs
+const ASSET_CONFIG = {
+    mandatory_yellow: {
+        local: 'Assets/mandatory_yellow/',
+        cdnFallback: [
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F7f8a48d1c6234d89ab4e8927d6734ffe?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fd4c8e0152dfc452f932abdd5d5ab9973?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F57b2decb66554e90ae676dd184b63698?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F811c6987a28a4142b564445cae2e9f9d?format=webp&width=800'
+        ]
+    },
+    security_blue: {
+        local: 'Assets/security_blue/',
+        cdnFallback: [
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F15a26a64233444fb9abaea0ef3917943?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F8fe5c4b357744a83b7924df22040786d?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F4a053805f91a4361ad3e1ca4ffca7236?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F0598b1a294fa47f9bdf2932a02068298?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F6ad698fe7b8e490bb5d42b84b19cfa5d?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F1cece9b2c4b847a89f6c1353fe6cc301?format=webp&width=800'
+        ]
+    },
+    simple_joys_green: {
+        local: 'Assets/simple_joys_green/',
+        cdnFallback: [
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa620ba9d18c14ab4843eb138d79b8f4b?format=webp&width=800'
+        ]
+    },
+    ego_joys_red: {
+        local: 'Assets/ego_joys_red/',
+        cdnFallback: [
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ff4503e73a4ac42fb9e7661f9d403a9c1?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F9375f34992c34e42aab8a9874cb78bc7?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ffd217fff456c463bba005662bbbb9a98?format=webp&width=800'
+        ]
+    },
+    accessibility_joys_light_blue: {
+        local: 'Assets/accessibility_joys_light_blue/',
+        cdnFallback: [
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa72b300065e1411b9676589bedbbcb64?format=webp&width=800',
+            'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F5769f1433ebe4f659dd8ffebdacb1f27?format=webp&width=800'
+        ]
+    }
+};
 
-// Accessibility of simple joys timer background images
-let accessibilityJoysTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa72b300065e1411b9676589bedbbcb64?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F5769f1433ebe4f659dd8ffebdacb1f27?format=webp&width=800'
-];
-
-// Ego joys timer background images
-let egoJoysTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ff4503e73a4ac42fb9e7661f9d403a9c1?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F9375f34992c34e42aab8a9874cb78bc7?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Ffd217fff456c463bba005662bbbb9a98?format=webp&width=800'
-];
-
-// Mandatory tasks timer background images
-let mandatoryTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Faa4ed273a99e4c89b97f6530aefacbfc?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F7f8a48d1c6234d89ab4e8927d6734ffe?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fd4c8e0152dfc452f932abdd5d5ab9973?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F57b2decb66554e90ae676dd184b63698?format=webp&width=800',
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2F811c6987a28a4142b564445cae2e9f9d?format=webp&width=800'
-];
-
-// Simple joys timer background images
-let joysTimerBackgrounds = [
-    'https://cdn.builder.io/api/v1/image/assets%2Fb5f2bc8408634e5d8b17c4d6b87d2689%2Fa620ba9d18c14ab4843eb138d79b8f4b?format=webp&width=800'
-];
+// Build background arrays from configuration (currently uses CDN fallback)
+let mandatoryTimerBackgrounds = ASSET_CONFIG.mandatory_yellow.cdnFallback;
+let securityTimerBackgrounds = ASSET_CONFIG.security_blue.cdnFallback;
+let joysTimerBackgrounds = ASSET_CONFIG.simple_joys_green.cdnFallback;
+let egoJoysTimerBackgrounds = ASSET_CONFIG.ego_joys_red.cdnFallback;
+let accessibilityJoysTimerBackgrounds = ASSET_CONFIG.accessibility_joys_light_blue.cdnFallback;
 
 function getRandomSecurityBackground() {
     if (securityTimerBackgrounds.length === 0) return null;
