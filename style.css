@@ -588,10 +588,11 @@ textarea {
     border-radius: 8px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
     position: relative;
-    height: 400px;
+    min-height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .timer-content::before {
