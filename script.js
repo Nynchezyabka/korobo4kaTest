@@ -1655,6 +1655,7 @@ function showAddSubcategoriesFor(cat, targetContainer = null) {
 }
 
 window.addEventListener('load', async () => {
+    await loadAssets();
     await loadTasks();
 
     // Register Service Worker for PWA/offline
