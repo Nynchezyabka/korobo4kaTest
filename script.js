@@ -1204,18 +1204,7 @@ function showTimer(task) {
         timerContent.style.color = '#333';
 
         // Apply random background image based on category
-        let backgroundImage = null;
-        if (task.category === 1) {
-            backgroundImage = getRandomMandatoryBackground();
-        } else if (task.category === 2) {
-            backgroundImage = getRandomSecurityBackground();
-        } else if (task.category === 3) {
-            backgroundImage = getRandomJoysBackground();
-        } else if (task.category === 4) {
-            backgroundImage = getRandomEgoJoysBackground();
-        } else if (task.category === 5) {
-            backgroundImage = getRandomAccessibilityJoysBackground();
-        }
+        const backgroundImage = getRandomBackgroundForCategory(task.category);
 
         if (backgroundImage) {
             timerContent.style.backgroundImage = `url('${backgroundImage}')`;
