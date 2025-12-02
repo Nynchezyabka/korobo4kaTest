@@ -591,7 +591,7 @@ textarea {
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 10px;
 }
 
