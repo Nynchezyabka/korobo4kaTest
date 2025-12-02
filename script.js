@@ -19,6 +19,9 @@ async function loadAssets() {
         const response = await fetch('/api/assets/list');
         if (response.ok) {
             loadedAssets = await response.json();
+            console.log('Assets loaded successfully:', loadedAssets);
+        } else {
+            console.error('Failed to load assets: HTTP', response.status);
         }
     } catch (e) {
         console.error('Failed to load assets:', e);
