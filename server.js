@@ -118,9 +118,11 @@ async function handleApi(req, res, pathname) {
         }
       }
 
-      return toJson(res, categories);
+      toJson(res, categories);
+      return true;
     } catch (e) {
-      return toJson(res, { error: 'Failed to list assets' }, 500);
+      toJson(res, { error: 'Failed to list assets' }, 500);
+      return true;
     }
   }
 
