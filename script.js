@@ -1199,8 +1199,6 @@ function showTimer(task) {
     // Set timer-content background to match category
     const timerContent = document.querySelector('.timer-content');
     if (timerContent) {
-        const bgColor = getCategoryGroupBg(task.category);
-        timerContent.style.backgroundColor = bgColor;
         timerContent.style.color = '#333';
 
         // Apply random background image based on category
@@ -1210,9 +1208,12 @@ function showTimer(task) {
             timerContent.style.backgroundImage = `url('${backgroundImage}')`;
             timerContent.style.backgroundSize = 'cover';
             timerContent.style.backgroundPosition = 'center';
-            timerContent.style.backgroundAttachment = 'fixed';
+            timerContent.style.backgroundRepeat = 'no-repeat';
+            timerContent.style.backgroundAttachment = 'scroll';
         } else {
             timerContent.style.backgroundImage = 'none';
+            const bgColor = getCategoryGroupBg(task.category);
+            timerContent.style.backgroundColor = bgColor;
         }
     }
 
