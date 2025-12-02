@@ -31,13 +31,23 @@ async function loadAssets() {
 // Get random background for a given category
 function getRandomBackgroundForCategory(category) {
     const assetFolder = CATEGORY_ASSET_MAP[category];
-    if (!assetFolder || !loadedAssets[assetFolder]) {
+    if (!assetFolder) {
+        console.warn(`No asset folder mapping for category ${category}`);
+        return null;
+    }
+    if (!loadedAssets[assetFolder]) {
+        console.warn(`No images loaded for category ${category} (folder: ${assetFolder})`);
         return null;
     }
     const images = loadedAssets[assetFolder];
-    if (images.length === 0) return null;
+    if (images.length === 0) {
+        console.warn(`No images found in ${assetFolder}`);
+        return null;
+    }
     const randomIndex = Math.floor(Math.random() * images.length);
-    return images[randomIndex];
+    const selectedImage = images[randomIndex];
+    console.log(`Selected image for category ${category}: ${selectedImage}`);
+    return selectedImage;
 }
 
 // Legacy function wrappers for backwards compatibility
