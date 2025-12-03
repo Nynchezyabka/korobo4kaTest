@@ -23,7 +23,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      await Promise.all(keys.filter(k => k !== STATIC_CACHE).map(k => caches.delete(k)));
+      await Promise.all(keys.filter(k => k !== STATIC_CACHE && k !== ASSETS_CACHE).map(k => caches.delete(k)));
       await self.clients.claim();
     })()
   );
