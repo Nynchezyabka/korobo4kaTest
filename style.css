@@ -1480,6 +1480,24 @@ textarea {
     100% { transform: translateX(-100%); }
 }
 
+@keyframes digit-fall {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.digit-animate {
+    animation: digit-fall 0.3s ease-out forwards;
+}
+
 /* Mobile compact subcategory title */
 @media (max-width: 480px) {
     .category-title.subcategory-title {
