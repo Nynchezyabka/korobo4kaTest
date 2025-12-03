@@ -621,12 +621,19 @@ textarea {
 }
 
 .timer-display {
+    font-family: 'Roboto Mono', monospace;
     font-size: 2.5rem;
     margin: 15px 0;
     font-weight: bold;
     color: #5d4037;
     position: relative;
     z-index: 2;
+    letter-spacing: 0.05em;
+    min-height: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .timer-task {
@@ -1471,6 +1478,24 @@ textarea {
 @keyframes marquee-scroll {
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
+}
+
+@keyframes digit-fall {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.digit-animate {
+    animation: digit-fall 0.3s ease-out forwards;
 }
 
 /* Mobile compact subcategory title */

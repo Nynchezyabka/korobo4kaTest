@@ -118,7 +118,11 @@ async function handleApi(req, res, pathname) {
         }
       }
 
-      toJson(res, categories);
+      const headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'public, max-age=86400, immutable'
+      };
+      send(res, 200, Buffer.from(JSON.stringify(categories)), headers);
       return true;
     } catch (e) {
       toJson(res, { error: 'Failed to list assets' }, 500);
