@@ -13,13 +13,31 @@ const CATEGORY_ASSET_MAP = {
     5: 'accessibility_joys_light_blue'
 };
 
-// Load assets from API
+// Load assets from API and cache them for offline use
 async function loadAssets() {
     try {
         const response = await fetch('/api/assets/list');
         if (response.ok) {
             loadedAssets = await response.json();
             console.log('Assets loaded successfully:', loadedAssets);
+
+            // Pre-cache all asset images for offline support
+            if ('caches' in window && 'serviceWorker' in navigator) {
+                try {
+                    const cache = await caches.open('korobochka-assets-v5');
+                    for (const category in loadedAssets) {
+                        const images = loadedAssets[category];
+                        for (const imagePath of images) {
+                            cache.add(imagePath).catch(err => {
+                                console.debug(`Could not cache ${imagePath}:`, err.message);
+                            });
+                        }
+                    }
+                    console.log('Asset images cached for offline support');
+                } catch (cacheErr) {
+                    console.debug('Could not access cache:', cacheErr.message);
+                }
+            }
         } else {
             console.error('Failed to load assets: HTTP', response.status);
         }
