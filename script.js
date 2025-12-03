@@ -1219,7 +1219,7 @@ function showTimer(task) {
 
         if (backgroundImage) {
             timerContent.style.backgroundImage = `url('${backgroundImage}')`;
-            timerContent.style.backgroundSize = 'contain';
+            timerContent.style.backgroundSize = 'cover';
             timerContent.style.backgroundPosition = 'center center';
             timerContent.style.backgroundRepeat = 'no-repeat';
             timerContent.style.backgroundAttachment = 'scroll';
