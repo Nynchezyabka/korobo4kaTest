@@ -580,7 +580,6 @@ textarea {
     width: 100%;
     max-width: 350px;
     padding: 20px 15px;
-    background-color: rgba(255, 255, 255, 0.85);
     background-size: cover;
     background-position: center center;
     background-attachment: scroll;
@@ -617,6 +616,7 @@ textarea {
     font-size: 2rem;
     position: relative;
     z-index: 2;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .timer-display {
@@ -633,6 +633,7 @@ textarea {
     align-items: center;
     justify-content: center;
     line-height: 1;
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
 }
 
 .timer-digit {
@@ -654,6 +655,8 @@ textarea {
     line-height: 1.3;
     position: relative;
     z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .timer-category-info {

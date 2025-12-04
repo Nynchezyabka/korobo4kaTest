@@ -13,36 +13,61 @@ const CATEGORY_ASSET_MAP = {
     5: 'accessibility_joys_light_blue'
 };
 
-// Load assets from API and cache them for offline use
+// Load assets from static manifest or API fallback
 async function loadAssets() {
     try {
-        const response = await fetch('/api/assets/list');
+        const response = await fetch('/assets-manifest.json', { cache: 'force-cache' });
         if (response.ok) {
             loadedAssets = await response.json();
-            console.log('Assets loaded successfully:', loadedAssets);
-
-            // Pre-cache all asset images for offline support
-            if ('caches' in window && 'serviceWorker' in navigator) {
-                try {
-                    const cache = await caches.open('korobochka-assets-v5');
-                    for (const category in loadedAssets) {
-                        const images = loadedAssets[category];
-                        for (const imagePath of images) {
-                            cache.add(imagePath).catch(err => {
-                                console.debug(`Could not cache ${imagePath}:`, err.message);
-                            });
-                        }
-                    }
-                    console.log('Asset images cached for offline support');
-                } catch (cacheErr) {
-                    console.debug('Could not access cache:', cacheErr.message);
-                }
-            }
+            console.log('Assets loaded successfully from manifest');
         } else {
-            console.error('Failed to load assets: HTTP', response.status);
+            console.warn('Failed to load manifest, trying API');
+            await loadAssetsFromApi();
         }
     } catch (e) {
-        console.error('Failed to load assets:', e);
+        console.warn('Failed to load manifest, trying API:', e.message);
+        await loadAssetsFromApi();
+    }
+
+    if (!loadedAssets || Object.keys(loadedAssets).length === 0) {
+        console.error('Failed to load any assets');
+        return;
+    }
+
+    // Pre-cache all asset images for offline support
+    if ('caches' in window && 'serviceWorker' in navigator) {
+        try {
+            const cache = await caches.open('korobochka-assets-v5');
+            for (const category in loadedAssets) {
+                const images = loadedAssets[category];
+                for (const imagePath of images) {
+                    cache.add(imagePath).catch(err => {
+                        console.debug(`Could not cache ${imagePath}:`, err.message);
+                    });
+                }
+            }
+            console.log('Asset images cached for offline support');
+        } catch (cacheErr) {
+            console.debug('Could not access cache:', cacheErr.message);
+        }
+    }
+}
+
+// Fallback: try loading assets from API
+async function loadAssetsFromApi() {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch('/api/assets/list', { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+            loadedAssets = await response.json();
+            console.log('Assets loaded successfully from API');
+        }
+    } catch (e) {
+        console.error('Failed to load assets from API:', e.message);
     }
 }
 
@@ -1236,13 +1261,13 @@ function showTimer(task) {
         const backgroundImage = getRandomBackgroundForCategory(task.category);
 
         if (backgroundImage) {
-            // Apply background image with gradient overlay as part of the same background-image stack
-            timerContent.style.backgroundImage = `linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85)), url('${backgroundImage}')`;
+            // Apply background image with light overlay to ensure text readability while showing the image
+            timerContent.style.backgroundImage = `linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.5)), url('${backgroundImage}')`;
             timerContent.style.backgroundSize = 'cover';
             timerContent.style.backgroundPosition = 'center center';
             timerContent.style.backgroundRepeat = 'no-repeat';
             timerContent.style.backgroundAttachment = 'scroll';
-            timerContent.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
+            timerContent.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
         } else {
             timerContent.style.backgroundImage = 'none';
             const bgColor = getCategoryGroupBg(task.category);
