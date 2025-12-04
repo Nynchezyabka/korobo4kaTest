@@ -16,7 +16,12 @@ const CATEGORY_ASSET_MAP = {
 // Load assets from API and cache them for offline use
 async function loadAssets() {
     try {
-        const response = await fetch('/api/assets/list');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch('/api/assets/list', { signal: controller.signal });
+        clearTimeout(timeoutId);
+
         if (response.ok) {
             loadedAssets = await response.json();
             console.log('Assets loaded successfully:', loadedAssets);
@@ -40,10 +45,27 @@ async function loadAssets() {
             }
         } else {
             console.error('Failed to load assets: HTTP', response.status);
+            loadAssetsFallback();
         }
     } catch (e) {
-        console.error('Failed to load assets:', e);
+        console.error('Failed to load assets:', e.message);
+        loadAssetsFallback();
     }
+}
+
+// Fallback asset loading - generates list from known directories
+function loadAssetsFallback() {
+    console.warn('Using fallback asset list');
+    const assetDirs = ['mandatory_yellow', 'security_blue', 'simple_joys_green', 'ego_joys_red', 'accessibility_joys_light_blue'];
+    const categories = {};
+
+    assetDirs.forEach(dir => {
+        categories[dir] = [
+            `Assets/${dir}/placeholder.jpg`
+        ];
+    });
+
+    loadedAssets = categories;
 }
 
 // Get random background for a given category
