@@ -2840,3 +2840,296 @@ if (notifyToggleBtn) {
         updateNotifyToggle();
     });
 }
+
+// ============= DAILY ACTIVITY CALENDAR =============
+
+let selectedDailyDate = null;
+
+function openDailyActivityModal() {
+    const modal = document.getElementById('dailyActivityModal');
+    if (!modal) return;
+
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+
+    const backdrop = document.getElementById('dailyActivityBackdrop');
+    if (backdrop) backdrop.style.display = 'block';
+
+    selectedDailyDate = new Date();
+    selectedDailyDate.setHours(0, 0, 0, 0);
+
+    renderCalendarWidget();
+    updateDailyView();
+}
+
+function closeDailyActivityModal() {
+    const modal = document.getElementById('dailyActivityModal');
+    if (!modal) return;
+
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+
+    const backdrop = document.getElementById('dailyActivityBackdrop');
+    if (backdrop) backdrop.style.display = 'none';
+}
+
+function renderCalendarWidget() {
+    const container = document.getElementById('calendarWidget');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const monthDate = new Date(selectedDailyDate.getTime());
+    const year = monthDate.getFullYear();
+    const month = monthDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+    const monthYear = document.createElement('div');
+    monthYear.className = 'calendar-month-year';
+    monthYear.innerHTML = `
+        <button id="calendarPrevBtn" class="calendar-nav-btn">&lt;</button>
+        <span>${new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(monthDate)}</span>
+        <button id="calendarNextBtn" class="calendar-nav-btn">&gt;</button>
+    `;
+    container.appendChild(monthYear);
+
+    const weekDays = document.createElement('div');
+    weekDays.className = 'calendar-weekdays';
+    const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    dayNames.forEach(day => {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-weekday';
+        dayEl.textContent = day;
+        weekDays.appendChild(dayEl);
+    });
+    container.appendChild(weekDays);
+
+    const daysContainer = document.createElement('div');
+    daysContainer.className = 'calendar-days';
+
+    let currentDate = new Date(startDate);
+    while (currentDate <= lastDay || currentDate.getDay() !== 1) {
+        const dayEl = document.createElement('button');
+        dayEl.className = 'calendar-day';
+
+        const isCurrentMonth = currentDate.getMonth() === month;
+        const isToday = currentDate.toDateString() === new Date().toDateString();
+        const isSelected = currentDate.toDateString() === selectedDailyDate.toDateString();
+
+        if (!isCurrentMonth) dayEl.classList.add('other-month');
+        if (isToday) dayEl.classList.add('today');
+        if (isSelected) dayEl.classList.add('selected');
+
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const completedCount = tasks.filter(t => t.completedDate === dateStr && t.completed).length;
+
+        dayEl.textContent = currentDate.getDate();
+        if (completedCount > 0) {
+            dayEl.setAttribute('data-count', completedCount);
+        }
+
+        dayEl.addEventListener('click', () => {
+            selectedDailyDate = new Date(currentDate);
+            selectedDailyDate.setHours(0, 0, 0, 0);
+            renderCalendarWidget();
+            updateDailyView();
+        });
+
+        daysContainer.appendChild(dayEl);
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    container.appendChild(daysContainer);
+
+    document.getElementById('calendarPrevBtn').addEventListener('click', () => {
+        selectedDailyDate.setMonth(selectedDailyDate.getMonth() - 1);
+        renderCalendarWidget();
+    });
+
+    document.getElementById('calendarNextBtn').addEventListener('click', () => {
+        selectedDailyDate.setMonth(selectedDailyDate.getMonth() + 1);
+        renderCalendarWidget();
+    });
+}
+
+function updateDailyView() {
+    const dateDisplay = document.getElementById('selectedDateDisplay');
+    const tasksList = document.getElementById('dailyTasksList');
+
+    if (!dateDisplay || !tasksList) return;
+
+    const dateStr = selectedDailyDate.toISOString().split('T')[0];
+    const completedTasks = tasks.filter(t => t.completedDate === dateStr && t.completed);
+
+    const displayDate = new Intl.DateTimeFormat('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(selectedDailyDate);
+    dateDisplay.innerHTML = `<strong>${displayDate}</strong>`;
+
+    tasksList.innerHTML = '';
+
+    if (completedTasks.length === 0) {
+        tasksList.innerHTML = '<p class="no-tasks-message">Нет завершённых задач в этот день</p>';
+        return;
+    }
+
+    const categoryGroups = new Map();
+    completedTasks.forEach(task => {
+        const cat = getCategoryName(task.category);
+        if (!categoryGroups.has(task.category)) {
+            categoryGroups.set(task.category, []);
+        }
+        categoryGroups.get(task.category).push(task);
+    });
+
+    Array.from(categoryGroups.entries())
+        .sort((a, b) => a[0] - b[0])
+        .forEach(([catId, catTasks]) => {
+            const groupEl = document.createElement('div');
+            groupEl.className = 'daily-category-group';
+
+            const categoryColor = getCategoryColor(catId);
+            const categoryName = getCategoryName(catId);
+
+            const header = document.createElement('div');
+            header.className = 'daily-category-header';
+            header.style.borderLeftColor = categoryColor;
+            header.innerHTML = `<span style="background-color: ${categoryColor};" class="category-indicator"></span> ${categoryName}`;
+            groupEl.appendChild(header);
+
+            const listEl = document.createElement('div');
+            listEl.className = 'daily-tasks-group';
+
+            catTasks.forEach(task => {
+                const taskEl = document.createElement('div');
+                taskEl.className = 'daily-task-item';
+
+                const durationMinutes = Math.round((task.duration || 0) / 60000);
+                const durationText = durationMinutes > 0 ? `${durationMinutes}м` : 'нет времени';
+
+                taskEl.innerHTML = `
+                    <div class="daily-task-content">
+                        <div class="daily-task-text">${escapeHtml(task.text)}</div>
+                        <div class="daily-task-duration">${durationText}</div>
+                    </div>
+                    <div class="daily-task-actions">
+                        <button class="daily-task-undo-btn" title="Отменить выполнение" data-task-id="${task.id}">↺</button>
+                    </div>
+                `;
+
+                taskEl.querySelector('.daily-task-undo-btn').addEventListener('click', () => {
+                    undoCompleteTask(task.id);
+                });
+
+                listEl.appendChild(taskEl);
+            });
+
+            groupEl.appendChild(listEl);
+            tasksList.appendChild(groupEl);
+        });
+}
+
+function undoCompleteTask(taskId) {
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex !== -1) {
+        tasks[taskIndex].completed = false;
+        tasks[taskIndex].active = true;
+        delete tasks[taskIndex].completedAt;
+        delete tasks[taskIndex].duration;
+        delete tasks[taskIndex].completedDate;
+        saveTasks();
+        updateDailyView();
+        renderCalendarWidget();
+    }
+}
+
+function getCategoryName(catId) {
+    const categories = {
+        0: 'Без категории',
+        1: 'Обязательные дела',
+        2: 'Система безопасности',
+        3: 'Простые радости',
+        4: 'Эго-радости',
+        5: 'Доступность простых радостей'
+    };
+    return categories[catId] || 'Неизвестная категория';
+}
+
+function getCategoryColor(catId) {
+    const colors = {
+        0: '#999999',
+        1: '#FFC107',
+        2: '#2196F3',
+        3: '#4CAF50',
+        4: '#F44336',
+        5: '#B3E5FC'
+    };
+    return colors[catId] || '#999999';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Add modal event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const dailyActivityCloseBtn = document.getElementById('dailyActivityCloseBtn');
+    const dailyActivityBackdrop = document.getElementById('dailyActivityBackdrop');
+    const addPastTaskBtn = document.getElementById('addPastTaskBtn');
+
+    if (dailyActivityCloseBtn) {
+        dailyActivityCloseBtn.addEventListener('click', closeDailyActivityModal);
+    }
+
+    if (dailyActivityBackdrop) {
+        dailyActivityBackdrop.addEventListener('click', closeDailyActivityModal);
+    }
+
+    if (addPastTaskBtn) {
+        addPastTaskBtn.addEventListener('click', () => {
+            const input = document.getElementById('pastTaskInput');
+            const category = parseInt(document.getElementById('pastTaskCategory').value) || 0;
+            const durationMinutes = parseInt(document.getElementById('pastTaskDuration').value) || 0;
+
+            if (!input || !input.value.trim()) {
+                openInfoModal('Введите описание задачи');
+                return;
+            }
+
+            if (durationMinutes <= 0) {
+                openInfoModal('Укажите продолжительность в минутах');
+                return;
+            }
+
+            if (!selectedDailyDate) {
+                openInfoModal('Выберите дату');
+                return;
+            }
+
+            const newTask = {
+                id: getNextId(),
+                text: input.value.trim(),
+                category,
+                completed: true,
+                active: false,
+                completedAt: selectedDailyDate.getTime() + 12 * 3600000,
+                duration: durationMinutes * 60000,
+                completedDate: selectedDailyDate.toISOString().split('T')[0],
+                statusChangedAt: Date.now()
+            };
+
+            tasks.push(newTask);
+            saveTasks();
+
+            input.value = '';
+            document.getElementById('pastTaskDuration').value = '';
+
+            updateDailyView();
+            openInfoModal('Задача добавлена');
+        });
+    }
+});
