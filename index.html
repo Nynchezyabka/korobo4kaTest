@@ -272,6 +272,38 @@
         </div>
     </div>
 
+    <!-- Daily Activity Calendar Modal -->
+    <div class="modal" id="dailyActivityModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="dailyActivityBackdrop"></div>
+        <div class="modal-content daily-activity-modal">
+            <button class="modal-close" id="dailyActivityCloseBtn" aria-label="Закрыть">&times;</button>
+            <div class="daily-activity-container">
+                <div class="calendar-section">
+                    <h3>Календарь</h3>
+                    <div id="calendarWidget" class="calendar-widget"></div>
+                </div>
+                <div class="daily-view-section">
+                    <h3>Активность за день</h3>
+                    <div id="selectedDateDisplay" class="selected-date-display"></div>
+                    <div id="dailyTasksList" class="daily-tasks-list"></div>
+                    <div class="add-past-task-controls" id="addPastTaskControls">
+                        <textarea id="pastTaskInput" placeholder="Введите задачу, которую вы делали этот день..." class="past-task-textarea"></textarea>
+                        <select id="pastTaskCategory" class="past-task-category">
+                            <option value="0">Категория не определена</option>
+                            <option value="1">Обязательные дела</option>
+                            <option value="2">Система безопасности</option>
+                            <option value="5">Доступность простых радостей</option>
+                            <option value="3">Простые радости</option>
+                            <option value="4">Эго-радости</option>
+                        </select>
+                        <input type="number" id="pastTaskDuration" placeholder="Минуты" min="1" max="480" class="past-task-duration">
+                        <button id="addPastTaskBtn" class="add-past-task-btn">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- App Info Modal -->
     <div class="modal" id="infoModal" aria-hidden="true" role="dialog">
         <div class="modal-backdrop" id="infoBackdrop"></div>
