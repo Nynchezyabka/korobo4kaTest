@@ -2993,7 +2993,7 @@ function updateDailyView() {
             const groupEl = document.createElement('div');
             groupEl.className = 'daily-category-group';
 
-            const categoryColor = getCategoryColor(catId);
+            const categoryColor = getCategoryIndicatorColor(catId);
             const categoryName = getCategoryName(catId);
 
             const header = document.createElement('div');
