@@ -905,6 +905,9 @@ function displayTasks() {
                 tasks[idx].completed = false;
                 tasks[idx].active = true;
                 tasks[idx].statusChangedAt = Date.now();
+                delete tasks[idx].completedAt;
+                delete tasks[idx].duration;
+                delete tasks[idx].completedDate;
                 saveTasks();
                 displayTasks();
             }
