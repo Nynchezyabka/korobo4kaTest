@@ -604,7 +604,7 @@ textarea {
     bottom: 0;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85));
     border-radius: 8px;
-    z-index: 1;
+    z-index: 0;
     pointer-events: none;
 }
 
