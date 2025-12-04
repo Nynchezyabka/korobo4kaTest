@@ -13,59 +13,62 @@ const CATEGORY_ASSET_MAP = {
     5: 'accessibility_joys_light_blue'
 };
 
-// Load assets from API and cache them for offline use
+// Load assets from static manifest or API fallback
 async function loadAssets() {
     try {
+        const response = await fetch('/assets-manifest.json', { cache: 'force-cache' });
+        if (response.ok) {
+            loadedAssets = await response.json();
+            console.log('Assets loaded successfully from manifest');
+        } else {
+            console.warn('Failed to load manifest, trying API');
+            await loadAssetsFromApi();
+        }
+    } catch (e) {
+        console.warn('Failed to load manifest, trying API:', e.message);
+        await loadAssetsFromApi();
+    }
+
+    if (!loadedAssets || Object.keys(loadedAssets).length === 0) {
+        console.error('Failed to load any assets');
+        return;
+    }
+
+    // Pre-cache all asset images for offline support
+    if ('caches' in window && 'serviceWorker' in navigator) {
+        try {
+            const cache = await caches.open('korobochka-assets-v5');
+            for (const category in loadedAssets) {
+                const images = loadedAssets[category];
+                for (const imagePath of images) {
+                    cache.add(imagePath).catch(err => {
+                        console.debug(`Could not cache ${imagePath}:`, err.message);
+                    });
+                }
+            }
+            console.log('Asset images cached for offline support');
+        } catch (cacheErr) {
+            console.debug('Could not access cache:', cacheErr.message);
+        }
+    }
+}
+
+// Fallback: try loading assets from API
+async function loadAssetsFromApi() {
+    try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
 
         const response = await fetch('/api/assets/list', { signal: controller.signal });
         clearTimeout(timeoutId);
 
         if (response.ok) {
             loadedAssets = await response.json();
-            console.log('Assets loaded successfully:', loadedAssets);
-
-            // Pre-cache all asset images for offline support
-            if ('caches' in window && 'serviceWorker' in navigator) {
-                try {
-                    const cache = await caches.open('korobochka-assets-v5');
-                    for (const category in loadedAssets) {
-                        const images = loadedAssets[category];
-                        for (const imagePath of images) {
-                            cache.add(imagePath).catch(err => {
-                                console.debug(`Could not cache ${imagePath}:`, err.message);
-                            });
-                        }
-                    }
-                    console.log('Asset images cached for offline support');
-                } catch (cacheErr) {
-                    console.debug('Could not access cache:', cacheErr.message);
-                }
-            }
-        } else {
-            console.error('Failed to load assets: HTTP', response.status);
-            loadAssetsFallback();
+            console.log('Assets loaded successfully from API');
         }
     } catch (e) {
-        console.error('Failed to load assets:', e.message);
-        loadAssetsFallback();
+        console.error('Failed to load assets from API:', e.message);
     }
-}
-
-// Fallback asset loading - generates list from known directories
-function loadAssetsFallback() {
-    console.warn('Using fallback asset list');
-    const assetDirs = ['mandatory_yellow', 'security_blue', 'simple_joys_green', 'ego_joys_red', 'accessibility_joys_light_blue'];
-    const categories = {};
-
-    assetDirs.forEach(dir => {
-        categories[dir] = [
-            `Assets/${dir}/placeholder.jpg`
-        ];
-    });
-
-    loadedAssets = categories;
 }
 
 // Get random background for a given category
