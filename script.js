@@ -1357,15 +1357,23 @@ function hideTimer() {
 function updateTimerDisplay() {
     const minutes = Math.floor(timerTime / 60);
     const seconds = timerTime % 60;
-    const newText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    const oldText = timerDisplay.textContent;
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+    const newDigits = [formattedMinutes[0], formattedMinutes[1], formattedSeconds[0], formattedSeconds[1]];
 
-    if (oldText !== newText) {
-        timerDisplay.classList.remove('digit-animate');
-        timerDisplay.textContent = newText;
-        void timerDisplay.offsetWidth;
-        timerDisplay.classList.add('digit-animate');
-    }
+    const digitElements = timerDisplay.querySelectorAll('.timer-digit');
+
+    digitElements.forEach((element, index) => {
+        const oldValue = element.textContent;
+        const newValue = newDigits[index];
+
+        if (oldValue !== newValue) {
+            element.classList.remove('digit-animate');
+            element.textContent = newValue;
+            void element.offsetWidth;
+            element.classList.add('digit-animate');
+        }
+    });
 }
 
 // Функция для показа уведомления
