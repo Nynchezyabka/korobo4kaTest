@@ -2013,10 +2013,7 @@ showTasksBtn.addEventListener('click', () => {
 
 if (archiveBtn) {
     archiveBtn.addEventListener('click', () => {
-        showArchive = true;
-        taskList.style.display = 'block';
-        displayTasks();
-        const sc = document.querySelector('.add-subcategory-controls'); if (sc) { sc.classList.remove('show'); sc.style.display = 'none'; }
+        openDailyActivityModal();
     });
 }
 
