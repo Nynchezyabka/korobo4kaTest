@@ -1261,13 +1261,13 @@ function showTimer(task) {
         const backgroundImage = getRandomBackgroundForCategory(task.category);
 
         if (backgroundImage) {
-            // Apply background image with gradient overlay as part of the same background-image stack
-            timerContent.style.backgroundImage = `linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85)), url('${backgroundImage}')`;
+            // Apply background image with light overlay to ensure text readability while showing the image
+            timerContent.style.backgroundImage = `linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.5)), url('${backgroundImage}')`;
             timerContent.style.backgroundSize = 'cover';
             timerContent.style.backgroundPosition = 'center center';
             timerContent.style.backgroundRepeat = 'no-repeat';
             timerContent.style.backgroundAttachment = 'scroll';
-            timerContent.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
+            timerContent.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
         } else {
             timerContent.style.backgroundImage = 'none';
             const bgColor = getCategoryGroupBg(task.category);
