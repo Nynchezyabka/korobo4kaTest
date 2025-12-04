@@ -2281,3 +2281,335 @@ textarea {
 }
 
 /* end of restored CSS */
+
+/* ============ DAILY ACTIVITY CALENDAR ============ */
+
+.daily-activity-modal {
+    flex-direction: column;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 0;
+    border-radius: 12px;
+}
+
+.daily-activity-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.calendar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.calendar-section h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.calendar-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.calendar-month-year {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.calendar-nav-btn {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.calendar-nav-btn:hover {
+    background: #e0e0e0;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    color: #666;
+}
+
+.calendar-weekday {
+    padding: 4px;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: #f5f5f5;
+    border-color: #999;
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+    background: #fafafa;
+}
+
+.calendar-day.today {
+    border: 2px solid #FF6B6B;
+    color: #FF6B6B;
+    font-weight: bold;
+}
+
+.calendar-day.selected {
+    background: #5d4037;
+    color: white;
+    border-color: #5d4037;
+}
+
+.calendar-day[data-count]::after {
+    content: attr(data-count);
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #FF6B6B;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: bold;
+}
+
+.daily-view-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.daily-view-section h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.selected-date-display {
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.daily-tasks-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.no-tasks-message {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
+}
+
+.daily-category-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.daily-category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    border-left: 4px solid #999;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.category-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.daily-tasks-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px;
+}
+
+.daily-task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.daily-task-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.daily-task-text {
+    flex: 1;
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+.daily-task-duration {
+    flex-shrink: 0;
+    padding: 4px 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.daily-task-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.daily-task-undo-btn {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.daily-task-undo-btn:hover {
+    background: #FF6B6B;
+    color: white;
+}
+
+.add-past-task-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.past-task-textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.past-task-textarea:focus {
+    outline: none;
+    border-color: #5d4037;
+    box-shadow: 0 0 0 2px rgba(93, 64, 55, 0.1);
+}
+
+.past-task-category,
+.past-task-duration {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.past-task-category:focus,
+.past-task-duration:focus {
+    outline: none;
+    border-color: #5d4037;
+    box-shadow: 0 0 0 2px rgba(93, 64, 55, 0.1);
+}
+
+.past-task-duration {
+    width: 100px;
+}
+
+.add-past-task-btn {
+    padding: 8px 16px;
+    background: #5d4037;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.add-past-task-btn:hover {
+    background: #4a302a;
+}
+
+/* Mobile layout for calendar */
+@media (max-width: 768px) {
+    .daily-activity-modal {
+        max-width: 95vw;
+    }
+
+    .daily-activity-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .calendar-days {
+        grid-template-columns: repeat(7, 1fr);
+    }
+}
