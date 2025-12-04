@@ -3048,7 +3048,7 @@ function undoCompleteTask(taskId) {
     }
 }
 
-function getCategoryColor(catId) {
+function getCategoryIndicatorColor(catId) {
     const colors = {
         0: '#999999',
         1: '#FFC107',
