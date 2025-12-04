@@ -616,6 +616,7 @@ textarea {
     font-size: 2rem;
     position: relative;
     z-index: 2;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 .timer-display {
