@@ -3048,18 +3048,6 @@ function undoCompleteTask(taskId) {
     }
 }
 
-function getCategoryName(catId) {
-    const categories = {
-        0: 'Без категории',
-        1: 'Обязательные дела',
-        2: 'Система безопасности',
-        3: 'Простые радости',
-        4: 'Эго-радости',
-        5: 'Доступность простых радостей'
-    };
-    return categories[catId] || 'Неизвестная категория';
-}
-
 function getCategoryColor(catId) {
     const colors = {
         0: '#999999',
