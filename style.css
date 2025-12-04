@@ -636,6 +636,16 @@ textarea {
     line-height: 1;
 }
 
+.timer-digit {
+    display: inline-block;
+    min-width: 0.6em;
+}
+
+.timer-separator {
+    display: inline-block;
+    padding: 0 0.1em;
+}
+
 .timer-task {
     font-size: 1.3rem;
     margin-bottom: 12px;
