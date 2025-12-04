@@ -3060,12 +3060,6 @@ function getCategoryColor(catId) {
     return colors[catId] || '#999999';
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
 // Add modal event listeners
 document.addEventListener('DOMContentLoaded', () => {
     const dailyActivityCloseBtn = document.getElementById('dailyActivityCloseBtn');
