@@ -1389,7 +1389,7 @@ function saveEditedTask() {
     currentEditTaskId = null;
 }
 
-// Функция для функция для экспорта задач в файл
+// Функция для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
