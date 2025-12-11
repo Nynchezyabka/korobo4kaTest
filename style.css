@@ -2280,4 +2280,66 @@ textarea {
     .tasks.mobile-compact .sticker-wide { grid-column: 1 / -1; }
 }
 
+/* Task Actions Modal (for completed tasks in archive) */
+.task-actions { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
+.task-action-btn { padding: 12px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.2s; }
+.task-action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.task-action-btn:active { transform: translateY(0); }
+.task-action-btn[data-action="edit"] { background: #E3F2FD; color: #1565C0; }
+.task-action-btn[data-action="edit"]:hover { background: #BBDEFB; }
+.task-action-btn.destructive { background: #FFEBEE; color: #C62828; }
+.task-action-btn.destructive:hover { background: #FFCDD2; }
+
+/* Edit Task Modal Styles */
+#editTaskModal .modal-content { max-width: 640px; padding: 20px; }
+.edit-task-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+.edit-task-form label { font-weight: 600; color: #333; margin-bottom: 4px; font-size: 0.95rem; }
+.edit-task-form textarea,
+.edit-task-form input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; font-family: inherit; }
+.edit-task-form textarea { min-height: 80px; resize: vertical; }
+.edit-task-form input[type="number"] { }
+
+/* Time inputs in edit form */
+.edit-time-inputs { display: flex; align-items: center; gap: 8px; }
+.edit-time-inputs input { width: 80px; }
+.time-separator { font-weight: bold; color: #333; }
+
+/* Subcategory buttons in edit form */
+.edit-subcategory-options { display: flex; gap: 8px; flex-wrap: wrap; }
+.edit-subcat-btn { padding: 8px 12px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.9); color: #333; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: all 0.2s; }
+.edit-subcat-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.edit-subcat-btn.selected { outline: 2px solid rgba(0,0,0,0.12); }
+
+/* Color variants for edit subcategory buttons */
+.edit-subcat-btn.cat-1 { background-color: #fff9c4; color: #5d4037; }
+.edit-subcat-btn.cat-1.selected { background-color: #FFD54F; }
+.edit-subcat-btn.cat-2 { background-color: #bbdefb; color: #1b3b5a; }
+.edit-subcat-btn.cat-2.selected { background-color: #64B5F6; }
+.edit-subcat-btn.cat-3 { background-color: #c8e6c9; color: #1b5e20; }
+.edit-subcat-btn.cat-3.selected { background-color: #81C784; }
+.edit-subcat-btn.cat-4 { background-color: #ffcdd2; color: #7f1d1d; }
+.edit-subcat-btn.cat-4.selected { background-color: #E57373; }
+.edit-subcat-btn.cat-5 { background-color: #d1c4e9; color: #3d2a5a; }
+.edit-subcat-btn.cat-5.selected { background-color: #9575CD; }
+
+/* Task actions modal responsive */
+@media (max-width:480px) {
+    #taskActionsModal .modal-content { padding: 16px 12px; }
+    #taskActionsModal .task-actions { flex-direction: column; }
+    #taskActionsModal .task-action-btn { width: 100%; }
+    .edit-time-inputs { flex-direction: column; align-items: flex-start; }
+    .edit-time-inputs input { width: 100%; }
+}
+
+@media (min-width:481px) {
+    #taskActionsModal .task-actions { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+    #taskActionsModal .task-action-btn { flex: 1; }
+}
+
+/* Modal actions button styling for edit task modal */
+#editTaskSave { background-color: #5d4037; color: #fff; }
+#editTaskSave:hover { filter: brightness(0.95); }
+#editTaskCancel { background-color: #9E9E9E; color: #fff; }
+#editTaskCancel:hover { filter: brightness(0.95); }
+
 /* end of restored CSS */
