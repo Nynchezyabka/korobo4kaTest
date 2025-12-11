@@ -340,6 +340,57 @@
         </div>
     </div>
 
+    <!-- Task Actions Modal (for completed tasks in archive) -->
+    <div class="modal" id="taskActionsModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="taskActionsBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="taskActionsClose" aria-label="Закрыть">&times;</button>
+            <h3>Действия с задачей</h3>
+            <div class="task-actions">
+                <button type="button" class="task-action-btn" data-action="edit">Изменить</button>
+                <button type="button" class="task-action-btn destructive" data-action="delete">Удалить</button>
+            </div>
+            <div class="modal-actions">
+                <button id="taskActionsCancel">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div class="modal" id="editTaskModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="editTaskBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="editTaskClose" aria-label="Закрыть">&times;</button>
+            <h3>Редактировать задачу</h3>
+            <div class="edit-task-form">
+                <label for="editTaskText">Название задачи:</label>
+                <textarea id="editTaskText" placeholder="Введите название задачи..."></textarea>
+
+                <label for="editTaskCategory">Категория:</label>
+                <div id="editTaskCategory" class="modal-category-options" aria-label="Выбор категории"></div>
+
+                <div id="editTaskSubcategoryContainer" style="display:none;">
+                    <label for="editTaskSubcategory">Подкатегория:</label>
+                    <div id="editTaskSubcategory" class="edit-subcategory-options"></div>
+                </div>
+
+                <label for="editTaskCompletedHours">Время завершения:</label>
+                <div class="edit-time-inputs">
+                    <input type="number" id="editTaskCompletedHours" placeholder="Часы" min="0" max="23">
+                    <span class="time-separator">:</span>
+                    <input type="number" id="editTaskCompletedMinutes" placeholder="Минуты" min="0" max="59">
+                </div>
+
+                <label for="editTaskDuration">Продолжительность (в минутах):</label>
+                <input type="number" id="editTaskDuration" placeholder="Продолжительность" min="0" max="9999">
+            </div>
+            <div class="modal-actions">
+                <button id="editTaskSave">Сохранить</button>
+                <button id="editTaskCancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <script src="db.js"></script>
     <script src="script.js"></script>
 	</body>
