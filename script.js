@@ -593,12 +593,18 @@ function displayTasks() {
                 const controls = taskElement.querySelector('.task-controls');
                 if (controls) {
                     controls.innerHTML = '';
-                    const del = document.createElement('button');
-                    del.className = 'task-control-btn delete-task-btn';
-                    del.dataset.id = String(task.id);
-                    del.title = 'Удалить задачу';
-                    del.innerHTML = '<i class="fas fa-trash"></i>';
-                    controls.appendChild(del);
+
+                    const menu = document.createElement('button');
+                    menu.className = 'task-control-btn task-menu-btn';
+                    menu.dataset.id = String(task.id);
+                    menu.title = 'Действия с задачей';
+                    menu.setAttribute('aria-label', 'Действия с задачей');
+                    menu.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
+                    menu.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openTimelineTaskMenu(task.id);
+                    });
+                    controls.appendChild(menu);
 
                     const ret = document.createElement('button');
                     ret.className = 'task-control-btn return-task-btn';
