@@ -2337,9 +2337,12 @@ textarea {
 }
 
 /* Modal actions button styling for edit task modal */
+#editTaskSave, #editTaskCancel { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
 #editTaskSave { background-color: #5d4037; color: #fff; }
-#editTaskSave:hover { filter: brightness(0.95); }
+#editTaskSave:hover { filter: brightness(0.95); transform: translateY(-1px); }
+#editTaskSave:active { transform: translateY(0); filter: brightness(0.9); }
 #editTaskCancel { background-color: #9E9E9E; color: #fff; }
-#editTaskCancel:hover { filter: brightness(0.95); }
+#editTaskCancel:hover { filter: brightness(0.95); transform: translateY(-1px); }
+#editTaskCancel:active { transform: translateY(0); }
 
 /* end of restored CSS */
