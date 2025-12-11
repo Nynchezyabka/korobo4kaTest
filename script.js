@@ -2597,6 +2597,65 @@ try {
     });
 })();
 
+// Setup task actions modal behavior for completed tasks
+(function setupTaskActions(){
+    const m = document.getElementById('taskActionsModal');
+    if (!m) return;
+
+    const close = () => {
+        m.setAttribute('aria-hidden', 'true');
+        m.style.display = 'none';
+    };
+
+    const closeBtn = document.getElementById('taskActionsClose');
+    const cancelBtn = document.getElementById('taskActionsCancel');
+    const backdrop = document.getElementById('taskActionsBackdrop');
+
+    [closeBtn, cancelBtn, backdrop].forEach(el => el && el.addEventListener('click', close));
+
+    // Wire task action buttons
+    m.querySelectorAll('.task-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            if (!currentEditTaskId) return;
+
+            close();
+
+            if (action === 'edit') {
+                openEditTaskModal(currentEditTaskId);
+            } else if (action === 'delete') {
+                deleteTask(currentEditTaskId);
+            }
+        });
+    });
+})();
+
+// Setup edit task modal behavior
+(function setupEditTaskModal(){
+    const m = document.getElementById('editTaskModal');
+    if (!m) return;
+
+    const close = () => {
+        m.setAttribute('aria-hidden', 'true');
+        m.style.display = 'none';
+        currentEditTaskId = null;
+    };
+
+    const closeBtn = document.getElementById('editTaskClose');
+    const cancelBtn = document.getElementById('editTaskCancel');
+    const saveBtn = document.getElementById('editTaskSave');
+    const backdrop = document.getElementById('editTaskBackdrop');
+
+    [closeBtn, cancelBtn, backdrop].forEach(el => el && el.addEventListener('click', close));
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            saveEditedTask();
+            close();
+        });
+    }
+})();
+
 
 function openAddModal(initialCategory, options = {}) {
     // capture quick-add context flags as a fallback
