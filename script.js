@@ -1120,7 +1120,276 @@ function deleteTask(taskId) {
     });
 }
 
-// Функция для экспорта задач в файл
+// Переменная для хранения ID текущей редактируемой задачи
+let currentEditTaskId = null;
+
+// Функция для открытия меню действий с задачей в архиве
+function openTimelineTaskMenu(taskId) {
+    currentEditTaskId = taskId;
+    const modal = document.getElementById('taskActionsModal');
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+}
+
+// Функция для открытия модального окна редактирования задачи
+function openEditTaskModal(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    currentEditTaskId = taskId;
+    const modal = document.getElementById('editTaskModal');
+    if (!modal) return;
+
+    // Заполняем форму текущими значениями задачи
+    const textField = document.getElementById('editTaskText');
+    if (textField) textField.value = task.text || '';
+
+    // Заполняем категорию
+    const categoryContainer = document.getElementById('editTaskCategory');
+    if (categoryContainer) {
+        renderTaskEditCategoryOptions(categoryContainer, task.category);
+    }
+
+    // Заполняем подкатегорию
+    const subcontainer = document.getElementById('editTaskSubcategoryContainer');
+    const subOptions = document.getElementById('editTaskSubcategory');
+    if (subcontainer && subOptions) {
+        if (task.category === 1) {
+            subcontainer.style.display = 'block';
+            renderTaskEditSubcategoryOptions(subOptions, task);
+        } else {
+            subcontainer.style.display = 'none';
+        }
+    }
+
+    // Заполняем время завершения
+    let completedAt = 0;
+    if (task.completedAt) {
+        completedAt = task.completedAt;
+    }
+    const hoursField = document.getElementById('editTaskCompletedHours');
+    const minutesField = document.getElementById('editTaskCompletedMinutes');
+    if (hoursField && minutesField) {
+        const hours = Math.floor(completedAt / 60);
+        const minutes = completedAt % 60;
+        hoursField.value = hours || '';
+        minutesField.value = minutes || '';
+    }
+
+    // Заполняем продолжительность
+    const durationField = document.getElementById('editTaskDuration');
+    if (durationField) {
+        durationField.value = task.duration || '';
+    }
+
+    // Закрываем меню действий
+    const actionsModal = document.getElementById('taskActionsModal');
+    if (actionsModal) {
+        actionsModal.setAttribute('aria-hidden', 'true');
+        actionsModal.style.display = 'none';
+    }
+
+    // Открываем модальное окно редактирования
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+
+    // Фокусируем на поле текста
+    setTimeout(() => textField && textField.focus(), 50);
+}
+
+// Функция для отрисовки кнопок категорий в модальном окне редактирования
+function renderTaskEditCategoryOptions(container, selectedCategory) {
+    if (!container) return;
+    container.innerHTML = '';
+    const cats = [0, 1, 2, 5, 3, 4];
+    const labels = {
+        0: 'Категория не определена',
+        1: 'Обязательные',
+        2: 'Система безопасности',
+        3: 'Простые радости',
+        4: 'Эго-радости',
+        5: 'Доступность простых радостей'
+    };
+
+    cats.forEach(c => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `modal-category-btn cat-${c}`;
+        btn.dataset.category = String(c);
+        btn.textContent = labels[c] || String(c);
+
+        if (c === selectedCategory) {
+            btn.classList.add('selected');
+        }
+
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.modal-category-btn').forEach(x => x.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            // Показываем подкатегории если это категория 1
+            const subcontainer = document.getElementById('editTaskSubcategoryContainer');
+            const subOptions = document.getElementById('editTaskSubcategory');
+            if (subcontainer && subOptions) {
+                if (c === 1) {
+                    subcontainer.style.display = 'block';
+                    renderTaskEditSubcategoryOptions(subOptions, { category: c, subcategory: '' });
+                } else {
+                    subcontainer.style.display = 'none';
+                }
+            }
+        });
+
+        container.appendChild(btn);
+    });
+}
+
+// Функция для отрисовки кнопок подкатегорий в модальном окне редактирования
+function renderTaskEditSubcategoryOptions(container, task) {
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (task.category !== 1) return;
+
+    const customSubsRaw = localStorage.getItem('customSubcategories');
+    const customSubs = customSubsRaw ? JSON.parse(customSubsRaw) : {};
+
+    const list = [];
+    const present = new Set();
+
+    // Добавляем подкатегории из существующих задач
+    tasks.filter(t => t.category === 1 && typeof t.subcategory === 'string' && t.subcategory.trim())
+        .forEach(t => {
+            const norm = normalizeSubcategoryName(1, t.subcategory);
+            const key = norm || t.subcategory.trim();
+            const tag = key.toLowerCase();
+            if (!present.has(tag)) {
+                present.add(tag);
+                list.push({ key, label: key });
+            }
+        });
+
+    // Добавляем сохранённые подкатегории
+    const saved = Array.isArray(customSubs[1]) ? customSubs[1] : [];
+    saved.forEach(s => {
+        const norm = normalizeSubcategoryName(1, s);
+        const key = norm || s;
+        const tag = key.toLowerCase();
+        if (!present.has(tag)) {
+            present.add(tag);
+            list.push({ key, label: s });
+        }
+    });
+
+    // Сортируем по алфавиту
+    list.sort((a, b) => String(a.label).localeCompare(String(b.label), 'ru'));
+
+    // Добавляем "без подкатегории" первой
+    const noneBtn = document.createElement('button');
+    noneBtn.type = 'button';
+    noneBtn.className = 'edit-subcat-btn cat-1';
+    noneBtn.dataset.sub = '';
+    noneBtn.textContent = 'Без подкатегории';
+
+    if (!task.subcategory) {
+        noneBtn.classList.add('selected');
+    }
+
+    noneBtn.addEventListener('click', () => {
+        container.querySelectorAll('.edit-subcat-btn').forEach(x => x.classList.remove('selected'));
+        noneBtn.classList.add('selected');
+    });
+
+    container.appendChild(noneBtn);
+
+    // Добавляем остальные подкатегории
+    list.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'edit-subcat-btn cat-1';
+        btn.dataset.sub = normalizeSubcategoryName(1, item.key) || item.key;
+        btn.textContent = getSubcategoryLabel(1, item.label);
+
+        if (btn.dataset.sub === task.subcategory) {
+            btn.classList.add('selected');
+        }
+
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.edit-subcat-btn').forEach(x => x.classList.remove('selected'));
+            btn.classList.add('selected');
+        });
+
+        container.appendChild(btn);
+    });
+}
+
+// Функция для сохранения отредактированной задачи
+function saveEditedTask() {
+    if (currentEditTaskId === null) return;
+
+    const taskIndex = tasks.findIndex(t => t.id === currentEditTaskId);
+    if (taskIndex === -1) return;
+
+    // Получаем значения из формы
+    const textField = document.getElementById('editTaskText');
+    const categoryContainer = document.getElementById('editTaskCategory');
+    const subOptions = document.getElementById('editTaskSubcategory');
+    const hoursField = document.getElementById('editTaskCompletedHours');
+    const minutesField = document.getElementById('editTaskCompletedMinutes');
+    const durationField = document.getElementById('editTaskDuration');
+
+    const newText = textField ? (textField.value || '').trim() : '';
+    if (!newText) {
+        openInfoModal('Название задачи не может быть пустым');
+        return;
+    }
+
+    // Получаем выбранную категорию
+    const selectedCatBtn = categoryContainer ? categoryContainer.querySelector('.modal-category-btn.selected') : null;
+    const newCategory = selectedCatBtn ? parseInt(selectedCatBtn.dataset.category) : tasks[taskIndex].category;
+
+    // Получаем выбранную подкатегорию
+    let newSubcategory = tasks[taskIndex].subcategory || '';
+    if (newCategory === 1) {
+        const selectedSubBtn = subOptions ? subOptions.querySelector('.edit-subcat-btn.selected') : null;
+        newSubcategory = selectedSubBtn ? (selectedSubBtn.dataset.sub || '') : '';
+    } else {
+        newSubcategory = '';
+    }
+
+    // Получаем время завершения (в минутах)
+    const hours = parseInt(hoursField ? (hoursField.value || 0) : 0);
+    const minutes = parseInt(minutesField ? (minutesField.value || 0) : 0);
+    const completedAt = hours * 60 + minutes;
+
+    // Получаем продолжительность (переводим в миллисекунды)
+    const duration = parseInt(durationField ? (durationField.value || 0) : 0);
+
+    // Обновляем задачу
+    tasks[taskIndex].text = newText;
+    tasks[taskIndex].category = newCategory;
+    if (newCategory === 1 && newSubcategory) {
+        tasks[taskIndex].subcategory = newSubcategory;
+    } else if (newCategory !== 1) {
+        delete tasks[taskIndex].subcategory;
+    }
+    tasks[taskIndex].completedAt = completedAt;
+    tasks[taskIndex].duration = duration;
+
+    // Сохраняем и закрываем форму
+    saveTasks();
+    displayTasks();
+
+    const modal = document.getElementById('editTaskModal');
+    if (modal) {
+        modal.setAttribute('aria-hidden', 'true');
+        modal.style.display = 'none';
+    }
+
+    currentEditTaskId = null;
+}
+
+// Функция для функция для экспорта задач в файл
 function exportTasks() {
     const dataStr = JSON.stringify(tasks, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
